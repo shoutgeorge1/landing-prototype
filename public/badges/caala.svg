@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 144" role="img" aria-label="Consumer Attorneys Association of Los Angeles">
+  <rect x="4" y="4" width="256" height="136" rx="12" fill="#ffffff" stroke="#10284a" stroke-width="3"/>
+  <text x="132" y="62" text-anchor="middle" font-family="Georgia, serif" font-size="40" font-weight="700" fill="#10284a">CAALA</text>
+  <line x1="52" y1="80" x2="212" y2="80" stroke="#e7be02" stroke-width="3"/>
+  <text x="132" y="102" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#10284a">Consumer Attorneys Association</text>
+  <text x="132" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#10284a">of Los Angeles</text>
+</svg>

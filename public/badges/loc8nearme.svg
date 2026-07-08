@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 144" role="img" aria-label="Loc8NearMe Recommended">
+  <rect x="4" y="4" width="256" height="136" rx="12" fill="#ffffff" stroke="#10284a" stroke-width="3"/>
+  <text x="132" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#10284a">Loc8NearMe</text>
+  <line x1="72" y1="76" x2="192" y2="76" stroke="#e7be02" stroke-width="3"/>
+  <text x="132" y="104" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="600" fill="#10284a">Recommended</text>
+</svg>

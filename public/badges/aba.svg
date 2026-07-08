@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 144" role="img" aria-label="American Bar Association">
+  <rect x="4" y="4" width="256" height="136" rx="12" fill="#ffffff" stroke="#10284a" stroke-width="3"/>
+  <text x="132" y="62" text-anchor="middle" font-family="Georgia, serif" font-size="42" font-weight="700" fill="#10284a">ABA</text>
+  <line x1="72" y1="80" x2="192" y2="80" stroke="#e7be02" stroke-width="3"/>
+  <text x="132" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#10284a">American Bar Association</text>
+</svg>

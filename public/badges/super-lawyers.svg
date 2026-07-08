@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 144" role="img" aria-label="Super Lawyers, Kasim Idrees, Selected 2023">
+  <rect x="4" y="4" width="256" height="136" rx="12" fill="#10284a" stroke="#10284a" stroke-width="3"/>
+  <text x="132" y="52" text-anchor="middle" font-family="Georgia, serif" font-size="26" font-weight="700" fill="#ffffff">Super Lawyers</text>
+  <line x1="72" y1="70" x2="192" y2="70" stroke="#e7be02" stroke-width="3"/>
+  <text x="132" y="96" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#e7be02">Kasim Idrees</text>
+  <text x="132" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#ffffff">Selected 2023</text>
+</svg>
