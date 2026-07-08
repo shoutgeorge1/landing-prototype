@@ -11,20 +11,20 @@ interface FinalCTAProps {
 
 export function FinalCTA({ city, copy }: FinalCTAProps) {
   return (
-    <section className="bg-slate-100 px-6 py-16 text-center">
+    <section className="bg-slate-100 px-5 py-14 text-center">
       <div className="mx-auto max-w-2xl">
-        <h2 className="text-2xl font-bold text-[var(--navy)] sm:text-3xl">{copy.finalTitle}</h2>
-        <p className="mt-3 text-slate-600">{copy.finalBody(city.name)}</p>
-        <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <PhoneCTA location="final_cta" label={copy.ctaCall} />
+        <h2 className="text-[26px] font-extrabold text-[var(--navy)] sm:text-3xl">{copy.finalTitle}</h2>
+        <p className="mt-4 text-[17px] leading-relaxed text-slate-700">{copy.finalBody(city.name)}</p>
+        <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
+          <PhoneCTA location="final_cta" label={copy.ctaCall} className="w-full sm:w-auto" />
           <ScrollToFormButton
             location="final_cta"
-            className="inline-flex items-center justify-center rounded-lg border-2 border-[var(--navy)] px-6 py-3 text-lg font-bold text-[var(--navy)] transition-colors hover:bg-[var(--navy)] hover:text-white"
+            className="inline-flex w-full items-center justify-center rounded-lg border-2 border-[var(--navy)] px-6 py-3.5 text-lg font-bold text-[var(--navy)] transition-colors hover:bg-[var(--navy)] hover:text-white sm:w-auto"
           >
             {copy.ctaPrimary}
           </ScrollToFormButton>
         </div>
-        <p className="mt-6 text-sm text-slate-500">{copy.finalNote}</p>
+        <p className="mt-6 text-base text-slate-600">{copy.finalNote}</p>
       </div>
     </section>
   );

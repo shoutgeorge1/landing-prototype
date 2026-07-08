@@ -16,7 +16,7 @@ export function StickyMobileCTA({ label }: StickyMobileCTAProps) {
         <a
           href={`tel:${FIRM.phoneTel}`}
           onClick={() => pushEvent("phone_click", { location: "sticky_mobile" })}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--gold)] px-4 py-3 text-lg font-bold text-[var(--navy)]"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--gold)] px-4 py-4 text-lg font-bold text-[var(--navy)]"
           aria-label={`${label} — ${FIRM.name}`}
         >
           <span aria-hidden>&#9742;</span>

@@ -69,6 +69,9 @@ export interface Copy {
   finalTitle: string;
   finalBody: (city: string) => string;
   finalNote: string;
+  finalStopTitle: string;
+  finalStopBody: string;
+  finalStopNote: string;
   form: FormCopy;
   disclaimer: (city: string) => string;
   disclaimerGeneric: string;
@@ -89,7 +92,7 @@ const en: Copy = {
   headline: (city) =>
     `Fired, Harassed, Retaliated Against, or Mistreated at Work in ${city}?`,
   subheadline:
-    "Talk to an employment lawyer about what happened. Employment Law Assist helps California employees with wrongful termination, retaliation, discrimination, harassment, unpaid wages, overtime, and workplace mistreatment.",
+    "Talk to an employment lawyer about what happened. We help California employees with wrongful termination, retaliation, discrimination, harassment, unpaid wages, and workplace mistreatment.",
   heroBullets: [
     "Free consultation",
     "No fee unless we win, if your case qualifies",
@@ -161,6 +164,10 @@ const en: Copy = {
   finalBody: (city) =>
     `Call now or request a free, confidential consultation. Serving employees in ${city} across California.`,
   finalNote: "Available 24/7 by phone. Hablamos Español.",
+  finalStopTitle: "Still Wondering If What Happened Was Legal?",
+  finalStopBody:
+    "You do not need to know the exact legal category before reaching out. If you were fired, punished, harassed, underpaid, or treated unfairly at work, you can call or request a free consultation today.",
+  finalStopNote: "Free consultation. Hablamos Español. Available 24/7 by phone.",
   form: {
     title: "Request a Free Consultation",
     subtitle: (city) => `No commitment. Confidential. Serving employees in ${city}.`,
@@ -281,6 +288,10 @@ const es: Copy = {
   finalBody: (city) =>
     `Llame ahora o solicite una consulta gratis y confidencial. Ayudamos a empleados en ${city} en todo California.`,
   finalNote: "Disponible por teléfono 24/7. Hablamos Español.",
+  finalStopTitle: "¿Aún Se Pregunta Si Lo Que Pasó Fue Legal?",
+  finalStopBody:
+    "No necesita saber la categoría legal exacta antes de contactarnos. Si lo despidieron, castigaron, acosaron, le pagaron mal o lo trataron injustamente en el trabajo, puede llamar o solicitar una consulta gratis hoy.",
+  finalStopNote: "Consulta gratis. Hablamos Español. Disponible por teléfono 24/7.",
   form: {
     title: "Solicite una Consulta Gratis",
     subtitle: (city) => `Sin compromiso. Confidencial. Ayudamos a empleados en ${city}.`,

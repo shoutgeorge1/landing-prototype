@@ -11,6 +11,7 @@ import { AttorneyOffice } from "./AttorneyOffice";
 import { ThreeSteps } from "./ThreeSteps";
 import { Testimonials } from "./Testimonials";
 import { FinalCTA } from "./FinalCTA";
+import { FinalStopCTA } from "./FinalStopCTA";
 import { Disclaimer } from "./Disclaimer";
 import { SiteFooter } from "./SiteFooter";
 import { StickyMobileCTA } from "./StickyMobileCTA";
@@ -65,13 +66,14 @@ export function LandingPage({ city, lang }: LandingPageProps) {
         intro={copy.testimonialsIntro}
         more={copy.testimonialsMore}
       />
-      <TrustBadges
-        title={copy.trustBadgesTitle}
-        membershipsTitle={copy.trustMembershipsTitle}
-        tone="muted"
-        showMemberships={false}
-      />
       <FinalCTA city={city} lang={lang} copy={copy} />
+      <FinalStopCTA
+        title={copy.finalStopTitle}
+        body={copy.finalStopBody}
+        note={copy.finalStopNote}
+        callLabel={copy.ctaCall}
+        formLabel={copy.ctaPrimary}
+      />
       <Disclaimer text={copy.disclaimer(city.name)} />
       <SiteFooter
         officeTitle={copy.footerOfficeTitle}

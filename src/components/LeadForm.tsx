@@ -14,9 +14,9 @@ interface LeadFormProps {
 
 type Fields = Omit<LeadPayload, "citySlug" | "lang">;
 
-const labelClass = "block text-sm font-semibold text-[var(--navy)]";
+const labelClass = "block text-base font-semibold text-[var(--navy)]";
 const inputClass =
-  "mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-base text-slate-900 outline-none focus:border-[var(--navy)] focus:ring-1 focus:ring-[var(--navy)]";
+  "mt-1.5 w-full rounded-lg border-2 border-slate-300 px-3 py-3 text-base text-slate-900 outline-none focus:border-[var(--navy)] focus:ring-1 focus:ring-[var(--navy)]";
 
 function isEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -90,10 +90,10 @@ export function LeadForm({ city, lang }: LeadFormProps) {
       onSubmit={handleSubmit}
       onChange={markStarted}
       noValidate
-      className="rounded-2xl bg-white p-6 shadow-xl ring-1 ring-slate-200"
+      className="rounded-2xl bg-white p-6 shadow-2xl ring-2 ring-slate-200"
     >
       <h2 className="text-xl font-bold text-[var(--navy)]">{c.title}</h2>
-      <p className="mt-1 text-sm text-slate-600">{c.subtitle(city.name)}</p>
+      <p className="mt-1.5 text-base text-slate-600">{c.subtitle(city.name)}</p>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div>
@@ -110,7 +110,7 @@ export function LeadForm({ city, lang }: LeadFormProps) {
             onChange={(e) => update("firstName", e.target.value)}
             aria-invalid={!!errors.firstName}
           />
-          {errors.firstName && <p className="mt-1 text-xs text-red-600">{errors.firstName}</p>}
+          {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>}
         </div>
         <div>
           <label htmlFor="lastName" className={labelClass}>
@@ -125,7 +125,7 @@ export function LeadForm({ city, lang }: LeadFormProps) {
             onChange={(e) => update("lastName", e.target.value)}
             aria-invalid={!!errors.lastName}
           />
-          {errors.lastName && <p className="mt-1 text-xs text-red-600">{errors.lastName}</p>}
+          {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>}
         </div>
         <div>
           <label htmlFor="phone" className={labelClass}>
@@ -141,7 +141,7 @@ export function LeadForm({ city, lang }: LeadFormProps) {
             onChange={(e) => update("phone", e.target.value)}
             aria-invalid={!!errors.phone}
           />
-          {errors.phone && <p className="mt-1 text-xs text-red-600">{errors.phone}</p>}
+          {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
         </div>
         <div>
           <label htmlFor="email" className={labelClass}>
@@ -157,7 +157,7 @@ export function LeadForm({ city, lang }: LeadFormProps) {
             onChange={(e) => update("email", e.target.value)}
             aria-invalid={!!errors.email}
           />
-          {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
+          {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
         </div>
         <div>
           <label htmlFor="city" className={labelClass}>
@@ -172,7 +172,7 @@ export function LeadForm({ city, lang }: LeadFormProps) {
             onChange={(e) => update("city", e.target.value)}
             aria-invalid={!!errors.city}
           />
-          {errors.city && <p className="mt-1 text-xs text-red-600">{errors.city}</p>}
+          {errors.city && <p className="mt-1 text-sm text-red-600">{errors.city}</p>}
         </div>
         <div>
           <label htmlFor="employer" className={labelClass}>
@@ -201,7 +201,7 @@ export function LeadForm({ city, lang }: LeadFormProps) {
           onChange={(e) => update("whatHappened", e.target.value)}
           aria-invalid={!!errors.whatHappened}
         />
-        {errors.whatHappened && <p className="mt-1 text-xs text-red-600">{errors.whatHappened}</p>}
+        {errors.whatHappened && <p className="mt-1 text-sm text-red-600">{errors.whatHappened}</p>}
       </div>
 
       <div className="mt-4 flex items-start gap-3">
@@ -214,16 +214,16 @@ export function LeadForm({ city, lang }: LeadFormProps) {
           onChange={(e) => update("consent", e.target.checked)}
           aria-invalid={!!errors.consent}
         />
-        <label htmlFor="consent" className="text-xs leading-relaxed text-slate-600">
+        <label htmlFor="consent" className="text-sm leading-relaxed text-slate-600">
           {c.consent}
         </label>
       </div>
-      {errors.consent && <p className="mt-1 text-xs text-red-600">{errors.consent}</p>}
+      {errors.consent && <p className="mt-1 text-sm text-red-600">{errors.consent}</p>}
 
       <button
         type="submit"
         disabled={submitting}
-        className="mt-6 w-full rounded-lg bg-[var(--gold)] px-6 py-3.5 text-lg font-bold text-[var(--navy)] transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-6 w-full rounded-lg bg-[var(--gold)] px-6 py-4 text-lg font-bold text-[var(--navy)] transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {submitting ? c.submitting : c.submit}
       </button>
