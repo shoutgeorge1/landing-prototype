@@ -71,6 +71,7 @@ export interface Copy {
   finalNote: string;
   finalStopTitle: string;
   finalStopBody: string;
+  finalStopUrgency: string;
   finalStopNote: string;
   form: FormCopy;
   disclaimer: (city: string) => string;
@@ -167,6 +168,7 @@ const en: Copy = {
   finalStopTitle: "Still Wondering If What Happened Was Legal?",
   finalStopBody:
     "You do not need to know the exact legal category before reaching out. If you were fired, punished, harassed, underpaid, or treated unfairly at work, you can call or request a free consultation today.",
+  finalStopUrgency: "Call now — consultation is free and confidential.",
   finalStopNote: "Free consultation. Hablamos Español. Available 24/7 by phone.",
   form: {
     title: "Request a Free Consultation",
@@ -291,6 +293,7 @@ const es: Copy = {
   finalStopTitle: "¿Aún Se Pregunta Si Lo Que Pasó Fue Legal?",
   finalStopBody:
     "No necesita saber la categoría legal exacta antes de contactarnos. Si lo despidieron, castigaron, acosaron, le pagaron mal o lo trataron injustamente en el trabajo, puede llamar o solicitar una consulta gratis hoy.",
+  finalStopUrgency: "Llame ahora — la consulta es gratis y confidencial.",
   finalStopNote: "Consulta gratis. Hablamos Español. Disponible por teléfono 24/7.",
   form: {
     title: "Solicite una Consulta Gratis",

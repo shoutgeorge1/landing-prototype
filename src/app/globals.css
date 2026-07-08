@@ -30,3 +30,60 @@ body {
     font-size: 16px;
   }
 }
+
+@keyframes stop-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes cta-glow {
+  0%,
+  100% {
+    box-shadow: 0 4px 14px rgba(231, 190, 2, 0.35);
+  }
+  50% {
+    box-shadow: 0 4px 24px rgba(231, 190, 2, 0.65);
+  }
+}
+
+@keyframes phone-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes bounce-down {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+.stop-sign-pulse {
+  animation: stop-pulse 2.2s ease-in-out infinite;
+}
+
+.cta-glow {
+  animation: cta-glow 2s ease-in-out infinite;
+}
+
+.phone-pulse {
+  display: inline-block;
+  animation: phone-pulse 1.8s ease-in-out infinite;
+}
+
+.arrow-bounce {
+  animation: bounce-down 1.5s ease-in-out infinite;
+}
