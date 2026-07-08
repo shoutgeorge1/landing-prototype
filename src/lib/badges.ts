@@ -39,9 +39,9 @@ export const PRIMARY_BADGES: Badge[] = [
   {
     src: "/badges/super-lawyers.png",
     label: "Super Lawyers",
-    alt: "Super Lawyers — Kasim Idrees, Selected 2023",
-    width: 300,
-    height: 230,
+    alt: "Rated by Super Lawyers",
+    width: 720,
+    height: 760,
   },
   {
     src: "/badges/loc8nearme.png",

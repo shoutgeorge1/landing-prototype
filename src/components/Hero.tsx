@@ -46,15 +46,15 @@ export function Hero({ city, lang, copy }: HeroProps) {
 
         <div className="mt-10 grid gap-10 lg:grid-cols-2">
           <div>
-            <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">
+            <h1 className="text-[28px] font-extrabold leading-tight sm:text-4xl lg:text-5xl">
               {copy.headline(city.name)}
             </h1>
             <p className="mt-4 text-lg leading-relaxed text-white/90">{copy.subheadline}</p>
             <div className="mt-6">
-              <TrustBar points={copy.trustPoints} tone="dark" />
+              <TrustBar points={copy.heroBullets} tone="dark" />
             </div>
             <div className="mt-8">
-              <PhoneCTA location="hero" label={copy.ctaCall} />
+              <PhoneCTA location="hero" label={copy.ctaCall} className="w-full text-xl sm:w-auto" />
             </div>
           </div>
 

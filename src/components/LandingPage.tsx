@@ -1,15 +1,15 @@
 import type { City, Lang } from "@/lib/cities";
 import { COPY } from "@/lib/copy";
 import { Hero } from "./Hero";
+import { ProofStrip } from "./ProofStrip";
 import { TrustBadges } from "./TrustBadges";
-import { NoWinNoFee } from "./NoWinNoFee";
-import { ProblemSection } from "./ProblemSection";
+import { ProblemRecognition } from "./ProblemRecognition";
 import { PracticeAreas } from "./PracticeAreas";
-import { WhyUs } from "./WhyUs";
+import { NoWinNoFee } from "./NoWinNoFee";
+import { MidCTA } from "./MidCTA";
 import { AttorneyOffice } from "./AttorneyOffice";
 import { ThreeSteps } from "./ThreeSteps";
 import { Testimonials } from "./Testimonials";
-import { ReviewsCTA } from "./ReviewsCTA";
 import { FinalCTA } from "./FinalCTA";
 import { Disclaimer } from "./Disclaimer";
 import { SiteFooter } from "./SiteFooter";
@@ -27,18 +27,30 @@ export function LandingPage({ city, lang }: LandingPageProps) {
     <main>
       <UtmCapture />
       <Hero city={city} lang={lang} copy={copy} />
+      <ProofStrip
+        title={copy.proofTitle}
+        googleRating={copy.proofGoogleRating}
+        googleReviews={copy.proofGoogleReviews}
+        yelpLabel={copy.proofYelp}
+        points={copy.proofPoints}
+      />
       <TrustBadges
         title={copy.trustBadgesTitle}
         membershipsTitle={copy.trustMembershipsTitle}
       />
-      <NoWinNoFee title={copy.noWinTitle} body={copy.noWinBody} />
-      <ProblemSection title={copy.problemTitle(city.name)} body={copy.problemBody(city.name)} />
+      <ProblemRecognition title={copy.problemTitle} items={copy.problemItems} />
       <PracticeAreas
         title={copy.practiceTitle}
         intro={copy.practiceIntro(city.name)}
         items={copy.practiceAreas}
       />
-      <WhyUs title={copy.whyUsTitle} items={copy.whyUs} note={copy.whyUsNote} />
+      <NoWinNoFee title={copy.noWinTitle} body={copy.noWinBody} />
+      <MidCTA
+        title={copy.notSureTitle}
+        body={copy.notSureBody}
+        callLabel={copy.ctaCall}
+        formLabel={copy.ctaPrimary}
+      />
       <AttorneyOffice
         title={copy.attorneyTitle}
         name={copy.attorneyName}
@@ -48,16 +60,16 @@ export function LandingPage({ city, lang }: LandingPageProps) {
         teamCaption={copy.teamCaption}
       />
       <ThreeSteps title={copy.stepsTitle} steps={copy.steps} />
-      <Testimonials title={copy.testimonialsTitle} intro={copy.testimonialsIntro} />
-      <ReviewsCTA
-        title={copy.reviewsTitle}
-        googleLabel={copy.reviewsGoogle}
-        yelpLabel={copy.reviewsYelp}
+      <Testimonials
+        title={copy.testimonialsTitle}
+        intro={copy.testimonialsIntro}
+        more={copy.testimonialsMore}
       />
       <TrustBadges
         title={copy.trustBadgesTitle}
         membershipsTitle={copy.trustMembershipsTitle}
         tone="muted"
+        showMemberships={false}
       />
       <FinalCTA city={city} lang={lang} copy={copy} />
       <Disclaimer text={copy.disclaimer(city.name)} />

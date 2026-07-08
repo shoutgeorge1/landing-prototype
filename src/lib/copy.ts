@@ -36,34 +36,36 @@ export interface Copy {
   seoDescription: (city: string) => string;
   headline: (city: string) => string;
   subheadline: string;
-  trustPoints: string[];
+  heroBullets: string[];
   ctaPrimary: string;
   ctaCall: string;
+  proofTitle: string;
+  proofGoogleRating: string;
+  proofGoogleReviews: string;
+  proofYelp: string;
+  proofPoints: string[];
   trustBadgesTitle: string;
   trustMembershipsTitle: string;
-  problemTitle: (city: string) => string;
-  problemBody: (city: string) => string[];
+  problemTitle: string;
+  problemItems: string[];
   noWinTitle: string;
   noWinBody: string[];
   practiceTitle: string;
   practiceIntro: (city: string) => string;
   practiceAreas: string[];
-  whyUsTitle: string;
-  whyUs: string[];
-  whyUsNote: string;
+  notSureTitle: string;
+  notSureBody: string;
   stepsTitle: string;
   steps: Step[];
   testimonialsTitle: string;
   testimonialsIntro: string;
+  testimonialsMore: string;
   attorneyTitle: string;
   attorneyName: string;
   attorneyRole: string;
   attorneyBio: string;
   officeCaption: string;
   teamCaption: string;
-  reviewsTitle: string;
-  reviewsGoogle: string;
-  reviewsYelp: string;
   finalTitle: string;
   finalBody: (city: string) => string;
   finalNote: string;
@@ -83,28 +85,42 @@ const en: Copy = {
   locale: "en_US",
   seoTitle: (city) => `Employment Lawyers Serving ${city} Employees | Free Consultation`,
   seoDescription: (city) =>
-    `Employment Law Assist helps employees in ${city}, California with wrongful termination, discrimination, retaliation, harassment, and wage claims. No win, no fee. Free, confidential consultation.`,
-  headline: (city) => `Employment Lawyers Serving ${city} Employees`,
+    `Fired, harassed, retaliated against, or underpaid at work in ${city}? Employment Law Assist helps California employees with wrongful termination, retaliation, discrimination, harassment, and unpaid wages. Free consultation.`,
+  headline: (city) =>
+    `Fired, Harassed, Retaliated Against, or Mistreated at Work in ${city}?`,
   subheadline:
-    "Compassionate attorneys fighting for California employees — wrongful termination, workplace discrimination, retaliation, harassment, wage issues, and meal/rest break violations.",
-  trustPoints: ["Hablamos Español", "100% Free Consultation", "Available 24/7 By Phone"],
+    "Talk to an employment lawyer about what happened. Employment Law Assist helps California employees with wrongful termination, retaliation, discrimination, harassment, unpaid wages, overtime, and workplace mistreatment.",
+  heroBullets: [
+    "Free consultation",
+    "No fee unless we win, if your case qualifies",
+    "Hablamos Español",
+    "Available 24/7 by phone",
+  ],
   ctaPrimary: "Request a Free Consultation",
   ctaCall: `Call Now: ${FIRM.phoneDisplay}`,
+  proofTitle: "Recognized and Highly Rated",
+  proofGoogleRating: "4.8-Star Google Rating",
+  proofGoogleReviews: "70+ Google Reviews",
+  proofYelp: "Highly Rated on Yelp",
+  proofPoints: ["Hablamos Español", "Available 24/7 by Phone", "Free Consultation"],
   trustBadgesTitle: "Recognized & Trusted",
   trustMembershipsTitle: "Proud Members Of",
-  problemTitle: (city) => `Facing a workplace problem in ${city}?`,
-  problemBody: (city) => [
-    `If you're dealing with a serious problem at work, you don't have to face it alone. Employment Law Assist helps employees in ${city} understand their rights under California law.`,
-    "Whether you were fired, harassed, discriminated against, or denied pay you earned, a free consultation is the fastest way to learn where you stand.",
+  problemTitle: "Do Any of These Sound Familiar?",
+  problemItems: [
+    "You were fired after reporting harassment, discrimination, or unsafe conditions.",
+    "You were let go after taking medical leave, getting injured, or filing a complaint.",
+    "You're being harassed or discriminated against because of who you are.",
+    "You're not being paid for all your hours, overtime, or missed meal and rest breaks.",
+    "You were pushed out, demoted, or punished for standing up for your rights.",
   ],
-  noWinTitle: "No Win, No Fee — 100% Risk-Free",
+  noWinTitle: "Free Consultation. No Fee Unless We Win.",
   noWinBody: [
-    "We will handle your case on a contingency fee basis, which means you don't pay a thing unless we win or settle your case.",
-    "We pay all case costs and expenses from start to finish. You pay $0 out of pocket. If your case is unsuccessful for any reason, you owe us nothing.",
+    "Your first consultation is free. We handle qualifying cases on a contingency fee basis — you pay no attorney's fee unless we win or settle your case.",
+    "If your case qualifies and we take it on, there's no out-of-pocket attorney's fee along the way.",
   ],
-  practiceTitle: "Our Practice Areas",
+  practiceTitle: "How We Help Employees",
   practiceIntro: (city) =>
-    `We help employees in ${city} across a full range of California workplace claims.`,
+    `We represent employees in ${city} across a full range of California workplace claims.`,
   practiceAreas: [
     "Wrongful Termination",
     "Meal & Rest Break Violations",
@@ -113,36 +129,35 @@ const en: Copy = {
     "Workers' Compensation",
     "Harassment",
   ],
-  whyUsTitle: "Why Employment Law Assist?",
-  whyUs: [
-    "A premier employment law firm that aggressively represents employees.",
-    "Compassionate attorneys dedicated to enforcing employees' rights in the workplace.",
-    "Extensive knowledge across every area of employment law — wage & hour, workers' compensation, wrongful termination, retaliation, discrimination, and harassment.",
-  ],
-  whyUsNote:
-    "If your current or former employer has wronged you in any way, you may be entitled to compensation. Contact us for a free and confidential consultation.",
-  stepsTitle: "3 Easy Steps to Get Help",
+  notSureTitle: "Not Sure If You Have a Case?",
+  notSureBody:
+    "That's exactly what the free consultation is for. Tell us what happened and the team will let you know if your situation may involve a California employment law claim.",
+  stepsTitle: "What to Expect When You Contact Us",
   steps: [
     {
-      title: "Call or fill out the form",
-      body: `Call ${FIRM.phoneDisplay} or complete the form on this page.`,
+      title: "Tell us what happened",
+      body: "Call or submit the form with a brief explanation of your workplace issue.",
     },
-    { title: "Speak with us", body: "Speak with us to evaluate your claim." },
-    { title: "Get help with your claim", body: "We pursue the compensation you deserve." },
+    {
+      title: "The team reviews your situation",
+      body: "Employment Law Assist will look at whether your situation may involve a California employment law claim.",
+    },
+    {
+      title: "If your case qualifies, you learn the next steps",
+      body: "If the firm can help, the team will explain what may happen next.",
+    },
   ],
-  testimonialsTitle: "Client Success Stories",
+  testimonialsTitle: "What Clients Say",
   testimonialsIntro: "Real reviews from people we've helped.",
+  testimonialsMore: "More reviews available on Google and Yelp.",
   attorneyTitle: "Meet Your Attorney",
   attorneyName: "Kasim Idrees",
   attorneyRole: "Founding Attorney, Employment Law Assist",
   attorneyBio:
-    "Employment Law Assist is led by attorney Kasim Idrees, who represents California employees against unlawful treatment at work — from wrongful termination and retaliation to discrimination, harassment, and unpaid wages. Our team works from our Woodland Hills office and serves employees across California.",
+    "Employment Law Assist is led by attorney Kasim Idrees, who represents California employees against unlawful treatment at work. The team works from our Woodland Hills office and serves employees across California.",
   officeCaption: "Our office in Woodland Hills, California",
   teamCaption: "Our team at work",
-  reviewsTitle: "See What Clients Say",
-  reviewsGoogle: "Google Reviews",
-  reviewsYelp: "Yelp Reviews",
-  finalTitle: "Talk to someone about your situation today",
+  finalTitle: "Talk to Someone About Your Situation Today",
   finalBody: (city) =>
     `Call now or request a free, confidential consultation. Serving employees in ${city} across California.`,
   finalNote: "Available 24/7 by phone. Hablamos Español.",
@@ -189,28 +204,42 @@ const es: Copy = {
   locale: "es_US",
   seoTitle: (city) => `Abogados Laborales que Ayudan a Empleados en ${city} | Consulta Gratis`,
   seoDescription: (city) =>
-    `Employment Law Assist ayuda a empleados en ${city}, California con despido injustificado, discriminación, represalias, acoso y reclamos de salario. Sin ganar, sin pagar. Consulta gratis y confidencial.`,
-  headline: (city) => `Abogados Laborales que Ayudan a Empleados en ${city}`,
+    `¿Lo despidieron, acosaron, tomaron represalias o le pagaron mal en el trabajo en ${city}? Employment Law Assist ayuda a empleados de California con despido injustificado, represalias, discriminación, acoso y salarios no pagados. Consulta gratis.`,
+  headline: (city) =>
+    `¿Despedido, Acosado, con Represalias o Maltratado en el Trabajo en ${city}?`,
   subheadline:
-    "Abogados compasivos que luchan por los empleados de California — despido injustificado, discriminación laboral, represalias, acoso, problemas de salario y violaciones de descansos o comida.",
-  trustPoints: ["Hablamos Español", "Consulta 100% Gratis", "Disponible por Teléfono 24/7"],
+    "Hable con un abogado laboral sobre lo que pasó. Employment Law Assist ayuda a empleados de California con despido injustificado, represalias, discriminación, acoso, salarios no pagados, horas extra y maltrato en el trabajo.",
+  heroBullets: [
+    "Consulta gratis",
+    "Sin honorarios a menos que ganemos, si su caso califica",
+    "Hablamos Español",
+    "Disponible por teléfono 24/7",
+  ],
   ctaPrimary: "Solicite una Consulta Gratis",
   ctaCall: `Llame Ahora: ${FIRM.phoneDisplay}`,
+  proofTitle: "Reconocidos y Bien Calificados",
+  proofGoogleRating: "Calificación 4.8 Estrellas en Google",
+  proofGoogleReviews: "Más de 70 Reseñas en Google",
+  proofYelp: "Bien Calificados en Yelp",
+  proofPoints: ["Hablamos Español", "Disponible por Teléfono 24/7", "Consulta Gratis"],
   trustBadgesTitle: "Reconocidos y de Confianza",
   trustMembershipsTitle: "Miembros Orgullosos De",
-  problemTitle: (city) => `¿Tiene un problema laboral en ${city}?`,
-  problemBody: (city) => [
-    `Si enfrenta un problema serio en el trabajo, no tiene que hacerlo solo. Employment Law Assist ayuda a empleados en ${city} a entender sus derechos bajo la ley de California.`,
-    "Ya sea que lo hayan despedido, acosado, discriminado o negado el pago que ganó, una consulta gratis es la forma más rápida de conocer sus opciones.",
+  problemTitle: "¿Le Suena Familiar Algo de Esto?",
+  problemItems: [
+    "Lo despidieron después de reportar acoso, discriminación o condiciones inseguras.",
+    "Lo despidieron después de tomar incapacidad médica, lesionarse o presentar una queja.",
+    "Lo acosan o discriminan por quién es usted.",
+    "No le pagan todas sus horas, horas extra o descansos de comida perdidos.",
+    "Lo presionaron, degradaron o castigaron por defender sus derechos.",
   ],
-  noWinTitle: "Sin Ganar, Sin Pagar — 100% Sin Riesgo",
+  noWinTitle: "Consulta Gratis. Sin Honorarios a Menos que Ganemos.",
   noWinBody: [
-    "Manejamos su caso con honorarios de contingencia, lo que significa que usted no paga nada a menos que ganemos o resolvamos su caso.",
-    "Nosotros cubrimos todos los costos y gastos del caso de principio a fin. Usted paga $0 de su bolsillo. Si su caso no tiene éxito por cualquier razón, usted no nos debe nada.",
+    "Su primera consulta es gratis. Manejamos los casos que califican con honorarios de contingencia — usted no paga honorarios de abogado a menos que ganemos o resolvamos su caso.",
+    "Si su caso califica y lo aceptamos, no hay honorarios de abogado de su bolsillo durante el proceso.",
   ],
-  practiceTitle: "Nuestras Áreas de Práctica",
+  practiceTitle: "Cómo Ayudamos a los Empleados",
   practiceIntro: (city) =>
-    `Ayudamos a empleados en ${city} con una amplia gama de reclamos laborales en California.`,
+    `Representamos a empleados en ${city} con una amplia gama de reclamos laborales en California.`,
   practiceAreas: [
     "Despido Injustificado",
     "Violaciones de Descanso y Comida",
@@ -219,37 +248,36 @@ const es: Copy = {
     "Compensación Laboral",
     "Acoso",
   ],
-  whyUsTitle: "¿Por Qué Employment Law Assist?",
-  whyUs: [
-    "Una firma líder en derecho laboral que representa agresivamente a los empleados.",
-    "Abogados compasivos dedicados a hacer valer los derechos de los empleados en el trabajo.",
-    "Amplio conocimiento en todas las áreas del derecho laboral: salario y horas, compensación laboral, despido injustificado, represalias, discriminación y acoso.",
-  ],
-  whyUsNote:
-    "Si su empleador actual o anterior le ha perjudicado de alguna manera, usted podría tener derecho a una compensación. Contáctenos para una consulta gratis y confidencial.",
-  stepsTitle: "3 Pasos Sencillos para Recibir Ayuda",
+  notSureTitle: "¿No Está Seguro Si Tiene un Caso?",
+  notSureBody:
+    "Para eso es la consulta gratis. Cuéntenos qué pasó y el equipo le dirá si su situación podría involucrar un reclamo bajo la ley laboral de California.",
+  stepsTitle: "Qué Esperar Cuando Nos Contacta",
   steps: [
     {
-      title: "Llame o complete el formulario",
-      body: `Llame al ${FIRM.phoneDisplay} o complete el formulario en esta página.`,
+      title: "Cuéntenos qué pasó",
+      body: "Llame o envíe el formulario con una breve explicación de su problema laboral.",
     },
-    { title: "Hable con nosotros", body: "Hable con nosotros para evaluar su reclamo." },
-    { title: "Reciba ayuda con su reclamo", body: "Buscamos la compensación que usted merece." },
+    {
+      title: "El equipo revisa su situación",
+      body: "Employment Law Assist evaluará si su situación podría involucrar un reclamo bajo la ley laboral de California.",
+    },
+    {
+      title: "Si su caso califica, conoce los siguientes pasos",
+      body: "Si la firma puede ayudar, el equipo le explicará qué podría suceder después.",
+    },
   ],
-  testimonialsTitle: "Historias de Éxito de Clientes",
+  testimonialsTitle: "Lo que Dicen los Clientes",
   testimonialsIntro:
-    "Reseñas reales de personas a las que hemos ayudado. Las reseñas se muestran en su idioma original (inglés).",
+    "Reseñas reales de personas a las que hemos ayudado (en su idioma original, inglés).",
+  testimonialsMore: "Más reseñas disponibles en Google y Yelp.",
   attorneyTitle: "Conozca a Su Abogado",
   attorneyName: "Kasim Idrees",
   attorneyRole: "Abogado Fundador, Employment Law Assist",
   attorneyBio:
-    "Employment Law Assist está dirigida por el abogado Kasim Idrees, quien representa a empleados de California frente a tratos ilegales en el trabajo — desde despido injustificado y represalias hasta discriminación, acoso y salarios no pagados. Nuestro equipo trabaja desde nuestra oficina en Woodland Hills y ayuda a empleados en todo California.",
+    "Employment Law Assist está dirigida por el abogado Kasim Idrees, quien representa a empleados de California frente a tratos ilegales en el trabajo. El equipo trabaja desde nuestra oficina en Woodland Hills y ayuda a empleados en todo California.",
   officeCaption: "Nuestra oficina en Woodland Hills, California",
   teamCaption: "Nuestro equipo en acción",
-  reviewsTitle: "Vea lo que Dicen los Clientes",
-  reviewsGoogle: "Reseñas de Google",
-  reviewsYelp: "Reseñas de Yelp",
-  finalTitle: "Hable con alguien sobre su situación hoy",
+  finalTitle: "Hable Hoy con Alguien Sobre Su Situación",
   finalBody: (city) =>
     `Llame ahora o solicite una consulta gratis y confidencial. Ayudamos a empleados en ${city} en todo California.`,
   finalNote: "Disponible por teléfono 24/7. Hablamos Español.",
