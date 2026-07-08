@@ -40,6 +40,7 @@ export interface Copy {
   ctaPrimary: string;
   ctaCall: string;
   trustBadgesTitle: string;
+  trustMembershipsTitle: string;
   problemTitle: (city: string) => string;
   problemBody: (city: string) => string[];
   noWinTitle: string;
@@ -54,6 +55,15 @@ export interface Copy {
   steps: Step[];
   testimonialsTitle: string;
   testimonialsIntro: string;
+  attorneyTitle: string;
+  attorneyName: string;
+  attorneyRole: string;
+  attorneyBio: string;
+  officeCaption: string;
+  teamCaption: string;
+  reviewsTitle: string;
+  reviewsGoogle: string;
+  reviewsYelp: string;
   finalTitle: string;
   finalBody: (city: string) => string;
   finalNote: string;
@@ -81,6 +91,7 @@ const en: Copy = {
   ctaPrimary: "Request a Free Consultation",
   ctaCall: `Call Now: ${FIRM.phoneDisplay}`,
   trustBadgesTitle: "Recognized & Trusted",
+  trustMembershipsTitle: "Proud Members Of",
   problemTitle: (city) => `Facing a workplace problem in ${city}?`,
   problemBody: (city) => [
     `If you're dealing with a serious problem at work, you don't have to face it alone. Employment Law Assist helps employees in ${city} understand their rights under California law.`,
@@ -121,6 +132,16 @@ const en: Copy = {
   ],
   testimonialsTitle: "Client Success Stories",
   testimonialsIntro: "Real reviews from people we've helped.",
+  attorneyTitle: "Meet Your Attorney",
+  attorneyName: "Kasim Idrees",
+  attorneyRole: "Founding Attorney, Employment Law Assist",
+  attorneyBio:
+    "Employment Law Assist is led by attorney Kasim Idrees, who represents California employees against unlawful treatment at work — from wrongful termination and retaliation to discrimination, harassment, and unpaid wages. Our team works from our Woodland Hills office and serves employees across California.",
+  officeCaption: "Our office in Woodland Hills, California",
+  teamCaption: "Our team at work",
+  reviewsTitle: "See What Clients Say",
+  reviewsGoogle: "Google Reviews",
+  reviewsYelp: "Yelp Reviews",
   finalTitle: "Talk to someone about your situation today",
   finalBody: (city) =>
     `Call now or request a free, confidential consultation. Serving employees in ${city} across California.`,
@@ -176,6 +197,7 @@ const es: Copy = {
   ctaPrimary: "Solicite una Consulta Gratis",
   ctaCall: `Llame Ahora: ${FIRM.phoneDisplay}`,
   trustBadgesTitle: "Reconocidos y de Confianza",
+  trustMembershipsTitle: "Miembros Orgullosos De",
   problemTitle: (city) => `¿Tiene un problema laboral en ${city}?`,
   problemBody: (city) => [
     `Si enfrenta un problema serio en el trabajo, no tiene que hacerlo solo. Employment Law Assist ayuda a empleados en ${city} a entender sus derechos bajo la ley de California.`,
@@ -217,6 +239,16 @@ const es: Copy = {
   testimonialsTitle: "Historias de Éxito de Clientes",
   testimonialsIntro:
     "Reseñas reales de personas a las que hemos ayudado. Las reseñas se muestran en su idioma original (inglés).",
+  attorneyTitle: "Conozca a Su Abogado",
+  attorneyName: "Kasim Idrees",
+  attorneyRole: "Abogado Fundador, Employment Law Assist",
+  attorneyBio:
+    "Employment Law Assist está dirigida por el abogado Kasim Idrees, quien representa a empleados de California frente a tratos ilegales en el trabajo — desde despido injustificado y represalias hasta discriminación, acoso y salarios no pagados. Nuestro equipo trabaja desde nuestra oficina en Woodland Hills y ayuda a empleados en todo California.",
+  officeCaption: "Nuestra oficina en Woodland Hills, California",
+  teamCaption: "Nuestro equipo en acción",
+  reviewsTitle: "Vea lo que Dicen los Clientes",
+  reviewsGoogle: "Reseñas de Google",
+  reviewsYelp: "Reseñas de Yelp",
   finalTitle: "Hable con alguien sobre su situación hoy",
   finalBody: (city) =>
     `Llame ahora o solicite una consulta gratis y confidencial. Ayudamos a empleados en ${city} en todo California.`,

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FIRM } from "@/lib/content";
 
 interface SiteFooterProps {
@@ -13,8 +14,14 @@ export function SiteFooter({ officeTitle, contactTitle, disclaimer }: SiteFooter
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-8 sm:grid-cols-2">
           <div>
-            <p className="text-lg font-bold">{FIRM.name}</p>
-            <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-[var(--gold)]">
+            <Image
+              src="/images/logo-white.png"
+              alt={FIRM.name}
+              width={1024}
+              height={242}
+              className="h-10 w-auto"
+            />
+            <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-[var(--gold)]">
               {officeTitle}
             </p>
             <address className="mt-1 text-sm not-italic leading-relaxed text-white/80">

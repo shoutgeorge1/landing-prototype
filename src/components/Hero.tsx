@@ -20,12 +20,12 @@ export function Hero({ city, lang, copy }: HeroProps) {
       <div className="mx-auto max-w-6xl">
         <div className="flex items-center justify-between gap-4">
           <Image
-            src={FIRM.logo}
+            src="/images/logo-white.png"
             alt={FIRM.name}
-            width={220}
-            height={52}
+            width={1024}
+            height={242}
             priority
-            className="h-11 w-auto brightness-0 invert"
+            className="h-11 w-auto"
           />
           <div className="flex items-center gap-4">
             <Link

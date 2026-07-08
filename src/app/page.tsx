@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { CITIES, LANGS } from "@/lib/cities";
@@ -11,6 +12,14 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
+      <Image
+        src="/images/logo-lion.png"
+        alt={FIRM.name}
+        width={520}
+        height={620}
+        className="mb-6 h-20 w-auto"
+        priority
+      />
       <h1 className="text-2xl font-bold text-[var(--navy)]">
         {FIRM.name} &mdash; Bilingual PPC Landing Pages
       </h1>
