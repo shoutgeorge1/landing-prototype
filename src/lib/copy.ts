@@ -66,9 +66,6 @@ export interface Copy {
   attorneyBio: string;
   officeCaption: string;
   teamCaption: string;
-  finalTitle: string;
-  finalBody: (city: string) => string;
-  finalNote: string;
   finalStopTitle: string;
   finalStopBody: string;
   finalStopUrgency: string;
@@ -161,10 +158,6 @@ const en: Copy = {
     "Employment Law Assist is led by attorney Kasim Idrees, who represents California employees against unlawful treatment at work. The team works from our Woodland Hills office and serves employees across California.",
   officeCaption: "Our office in Woodland Hills, California",
   teamCaption: "Our team at work",
-  finalTitle: "Talk to Someone About Your Situation Today",
-  finalBody: (city) =>
-    `Call now or request a free, confidential consultation. Serving employees in ${city} across California.`,
-  finalNote: "Available 24/7 by phone. Hablamos Español.",
   finalStopTitle: "Still Wondering If What Happened Was Legal?",
   finalStopBody:
     "You do not need to know the exact legal category before reaching out. If you were fired, punished, harassed, underpaid, or treated unfairly at work, you can call or request a free consultation today.",
@@ -286,10 +279,6 @@ const es: Copy = {
     "Employment Law Assist está dirigida por el abogado Kasim Idrees, quien representa a empleados de California frente a tratos ilegales en el trabajo. El equipo trabaja desde nuestra oficina en Woodland Hills y ayuda a empleados en todo California.",
   officeCaption: "Nuestra oficina en Woodland Hills, California",
   teamCaption: "Nuestro equipo en acción",
-  finalTitle: "Hable Hoy con Alguien Sobre Su Situación",
-  finalBody: (city) =>
-    `Llame ahora o solicite una consulta gratis y confidencial. Ayudamos a empleados en ${city} en todo California.`,
-  finalNote: "Disponible por teléfono 24/7. Hablamos Español.",
   finalStopTitle: "¿Aún Se Pregunta Si Lo Que Pasó Fue Legal?",
   finalStopBody:
     "No necesita saber la categoría legal exacta antes de contactarnos. Si lo despidieron, castigaron, acosaron, le pagaron mal o lo trataron injustamente en el trabajo, puede llamar o solicitar una consulta gratis hoy.",

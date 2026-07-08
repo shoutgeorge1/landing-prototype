@@ -9,14 +9,14 @@ export const metadata: Metadata = {
     template: "%s | Employment Law Assist",
   },
   description:
-    "California employment law attorneys serving Bakersfield employees. Free, confidential consultation. Hablamos Español. Available 24/7 by phone.",
+    "California employment law attorneys serving employees statewide. Free, confidential consultation. Hablamos Español. Available 24/7 by phone.",
   robots: { index: false, follow: false },
   openGraph: {
     type: "website",
     siteName: "Employment Law Assist",
     title: "Employment Law Assist | California Employment Lawyers",
     description:
-      "California employment law attorneys serving Bakersfield employees. Free, confidential consultation.",
+      "California employment law attorneys serving employees statewide. Free, confidential consultation.",
   },
 };
 
