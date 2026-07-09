@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ELA Landing Pages
 
-## Getting Started
+Bilingual PPC landing page prototype for **Employment Law Assist** (ELA).
 
-First, run the development server:
+> **Not MedVirtual.** This is a separate project from `medvirtual-meta-content-doc` (a Meta ad content doc tool for a different company). Open each folder in its own Cursor workspace.
+
+## What this is
+
+- Next.js app with per-city, per-language landing pages (`/[city]/[lang]`)
+- Internal QA index at `/` (not indexed by search engines)
+- HubSpot PPC forms, GTM tracking, and Google Ads URL parameter capture
+
+## Production links
+
+Base URL: **https://landing-prototype.vercel.app**
+
+### Bakersfield PPC
+
+- English: [https://landing-prototype.vercel.app/bakersfield/en](https://landing-prototype.vercel.app/bakersfield/en)
+- Spanish: [https://landing-prototype.vercel.app/bakersfield/es](https://landing-prototype.vercel.app/bakersfield/es)
+
+### Thank-you pages
+
+- English: [https://landing-prototype.vercel.app/thank-you?lang=en](https://landing-prototype.vercel.app/thank-you?lang=en)
+- Spanish: [https://landing-prototype.vercel.app/thank-you?lang=es](https://landing-prototype.vercel.app/thank-you?lang=es)
+- Default (English): [https://landing-prototype.vercel.app/thank-you](https://landing-prototype.vercel.app/thank-you)
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) for the QA index, or go directly to a city page (e.g. `/bakersfield/en`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env.example` to `.env.local` and set:
 
-## Learn More
+```
+NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
+NEXT_PUBLIC_HUBSPOT_PORTAL_ID=
+NEXT_PUBLIC_HUBSPOT_ENGLISH_FORM_ID=
+NEXT_PUBLIC_HUBSPOT_SPANISH_FORM_ID=
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Command         | Description              |
+| --------------- | ------------------------ |
+| `npm run dev`   | Start development server |
+| `npm run build` | Production build         |
+| `npm run start` | Run production server    |
+| `npm run lint`  | Run ESLint               |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Config
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Firm details (name, phone, logo, office): `src/lib/content.ts`
+- HubSpot form IDs: `src/lib/hubspot.ts` (via env vars)
+- Page copy (EN/ES): `src/lib/copy.ts`
+- City list: `src/lib/cities.ts`

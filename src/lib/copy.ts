@@ -78,6 +78,7 @@ export interface Copy {
   footerContactTitle: string;
   thankYouTitle: string;
   thankYouBody: string;
+  thankYouHomeCta: string;
   thankYouNote: string;
   switchLangLabel: string;
 }
@@ -195,9 +196,10 @@ const en: Copy = {
     "The information on this website is attorney advertising and is for general information only. Nothing here is legal advice for any individual case or situation. This information is not intended to create, and receipt or viewing does not constitute, an attorney-client relationship.",
   footerOfficeTitle: "Office",
   footerContactTitle: "Contact Us",
-  thankYouTitle: "Thank you — we've received your request",
+  thankYouTitle: "Thank You",
   thankYouBody:
-    "A member of our team will review your information and reach out. If you'd like to speak with someone now, call us directly — we're available 24/7 by phone.",
+    "Your information has been received. A member of the Employment Law Assist team will review your request and follow up as soon as possible.",
+  thankYouHomeCta: "Return to homepage",
   thankYouNote: "Hablamos Español",
   switchLangLabel: "Español",
 };
@@ -316,9 +318,10 @@ const es: Copy = {
     "La información en este sitio web es publicidad de abogados y es solo para información general. Nada aquí constituye asesoría legal para ningún caso o situación individual. Esta información no pretende crear, y su recepción o visualización no constituye, una relación abogado-cliente.",
   footerOfficeTitle: "Oficina",
   footerContactTitle: "Contáctenos",
-  thankYouTitle: "Gracias — hemos recibido su solicitud",
+  thankYouTitle: "Gracias",
   thankYouBody:
-    "Un miembro de nuestro equipo revisará su información y se comunicará con usted. Si desea hablar con alguien ahora, llámenos directamente — estamos disponibles por teléfono 24/7.",
+    "Hemos recibido su información. Un miembro del equipo de Employment Law Assist revisará su solicitud y se comunicará con usted lo antes posible.",
+  thankYouHomeCta: "Volver al inicio",
   thankYouNote: "Se habla inglés y español",
   switchLangLabel: "English",
 };

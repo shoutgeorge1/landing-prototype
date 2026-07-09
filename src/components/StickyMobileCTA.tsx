@@ -2,6 +2,7 @@
 
 import { FIRM } from "@/lib/content";
 import { pushEvent } from "@/lib/tracking";
+import { PhoneIcon } from "./PhoneIcon";
 
 interface StickyMobileCTAProps {
   label: string;
@@ -15,12 +16,10 @@ export function StickyMobileCTA({ label }: StickyMobileCTAProps) {
         <a
           href={`tel:${FIRM.phoneTel}`}
           onClick={() => pushEvent("phone_click", { location: "sticky_mobile" })}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--gold)] px-4 py-4 text-lg font-bold text-[var(--navy)]"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--gold)] px-3 py-3.5 text-base font-bold text-[var(--navy)] sm:px-4 sm:py-4 sm:text-lg"
           aria-label={`${label} — ${FIRM.name}`}
         >
-          <span aria-hidden className="phone-pulse text-xl">
-            &#9742;
-          </span>
+          <PhoneIcon className="phone-pulse h-5 w-5 shrink-0" />
           {label}
         </a>
       </div>

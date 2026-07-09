@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { BRAND_IMAGES } from "@/lib/content";
 import { GTM_ID } from "@/lib/tracking";
 
 export const metadata: Metadata = {
@@ -11,6 +12,10 @@ export const metadata: Metadata = {
   description:
     "California employment law attorneys serving employees statewide. Free, confidential consultation. Hablamos Español. Available 24/7 by phone.",
   robots: { index: false, follow: false },
+  icons: {
+    icon: BRAND_IMAGES.iconDarkSquare,
+    apple: BRAND_IMAGES.iconDarkSquare,
+  },
   openGraph: {
     type: "website",
     siteName: "Employment Law Assist",

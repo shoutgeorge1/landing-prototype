@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FIRM } from "@/lib/content";
+import { BRAND_IMAGES, FIRM } from "@/lib/content";
 
 interface SiteFooterProps {
   officeTitle: string;
@@ -15,11 +15,11 @@ export function SiteFooter({ officeTitle, contactTitle, disclaimer }: SiteFooter
         <div className="grid gap-8 sm:grid-cols-2">
           <div>
             <Image
-              src="/images/logo-white.png"
-              alt={FIRM.name}
-              width={1024}
-              height={242}
-              className="h-10 w-auto"
+              src={BRAND_IMAGES.logoWhiteLong}
+              alt={BRAND_IMAGES.alt.logo}
+              width={280}
+              height={56}
+              className="h-8 w-auto"
             />
             <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-[var(--gold)]">
               {officeTitle}

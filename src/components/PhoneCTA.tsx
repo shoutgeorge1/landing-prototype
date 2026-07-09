@@ -2,6 +2,7 @@
 
 import { FIRM } from "@/lib/content";
 import { pushEvent } from "@/lib/tracking";
+import { PhoneIcon } from "./PhoneIcon";
 
 interface PhoneCTAProps {
   location: string;
@@ -30,7 +31,7 @@ export function PhoneCTA({
       className={`${base} ${styles} ${className}`}
       aria-label={`Call ${FIRM.name} at ${FIRM.phoneDisplay}`}
     >
-      <span aria-hidden>&#9742;</span>
+      <PhoneIcon className="h-5 w-5 shrink-0" />
       {label ?? `Call ${FIRM.phoneDisplay}`}
     </a>
   );

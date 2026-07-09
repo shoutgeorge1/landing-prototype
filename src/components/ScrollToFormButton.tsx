@@ -17,7 +17,7 @@ export function ScrollToFormButton({
     pushEvent("cta_click", { location, target: "lead_form" });
     const el = document.getElementById("lead-form");
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      el.scrollIntoView({ behavior: "smooth", block: window.innerWidth < 1024 ? "center" : "start" });
       const firstField = el.querySelector<HTMLInputElement>("input, textarea");
       firstField?.focus({ preventScroll: true });
     }

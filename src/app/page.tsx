@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { CITIES, LANGS } from "@/lib/cities";
-import { FIRM } from "@/lib/content";
+import { BRAND_IMAGES, FIRM } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Landing Pages (QA Index)",
@@ -13,11 +13,11 @@ export default function Home() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
       <Image
-        src="/images/logo-lion.png"
-        alt={FIRM.name}
-        width={520}
-        height={620}
-        className="mb-6 h-20 w-auto"
+        src={BRAND_IMAGES.logoDarkLong}
+        alt={BRAND_IMAGES.alt.logo}
+        width={320}
+        height={64}
+        className="mb-6 h-16 w-auto"
         priority
       />
       <h1 className="text-2xl font-bold text-[var(--navy)]">

@@ -1,7 +1,8 @@
 {
-  "name": "landing-prototype",
+  "name": "ela-landing-pages",
   "version": "0.1.0",
   "private": true,
+  "description": "Employment Law Assist (ELA) bilingual PPC landing pages",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -20,6 +21,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

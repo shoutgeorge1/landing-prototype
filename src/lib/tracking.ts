@@ -14,6 +14,8 @@ export function pushEvent(event: string, data: DataLayerEntry = {}): void {
   window.dataLayer.push({ event, ...data });
 }
 
+import { GOOGLE_ADS_PARAM_KEYS } from "./googleAdsParams";
+
 const UTM_KEYS = [
   "utm_source",
   "utm_medium",
@@ -23,6 +25,7 @@ const UTM_KEYS = [
   "gclid",
   "gbraid",
   "wbraid",
+  ...GOOGLE_ADS_PARAM_KEYS,
 ];
 
 const STORAGE_KEY = "ela_utms";
