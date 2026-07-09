@@ -12,18 +12,20 @@ Bilingual PPC landing page prototype for **Employment Law Assist** (ELA).
 
 ## Production links
 
-Base URL: **https://landing-prototype.vercel.app**
+- **Live site:** [https://landing-prototype-delta.vercel.app](https://landing-prototype-delta.vercel.app)
+- **GitHub:** [https://github.com/shoutgeorge1/landing-prototype](https://github.com/shoutgeorge1/landing-prototype)
+- **Vercel:** [https://vercel.com/shoutgeorge1s-projects](https://vercel.com/shoutgeorge1s-projects)
 
 ### Bakersfield PPC
 
-- English: [https://landing-prototype.vercel.app/bakersfield/en](https://landing-prototype.vercel.app/bakersfield/en)
-- Spanish: [https://landing-prototype.vercel.app/bakersfield/es](https://landing-prototype.vercel.app/bakersfield/es)
+- English: [https://landing-prototype-delta.vercel.app/bakersfield/en](https://landing-prototype-delta.vercel.app/bakersfield/en)
+- Spanish: [https://landing-prototype-delta.vercel.app/bakersfield/es](https://landing-prototype-delta.vercel.app/bakersfield/es)
 
 ### Thank-you pages
 
-- English: [https://landing-prototype.vercel.app/thank-you?lang=en](https://landing-prototype.vercel.app/thank-you?lang=en)
-- Spanish: [https://landing-prototype.vercel.app/thank-you?lang=es](https://landing-prototype.vercel.app/thank-you?lang=es)
-- Default (English): [https://landing-prototype.vercel.app/thank-you](https://landing-prototype.vercel.app/thank-you)
+- English: [https://landing-prototype-delta.vercel.app/thank-you?lang=en](https://landing-prototype-delta.vercel.app/thank-you?lang=en)
+- Spanish: [https://landing-prototype-delta.vercel.app/thank-you?lang=es](https://landing-prototype-delta.vercel.app/thank-you?lang=es)
+- Default (English): [https://landing-prototype-delta.vercel.app/thank-you](https://landing-prototype-delta.vercel.app/thank-you)
 
 ## Getting started
 
