@@ -11,15 +11,20 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-16">
-      <Image
-        src={BRAND_IMAGES.logoDarkLong}
-        alt={BRAND_IMAGES.alt.logo}
-        width={320}
-        height={64}
-        className="mb-6 h-16 w-auto"
-        priority
-      />
+    <main>
+      <div className="bg-[var(--navy)] px-6 py-8">
+        <div className="mx-auto max-w-3xl">
+          <Image
+            src={BRAND_IMAGES.logoWhiteLong}
+            alt={BRAND_IMAGES.alt.logo}
+            width={480}
+            height={96}
+            className="h-12 w-auto sm:h-14"
+            priority
+          />
+        </div>
+      </div>
+      <div className="mx-auto max-w-3xl px-6 py-12">
       <h1 className="text-2xl font-bold text-[var(--navy)]">
         {FIRM.name} &mdash; Bilingual PPC Landing Pages
       </h1>
@@ -46,6 +51,7 @@ export default function Home() {
             </ul>
           </div>
         ))}
+      </div>
       </div>
     </main>
   );
