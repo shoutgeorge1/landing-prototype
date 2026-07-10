@@ -28,6 +28,9 @@ export interface FormCopy {
   errWhat: string;
   errConsent: string;
   genericError: string;
+  loading: string;
+  fallbackPrompt: string;
+  fallbackLink: string;
 }
 
 export interface Copy {
@@ -187,6 +190,9 @@ const en: Copy = {
     errWhat: "Tell us briefly what happened.",
     errConsent: "Please provide your consent to continue.",
     genericError: "Something went wrong. Please call us instead.",
+    loading: "Loading form…",
+    fallbackPrompt: "Having trouble with the form?",
+    fallbackLink: "Complete the form here instead",
   },
   disclaimer: (city) =>
     `The information on this page is for general informational purposes only and is not legal advice. Contacting Employment Law Assist does not create an attorney-client relationship. Employment Law Assist serves employees in ${city} and does not maintain a physical office in ${city}. Every case is different and prior results do not guarantee a similar outcome.`,
@@ -309,6 +315,9 @@ const es: Copy = {
     errWhat: "Cuéntenos brevemente qué pasó.",
     errConsent: "Por favor otorgue su consentimiento para continuar.",
     genericError: "Algo salió mal. Por favor llámenos.",
+    loading: "Cargando formulario…",
+    fallbackPrompt: "¿Problemas con el formulario?",
+    fallbackLink: "Complete el formulario aquí",
   },
   disclaimer: (city) =>
     `La información en esta página es solo para fines informativos generales y no constituye asesoría legal. Contactar a Employment Law Assist no crea una relación abogado-cliente. Employment Law Assist ayuda a empleados en ${city} y no mantiene una oficina física en ${city}. Cada caso es diferente y los resultados anteriores no garantizan un resultado similar.`,

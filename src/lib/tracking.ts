@@ -14,6 +14,17 @@ export function pushEvent(event: string, data: DataLayerEntry = {}): void {
   window.dataLayer.push({ event, ...data });
 }
 
+export function pushHubSpotFormSubmission(
+  formId: string,
+  formLanguage: "english" | "spanish",
+): void {
+  pushEvent("hubspot_form_submission", {
+    form_language: formLanguage,
+    form_id: formId,
+    landing_page_path: window.location.pathname,
+  });
+}
+
 import { GOOGLE_ADS_PARAM_KEYS } from "./googleAdsParams";
 
 const UTM_KEYS = [

@@ -1,114 +1,167 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Script from "next/script";
+import { useEffect, useId, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { City, Lang } from "@/lib/cities";
 import { COPY } from "@/lib/copy";
-import { populateGoogleAdsHiddenFields } from "@/lib/googleAdsParams";
+import { populateGoogleAdsFieldsV4 } from "@/lib/googleAdsParams";
 import {
+  getFormLanguageLabel,
   getHubSpotFormId,
+  getHubSpotStandaloneUrl,
+  getThankYouPath,
   HUBSPOT_PORTAL_ID,
+  HUBSPOT_REGION,
   isHubSpotConfigured,
 } from "@/lib/hubspot";
-import { pushEvent } from "@/lib/tracking";
+import {
+  appendPreservedQueryParams,
+  appendPreservedQueryParamsToUrl,
+} from "@/lib/queryParams";
+import { pushEvent, pushHubSpotFormSubmission } from "@/lib/tracking";
+import { useHubSpotScriptStatus } from "./HubSpotScriptProvider";
 
 interface HubSpotFormProps {
   city: City;
   lang: Lang;
 }
 
-type HubSpotFormElement = Parameters<typeof populateGoogleAdsHiddenFields>[0];
+const LOAD_TIMEOUT_MS = 20_000;
 
-interface HubSpotCreateOptions {
-  portalId: string;
-  formId: string;
-  target: string;
-  onFormReady?: ($form: HubSpotFormElement) => void;
-  onFormSubmitted?: () => void;
+function formIdFromEvent(event: Event): string | undefined {
+  const detail = (event as CustomEvent<{ formId?: string }>).detail;
+  return detail?.formId;
 }
-
-declare global {
-  interface Window {
-    hbspt?: {
-      forms: {
-        create: (options: HubSpotCreateOptions) => void;
-      };
-    };
-  }
-}
-
-const HS_FORMS_SCRIPT = "https://js.hsforms.net/forms/embed/v2.js";
 
 export function HubSpotForm({ city, lang }: HubSpotFormProps) {
   const router = useRouter();
-  const containerId = "lead-form";
-  const hubspotTargetId = "hubspot-form-target";
-  const targetSelector = `#${hubspotTargetId}`;
-  const formCreatedRef = useRef(false);
-  const [scriptReady, setScriptReady] = useState(false);
-  const configured = isHubSpotConfigured(lang);
+  const instanceId = useId().replace(/:/g, "");
+  const scriptStatus = useHubSpotScriptStatus();
   const formId = getHubSpotFormId(lang);
   const formCopy = COPY[lang].form;
+  const configured = isHubSpotConfigured(lang);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [showFallback, setShowFallback] = useState(false);
+  const [standaloneUrl, setStandaloneUrl] = useState(() =>
+    getHubSpotStandaloneUrl(lang),
+  );
 
   useEffect(() => {
-    if (!configured || !scriptReady || formCreatedRef.current) return;
-    if (!window.hbspt?.forms?.create) return;
+    setStandaloneUrl(
+      appendPreservedQueryParamsToUrl(
+        getHubSpotStandaloneUrl(lang),
+        window.location.search,
+      ),
+    );
+  }, [lang]);
 
-    formCreatedRef.current = true;
+  useEffect(() => {
+    if (!configured) return;
 
-    window.hbspt.forms.create({
-      portalId: HUBSPOT_PORTAL_ID,
-      formId,
-      target: targetSelector,
-      onFormReady: ($form) => {
-        // Hidden fields google_campaign, google_ad_group, and google_keyword are
-        // populated from Google Ads Final URL suffix query parameters.
-        populateGoogleAdsHiddenFields($form);
-        pushEvent("form_ready", { city: city.slug, lang });
-      },
-      onFormSubmitted: () => {
-        pushEvent("form_submit", { city: city.slug, lang });
-        router.push(`/thank-you?lang=${lang}`);
-      },
-    });
-  }, [configured, scriptReady, formId, city.slug, lang, router, targetSelector]);
+    const handleReady = (event: Event) => {
+      if (formIdFromEvent(event) !== formId) return;
+      setIsLoading(false);
+      void populateGoogleAdsFieldsV4(event);
+      pushEvent("form_ready", { city: city.slug, lang });
+    };
+
+    const handleSuccess = (event: Event) => {
+      if (formIdFromEvent(event) !== formId) return;
+
+      pushHubSpotFormSubmission(formId, getFormLanguageLabel(lang));
+      pushEvent("form_submit", { city: city.slug, lang });
+
+      const thankYouPath = appendPreservedQueryParams(
+        getThankYouPath(city.slug, lang),
+        window.location.search,
+      );
+      router.push(thankYouPath);
+    };
+
+    window.addEventListener("hs-form-event:on-ready", handleReady);
+    window.addEventListener("hs-form-event:on-submission:success", handleSuccess);
+
+    return () => {
+      window.removeEventListener("hs-form-event:on-ready", handleReady);
+      window.removeEventListener(
+        "hs-form-event:on-submission:success",
+        handleSuccess,
+      );
+    };
+  }, [configured, formId, city.slug, lang, router]);
+
+  useEffect(() => {
+    if (!configured || scriptStatus === "error") {
+      setShowFallback(true);
+      setIsLoading(false);
+      return;
+    }
+
+    if (scriptStatus !== "ready" || !isLoading) return;
+
+    const timeout = window.setTimeout(() => {
+      setIsLoading(false);
+      setShowFallback(true);
+    }, LOAD_TIMEOUT_MS);
+
+    return () => window.clearTimeout(timeout);
+  }, [configured, scriptStatus, isLoading]);
 
   return (
     <div
-      id={containerId}
+      id="lead-form"
       className="scroll-mt-4 rounded-2xl bg-white p-4 shadow-2xl ring-2 ring-slate-200 sm:p-6"
     >
       <h2 className="text-xl font-bold text-[var(--navy)]">{formCopy.title}</h2>
-      <p className="mt-1.5 text-base text-slate-600">{formCopy.subtitle(city.name)}</p>
-      <div className="mt-5">
-      {configured ? (
-        <>
-          <Script
-            src={HS_FORMS_SCRIPT}
-            strategy="afterInteractive"
-            onReady={() => setScriptReady(true)}
-            onLoad={() => setScriptReady(true)}
-          />
-          <div id={hubspotTargetId} />
-        </>
-      ) : (
-        <div className="rounded-lg border-2 border-dashed border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
-          <p className="font-semibold">HubSpot form not configured</p>
-          <p className="mt-2">
-            Add your portal and form IDs to <code className="text-xs">.env.local</code>{" "}
-            (see <code className="text-xs">.env.example</code>):
+      <p className="mt-1.5 text-base text-slate-600">
+        {formCopy.subtitle(city.name)}
+      </p>
+
+      <div className="relative mt-5 min-h-[280px] w-full overflow-hidden">
+        {configured && scriptStatus !== "error" ? (
+          <>
+            {isLoading && (
+              <div
+                className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 rounded-lg bg-slate-50"
+                aria-live="polite"
+                aria-busy="true"
+              >
+                <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--navy)] border-t-transparent" />
+                <p className="text-sm font-medium text-slate-600">
+                  {formCopy.loading}
+                </p>
+              </div>
+            )}
+            <div
+              className={`hs-form-frame hubspot-form-frame w-full max-w-full transition-opacity duration-300 ${
+                isLoading ? "pointer-events-none opacity-0" : "opacity-100"
+              }`}
+              data-region={HUBSPOT_REGION}
+              data-form-id={formId}
+              data-portal-id={HUBSPOT_PORTAL_ID}
+              data-instance-id={instanceId}
+            />
+          </>
+        ) : (
+          <div className="rounded-lg border-2 border-dashed border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
+            <p className="font-semibold">{formCopy.fallbackPrompt}</p>
+          </div>
+        )}
+
+        {showFallback && (
+          <p className="mt-4 text-center text-sm text-slate-600">
+            {formCopy.fallbackPrompt}{" "}
+            <a
+              href={standaloneUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-[var(--navy)] underline underline-offset-2 hover:text-[var(--gold)]"
+            >
+              {formCopy.fallbackLink}
+            </a>
           </p>
-          <ul className="mt-2 list-inside list-disc space-y-1 font-mono text-xs">
-            <li>NEXT_PUBLIC_HUBSPOT_PORTAL_ID</li>
-            <li>
-              {lang === "es"
-                ? "NEXT_PUBLIC_HUBSPOT_SPANISH_FORM_ID"
-                : "NEXT_PUBLIC_HUBSPOT_ENGLISH_FORM_ID"}
-            </li>
-          </ul>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );

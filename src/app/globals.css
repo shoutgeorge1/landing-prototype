@@ -87,3 +87,17 @@ body {
 .arrow-bounce {
   animation: bounce-down 1.5s ease-in-out infinite;
 }
+
+/* HubSpot V4 embed — keep forms inside the landing-page container on mobile */
+.hubspot-form-frame,
+.hubspot-form-frame iframe,
+.hs-form-frame,
+.hs-form-frame iframe {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.hubspot-form-frame .hs-form,
+.hs-form-frame .hs-form {
+  max-width: 100%;
+}

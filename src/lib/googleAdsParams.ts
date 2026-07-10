@@ -68,3 +68,33 @@ export function populateGoogleAdsHiddenFields($form: HubSpotFormElement): void {
     }
   }
 }
+
+interface HubSpotFormV4Instance {
+  getFormId: () => string;
+  setFieldValue?: (name: string, value: string) => Promise<void>;
+}
+
+declare global {
+  interface Window {
+    HubSpotFormsV4?: {
+      getFormFromEvent: (event: Event) => HubSpotFormV4Instance | null;
+    };
+  }
+}
+
+/** Populate Google Ads hidden fields on HubSpot V4 forms when the embed API supports it. */
+export async function populateGoogleAdsFieldsV4(event: Event): Promise<void> {
+  const form = window.HubSpotFormsV4?.getFormFromEvent(event);
+  if (!form?.setFieldValue) return;
+
+  const urlParams = readGoogleAdsParamsFromUrl();
+  for (const key of GOOGLE_ADS_PARAM_KEYS) {
+    const value = urlParams[key];
+    if (!value) continue;
+    try {
+      await form.setFieldValue(key, value);
+    } catch {
+      // Field may not exist on this form variant; ignore.
+    }
+  }
+}

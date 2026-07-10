@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { BRAND_IMAGES } from "@/lib/content";
 import { GTM_ID } from "@/lib/tracking";
+import { HubSpotScriptProvider } from "@/components/HubSpotScriptProvider";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://employmentlawassist.com"),
@@ -48,7 +49,7 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        {children}
+        <HubSpotScriptProvider>{children}</HubSpotScriptProvider>
       </body>
     </html>
   );
