@@ -1,17 +1,16 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { City, Lang } from "@/lib/cities";
 import { COPY } from "@/lib/copy";
-import { populateGoogleAdsFieldsV4 } from "@/lib/googleAdsParams";
+import { populateGoogleAdsHiddenFields } from "@/lib/googleAdsParams";
 import {
   getFormLanguageLabel,
   getHubSpotFormId,
   getHubSpotStandaloneUrl,
   getThankYouPath,
   HUBSPOT_PORTAL_ID,
-  HUBSPOT_REGION,
   isHubSpotConfigured,
 } from "@/lib/hubspot";
 import {
@@ -26,20 +25,40 @@ interface HubSpotFormProps {
   lang: Lang;
 }
 
-const LOAD_TIMEOUT_MS = 20_000;
+type HubSpotFormElement = Parameters<typeof populateGoogleAdsHiddenFields>[0];
 
-function formIdFromEvent(event: Event): string | undefined {
-  const detail = (event as CustomEvent<{ formId?: string }>).detail;
-  return detail?.formId;
+interface HubSpotCreateOptions {
+  portalId: string;
+  formId: string;
+  region?: string;
+  target: string;
+  cssClass?: string;
+  css?: string;
+  submitText?: string;
+  onFormReady?: ($form: HubSpotFormElement) => void;
+  onFormSubmitted?: () => void;
 }
+
+declare global {
+  interface Window {
+    hbspt?: {
+      forms: {
+        create: (options: HubSpotCreateOptions) => void;
+      };
+    };
+  }
+}
+
+const LOAD_TIMEOUT_MS = 20_000;
 
 export function HubSpotForm({ city, lang }: HubSpotFormProps) {
   const router = useRouter();
-  const instanceId = useId().replace(/:/g, "");
   const scriptStatus = useHubSpotScriptStatus();
   const formId = getHubSpotFormId(lang);
   const formCopy = COPY[lang].form;
   const configured = isHubSpotConfigured(lang);
+  const targetId = `hubspot-form-${city.slug}-${lang}`;
+  const formCreatedRef = useRef(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [showFallback, setShowFallback] = useState(false);
@@ -57,39 +76,10 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
   }, [lang]);
 
   useEffect(() => {
-    if (!configured) return;
-
-    const handleReady = (event: Event) => {
-      if (formIdFromEvent(event) !== formId) return;
-      setIsLoading(false);
-      void populateGoogleAdsFieldsV4(event);
-      pushEvent("form_ready", { city: city.slug, lang });
-    };
-
-    const handleSuccess = (event: Event) => {
-      if (formIdFromEvent(event) !== formId) return;
-
-      pushHubSpotFormSubmission(formId, getFormLanguageLabel(lang));
-      pushEvent("form_submit", { city: city.slug, lang });
-
-      const thankYouPath = appendPreservedQueryParams(
-        getThankYouPath(city.slug, lang),
-        window.location.search,
-      );
-      router.push(thankYouPath);
-    };
-
-    window.addEventListener("hs-form-event:on-ready", handleReady);
-    window.addEventListener("hs-form-event:on-submission:success", handleSuccess);
-
-    return () => {
-      window.removeEventListener("hs-form-event:on-ready", handleReady);
-      window.removeEventListener(
-        "hs-form-event:on-submission:success",
-        handleSuccess,
-      );
-    };
-  }, [configured, formId, city.slug, lang, router]);
+    formCreatedRef.current = false;
+    setIsLoading(true);
+    setShowFallback(false);
+  }, [formId, targetId]);
 
   useEffect(() => {
     if (!configured || scriptStatus === "error") {
@@ -98,7 +88,44 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
       return;
     }
 
-    if (scriptStatus !== "ready" || !isLoading) return;
+    if (scriptStatus !== "ready" || formCreatedRef.current) return;
+    if (!window.hbspt?.forms?.create) {
+      setShowFallback(true);
+      setIsLoading(false);
+      return;
+    }
+
+    const target = document.getElementById(targetId);
+    if (target) target.innerHTML = "";
+
+    formCreatedRef.current = true;
+
+    window.hbspt.forms.create({
+      portalId: HUBSPOT_PORTAL_ID,
+      formId,
+      region: "na2",
+      target: `#${targetId}`,
+      cssClass: "ela-hs-form",
+      css: "",
+      onFormReady: ($form) => {
+        populateGoogleAdsHiddenFields($form);
+        setIsLoading(false);
+        pushEvent("form_ready", { city: city.slug, lang });
+      },
+      onFormSubmitted: () => {
+        pushHubSpotFormSubmission(formId, getFormLanguageLabel(lang));
+        pushEvent("form_submit", { city: city.slug, lang });
+        const thankYouPath = appendPreservedQueryParams(
+          getThankYouPath(city.slug, lang),
+          window.location.search,
+        );
+        router.push(thankYouPath);
+      },
+    });
+  }, [configured, scriptStatus, formId, city.slug, lang, router, targetId]);
+
+  useEffect(() => {
+    if (!configured || scriptStatus === "error" || !isLoading) return;
 
     const timeout = window.setTimeout(() => {
       setIsLoading(false);
@@ -111,19 +138,24 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
   return (
     <div
       id="lead-form"
-      className="scroll-mt-4 rounded-2xl bg-white p-4 shadow-2xl ring-2 ring-slate-200 sm:p-6"
+      className="scroll-mt-4 overflow-hidden rounded-2xl bg-white shadow-[0_20px_50px_rgba(0,0,0,0.28)] ring-1 ring-black/5"
     >
-      <h2 className="text-xl font-bold text-[var(--navy)]">{formCopy.title}</h2>
-      <p className="mt-1.5 text-base text-slate-600">
-        {formCopy.subtitle(city.name)}
-      </p>
+      <div className="border-b border-slate-100 bg-gradient-to-b from-slate-50 to-white px-5 pb-4 pt-5 sm:px-6 sm:pt-6">
+        <div className="mb-3 h-1 w-12 rounded-full bg-[var(--gold)]" aria-hidden />
+        <h2 className="text-xl font-extrabold tracking-tight text-[var(--navy)] sm:text-2xl">
+          {formCopy.title}
+        </h2>
+        <p className="mt-1.5 text-sm leading-relaxed text-slate-600 sm:text-base">
+          {formCopy.subtitle(city.name)}
+        </p>
+      </div>
 
-      <div className="relative mt-5 min-h-[280px] w-full overflow-hidden">
+      <div className="relative px-5 py-5 sm:px-6 sm:pb-6">
         {configured && scriptStatus !== "error" ? (
           <>
             {isLoading && (
               <div
-                className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 rounded-lg bg-slate-50"
+                className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-white/95"
                 aria-live="polite"
                 aria-busy="true"
               >
@@ -134,17 +166,14 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
               </div>
             )}
             <div
-              className={`hs-form-frame hubspot-form-frame w-full max-w-full transition-opacity duration-300 ${
-                isLoading ? "pointer-events-none opacity-0" : "opacity-100"
+              id={targetId}
+              className={`ela-hs-form-shell w-full max-w-full transition-opacity duration-300 ${
+                isLoading ? "min-h-[320px] opacity-0" : "opacity-100"
               }`}
-              data-region={HUBSPOT_REGION}
-              data-form-id={formId}
-              data-portal-id={HUBSPOT_PORTAL_ID}
-              data-instance-id={instanceId}
             />
           </>
         ) : (
-          <div className="rounded-lg border-2 border-dashed border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
+          <div className="rounded-xl border border-dashed border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
             <p className="font-semibold">{formCopy.fallbackPrompt}</p>
           </div>
         )}
