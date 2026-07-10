@@ -38,6 +38,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="preconnect" href="https://js-na2.hsforms.net" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://js-na2.hsforms.net" />
+        <link rel="dns-prefetch" href="https://forms.hsforms.com" />
         <script dangerouslySetInnerHTML={{ __html: gtmSnippet }} />
       </head>
       <body className="min-h-screen bg-white text-slate-800 antialiased">

@@ -51,6 +51,31 @@ function dispatchInputEvents(input: HTMLInputElement): void {
 /**
  * Defensive fallback: set HubSpot hidden fields from current URL parameters
  * and dispatch input/change events so HubSpot registers the values.
+ *
+ * Only writes when the URL has a non-empty value — never clears an existing
+ * field value just because the param is absent from the current URL.
+ */
+export function populateGoogleAdsHiddenFieldsFromRoot(root: ParentNode): void {
+  const urlParams = readGoogleAdsParamsFromUrl();
+  for (const key of GOOGLE_ADS_PARAM_KEYS) {
+    const value = urlParams[key];
+    if (!value) continue;
+
+    // HubSpot may emit name="google_campaign" or name="0-1/google_campaign".
+    const inputs = root.querySelectorAll<HTMLInputElement>(
+      `input[name="${key}"], input[name$="/${key}"]`,
+    );
+    inputs.forEach((input) => {
+      if (input.value === value) return;
+      input.value = value;
+      dispatchInputEvents(input);
+    });
+  }
+}
+
+/**
+ * Same as populateGoogleAdsHiddenFieldsFromRoot, for HubSpot's jQuery-like
+ * onFormReady $form wrapper.
  */
 export function populateGoogleAdsHiddenFields($form: HubSpotFormElement): void {
   const urlParams = readGoogleAdsParamsFromUrl();
@@ -58,7 +83,9 @@ export function populateGoogleAdsHiddenFields($form: HubSpotFormElement): void {
     const value = urlParams[key];
     if (!value) continue;
 
-    const inputs = $form.find(`input[name="${key}"]`);
+    const inputs = $form.find(
+      `input[name="${key}"], input[name$="/${key}"]`,
+    );
     if (!inputs.length) continue;
 
     inputs.val(value);

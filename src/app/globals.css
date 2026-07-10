@@ -88,54 +88,161 @@ body {
   animation: bounce-down 1.5s ease-in-out infinite;
 }
 
-/* HubSpot classic embed — brand-matched field styles */
-.ela-hs-form-shell,
-.ela-hs-form-shell .hs-form,
-.ela-hs-form,
-.ela-hs-form.hs-form {
-  width: 100% !important;
+/* -------------------------------------------------------------------------- */
+/* HubSpot form — scoped under .ela-hubspot-form                               */
+/* !important used only where HubSpot injects competing inline/default CSS.   */
+/* -------------------------------------------------------------------------- */
+
+@keyframes ela-hubspot-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.ela-hubspot-skeleton-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.ela-hubspot-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  width: 100%;
+  min-height: 28rem;
+}
+
+.ela-hubspot-skeleton__row--split {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+@media (min-width: 480px) {
+  .ela-hubspot-skeleton__row--split {
+    flex-direction: row;
+  }
+
+  .ela-hubspot-skeleton__row--split .ela-hubspot-skeleton__field {
+    flex: 1 1 0;
+  }
+}
+
+.ela-hubspot-skeleton__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ela-hubspot-skeleton__label,
+.ela-hubspot-skeleton__input,
+.ela-hubspot-skeleton__textarea,
+.ela-hubspot-skeleton__button {
+  border-radius: 0.625rem;
+  background: linear-gradient(90deg, #e8eef5 0%, #f5f7fa 45%, #e8eef5 90%);
+  background-size: 200% 100%;
+  animation: ela-hubspot-shimmer 1.4s ease-in-out infinite;
+}
+
+.ela-hubspot-skeleton__label {
+  width: 34%;
+  height: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+.ela-hubspot-skeleton__input {
+  height: 3.15rem;
+}
+
+.ela-hubspot-skeleton__textarea {
+  height: 8rem;
+}
+
+.ela-hubspot-skeleton__button {
+  margin-top: 0.35rem;
+  height: 3.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ela-hubspot-skeleton__label,
+  .ela-hubspot-skeleton__input,
+  .ela-hubspot-skeleton__textarea,
+  .ela-hubspot-skeleton__button {
+    animation: none;
+    background: #e8eef5;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ela-hubspot-form .ela-hs-form-shell,
+.ela-hubspot-form .ela-hs-form-shell .hs-form,
+.ela-hubspot-form .ela-hs-form,
+.ela-hubspot-form .ela-hs-form.hs-form {
+  width: 100% !important; /* HubSpot sets fixed widths */
   max-width: 100% !important;
 }
 
-.ela-hs-form fieldset {
+.ela-hubspot-form .ela-hs-form fieldset {
   max-width: 100% !important;
 }
 
-.ela-hs-form .hs-form-field {
-  margin-bottom: 0.875rem !important;
+.ela-hubspot-form .ela-hs-form .hs-form-field,
+.ela-hubspot-form .ela-hs-form .hs-form-field.hs-fieldtype-text,
+.ela-hubspot-form .ela-hs-form .hs-form-field.hs-fieldtype-phonenumber,
+.ela-hubspot-form .ela-hs-form .hs-form-field.hs-fieldtype-textarea {
+  margin-bottom: 0.9rem !important;
 }
 
-.ela-hs-form label {
+.ela-hubspot-form .ela-hs-form label:not(.hs-error-msg) {
   display: block !important;
-  margin-bottom: 0.35rem !important;
-  font-size: 0.8125rem !important;
-  font-weight: 700 !important;
+  margin-bottom: 0.4rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
   letter-spacing: 0.01em !important;
-  color: #10284a !important;
+  color: var(--navy) !important;
+  line-height: 1.3 !important;
 }
 
-.ela-hs-form .hs-form-required,
-.ela-hs-form label .hs-form-required {
+.ela-hubspot-form .ela-hs-form .hs-form-required,
+.ela-hubspot-form .ela-hs-form label .hs-form-required {
+  margin-left: 0.15rem !important;
   color: #b45309 !important;
+  font-weight: 700 !important;
 }
 
-.ela-hs-form .input {
+.ela-hubspot-form .ela-hs-form .input {
   margin-right: 0 !important;
 }
 
-.ela-hs-form .hs-input,
-.ela-hs-form input.hs-input,
-.ela-hs-form select.hs-input,
-.ela-hs-form textarea.hs-input {
+.ela-hubspot-form .ela-hs-form .hs-input,
+.ela-hubspot-form .ela-hs-form input.hs-input,
+.ela-hubspot-form .ela-hs-form select.hs-input,
+.ela-hubspot-form .ela-hs-form textarea.hs-input {
   box-sizing: border-box !important;
   width: 100% !important;
   max-width: 100% !important;
+  min-height: 3.15rem !important;
   margin: 0 !important;
   border: 1.5px solid #cbd5e1 !important;
   border-radius: 0.625rem !important;
   background: #fff !important;
-  padding: 0.7rem 0.85rem !important;
-  font-size: 1rem !important;
+  padding: 0.75rem 0.9rem !important;
+  font-family: inherit !important;
+  font-size: 16px !important; /* avoid iOS zoom */
   line-height: 1.4 !important;
   color: #0f172a !important;
   transition:
@@ -143,51 +250,115 @@ body {
     box-shadow 0.15s ease !important;
 }
 
-.ela-hs-form textarea.hs-input {
-  min-height: 5.5rem !important;
+.ela-hubspot-form .ela-hs-form textarea.hs-input {
+  min-height: 8rem !important;
   resize: vertical !important;
 }
 
-.ela-hs-form .hs-input:focus,
-.ela-hs-form input.hs-input:focus,
-.ela-hs-form select.hs-input:focus,
-.ela-hs-form textarea.hs-input:focus {
-  outline: none !important;
-  border-color: #10284a !important;
-  box-shadow: 0 0 0 3px rgba(16, 40, 74, 0.12) !important;
+.ela-hubspot-form .ela-hs-form .hs-input:hover,
+.ela-hubspot-form .ela-hs-form input.hs-input:hover,
+.ela-hubspot-form .ela-hs-form textarea.hs-input:hover {
+  border-color: #94a3b8 !important;
 }
 
-.ela-hs-form .hs-input.error,
-.ela-hs-form input.hs-input.error,
-.ela-hs-form textarea.hs-input.error {
+.ela-hubspot-form .ela-hs-form .hs-input:focus,
+.ela-hubspot-form .ela-hs-form input.hs-input:focus,
+.ela-hubspot-form .ela-hs-form select.hs-input:focus,
+.ela-hubspot-form .ela-hs-form textarea.hs-input:focus {
+  outline: none !important;
+  border-color: var(--navy) !important;
+  box-shadow: 0 0 0 3px rgba(16, 40, 74, 0.14) !important;
+}
+
+.ela-hubspot-form .ela-hs-form .hs-input.error,
+.ela-hubspot-form .ela-hs-form input.hs-input.error,
+.ela-hubspot-form .ela-hs-form textarea.hs-input.error {
   border-color: #dc2626 !important;
 }
 
-.ela-hs-form .hs-error-msgs,
-.ela-hs-form ul.hs-error-msgs {
-  margin: 0.35rem 0 0 !important;
+.ela-hubspot-form .ela-hs-form .hs-error-msgs,
+.ela-hubspot-form .ela-hs-form ul.hs-error-msgs {
+  margin: 0.4rem 0 0 !important;
   padding: 0 !important;
   list-style: none !important;
 }
 
-.ela-hs-form .hs-error-msgs label,
-.ela-hs-form .hs-error-msg {
+.ela-hubspot-form .ela-hs-form .hs-error-msgs label,
+.ela-hubspot-form .ela-hs-form .hs-error-msg {
   margin: 0 !important;
-  font-size: 0.75rem !important;
+  font-size: 0.8125rem !important;
   font-weight: 600 !important;
-  color: #dc2626 !important;
+  color: #b91c1c !important;
 }
 
-.ela-hs-form .hs-fieldtype-booleancheckbox,
-.ela-hs-form .hs-fieldtype-booleancheckbox .inputs-list,
-.ela-hs-form .legal-consent-container,
-.ela-hs-form .hs-richtext {
-  margin-top: 0.25rem !important;
+/* Phone intl-tel-input — one coherent control */
+.ela-hubspot-form .ela-hs-form .hs-fieldtype-phonenumber .input,
+.ela-hubspot-form .ela-hs-form .iti {
+  width: 100% !important;
+  display: block !important;
 }
 
-.ela-hs-form .hs-form-booleancheckbox-display,
-.ela-hs-form .hs-form-booleancheckbox label,
-.ela-hs-form .legal-consent-container label {
+.ela-hubspot-form .ela-hs-form .iti {
+  position: relative !important;
+}
+
+.ela-hubspot-form .ela-hs-form .iti__flag-container {
+  z-index: 2 !important;
+}
+
+.ela-hubspot-form .ela-hs-form .iti__selected-flag {
+  border-radius: 0.625rem 0 0 0.625rem !important;
+  padding: 0 0.5rem 0 0.65rem !important;
+  background: #f8fafc !important;
+}
+
+.ela-hubspot-form .ela-hs-form .iti__selected-flag:hover,
+.ela-hubspot-form .ela-hs-form .iti__selected-flag:focus {
+  background: #f1f5f9 !important;
+}
+
+.ela-hubspot-form .ela-hs-form .iti input.hs-input,
+.ela-hubspot-form .ela-hs-form .iti input[type="tel"] {
+  padding-left: 5.5rem !important;
+}
+
+.ela-hubspot-form .ela-hs-form .iti__country-list {
+  z-index: 40 !important;
+  max-height: 14rem !important;
+  overflow-y: auto !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 0.625rem !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16) !important;
+  font-size: 0.9rem !important;
+  color: #0f172a !important;
+  background: #fff !important;
+}
+
+.ela-hubspot-form .ela-hs-form .iti__country.iti__highlight,
+.ela-hubspot-form .ela-hs-form .iti__country:hover {
+  background: #eef2f7 !important;
+}
+
+.ela-hubspot-form .ela-hs-form .iti__search-input {
+  box-sizing: border-box !important;
+  width: calc(100% - 1rem) !important;
+  margin: 0.5rem !important;
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 0.5rem !important;
+  padding: 0.55rem 0.7rem !important;
+  font-size: 16px !important;
+}
+
+/* Consent / legal */
+.ela-hubspot-form .ela-hs-form .hs-fieldtype-booleancheckbox,
+.ela-hubspot-form .ela-hs-form .legal-consent-container,
+.ela-hubspot-form .ela-hs-form .hs-richtext {
+  margin-top: 0.35rem !important;
+}
+
+.ela-hubspot-form .ela-hs-form .hs-form-booleancheckbox-display,
+.ela-hubspot-form .ela-hs-form .hs-form-booleancheckbox label,
+.ela-hubspot-form .ela-hs-form .legal-consent-container label {
   display: flex !important;
   align-items: flex-start !important;
   gap: 0.55rem !important;
@@ -197,94 +368,146 @@ body {
   color: #475569 !important;
 }
 
-.ela-hs-form .hs-form-booleancheckbox input[type="checkbox"],
-.ela-hs-form input[type="checkbox"].hs-input {
+.ela-hubspot-form .ela-hs-form .hs-form-booleancheckbox input[type="checkbox"],
+.ela-hubspot-form .ela-hs-form input[type="checkbox"].hs-input {
   width: 1.05rem !important;
   min-width: 1.05rem !important;
   height: 1.05rem !important;
+  min-height: 1.05rem !important;
   margin-top: 0.15rem !important;
-  accent-color: #10284a !important;
+  accent-color: var(--navy) !important;
 }
 
-.ela-hs-form .legal-consent-container .hs-richtext p,
-.ela-hs-form .hs-richtext p {
+.ela-hubspot-form .ela-hs-form .legal-consent-container .hs-richtext p,
+.ela-hubspot-form .ela-hs-form .hs-richtext p {
   margin: 0 0 0.5rem !important;
   font-size: 0.75rem !important;
   line-height: 1.45 !important;
   color: #64748b !important;
 }
 
-.ela-hs-form .hs-submit {
-  margin-top: 0.75rem !important;
+/* reCAPTCHA — spacing only; never hide branding/challenge */
+.ela-hubspot-form .ela-hs-form .hs-recaptcha,
+.ela-hubspot-form .ela-hs-form .grecaptcha-badge,
+.ela-hubspot-form .ela-hs-form iframe[src*="recaptcha"] {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.35rem !important;
 }
 
-.ela-hs-form .hs-button,
-.ela-hs-form input.hs-button,
-.ela-hs-form input[type="submit"].hs-button {
+.ela-hubspot-form .ela-hs-form .hs-submit,
+.ela-hubspot-form .ela-hs-form [data-hsfc-id="NavigationRow"],
+.ela-hubspot-form .ela-hs-form .hsfc-NavigationRow {
+  margin-top: 0.85rem !important;
+}
+
+.ela-hubspot-form .ela-hs-form .hs-button,
+.ela-hubspot-form .ela-hs-form input.hs-button,
+.ela-hubspot-form .ela-hs-form input[type="submit"].hs-button,
+.ela-hubspot-form .ela-hs-form [data-hsfc-id="Button"],
+.ela-hubspot-form .ela-hs-form .hsfc-Button {
   display: inline-flex !important;
   width: 100% !important;
+  min-height: 3.25rem !important;
   align-items: center !important;
   justify-content: center !important;
   border: none !important;
   border-radius: 0.625rem !important;
-  background: #e7be02 !important;
+  background: var(--gold) !important;
   padding: 0.9rem 1.25rem !important;
+  font-family: inherit !important;
   font-size: 1.05rem !important;
   font-weight: 800 !important;
   letter-spacing: 0.01em !important;
-  color: #10284a !important;
+  color: var(--navy) !important;
   cursor: pointer !important;
   box-shadow: 0 4px 14px rgba(231, 190, 2, 0.35) !important;
   transition:
     filter 0.15s ease,
-    transform 0.15s ease !important;
+    transform 0.15s ease,
+    opacity 0.15s ease !important;
 }
 
-.ela-hs-form .hs-button:hover,
-.ela-hs-form input.hs-button:hover,
-.ela-hs-form input[type="submit"].hs-button:hover {
+.ela-hubspot-form .ela-hs-form .hs-button:hover,
+.ela-hubspot-form .ela-hs-form input.hs-button:hover,
+.ela-hubspot-form .ela-hs-form input[type="submit"].hs-button:hover {
   filter: brightness(0.96) !important;
 }
 
-.ela-hs-form .hs-button:active,
-.ela-hs-form input[type="submit"].hs-button:active {
+.ela-hubspot-form .ela-hs-form .hs-button:active,
+.ela-hubspot-form .ela-hs-form input[type="submit"].hs-button:active {
   transform: translateY(1px) !important;
 }
 
-.ela-hs-form .submitted-message {
+.ela-hubspot-form .ela-hs-form .hs-button:focus-visible,
+.ela-hubspot-form .ela-hs-form input[type="submit"].hs-button:focus-visible {
+  outline: none !important;
+  box-shadow:
+    0 0 0 3px rgba(16, 40, 74, 0.2),
+    0 4px 14px rgba(231, 190, 2, 0.35) !important;
+}
+
+.ela-hubspot-form .ela-hs-form .hs-button:disabled,
+.ela-hubspot-form .ela-hs-form input.hs-button:disabled,
+.ela-hubspot-form .ela-hs-form .hs-button[aria-busy="true"],
+.ela-hubspot-form .ela-hs-form input.hs-button[aria-busy="true"] {
+  cursor: wait !important;
+  opacity: 0.72 !important;
+  filter: none !important;
+}
+
+.ela-hubspot-form .ela-hs-form .submitted-message {
   padding: 1rem 0 !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
-  color: #10284a !important;
+  color: var(--navy) !important;
   text-align: center !important;
 }
 
-/* Kill HubSpot default column quirks on mobile */
-.ela-hs-form .hs-form-field > .input > .hs-input,
-.ela-hs-form .field > .input > .hs-input {
+.ela-hubspot-form .ela-hs-form .hs-form-field > .input > .hs-input,
+.ela-hubspot-form .ela-hs-form .field > .input > .hs-input {
   width: 100% !important;
 }
 
-.ela-hs-form .form-columns-1,
-.ela-hs-form .form-columns-2,
-.ela-hs-form .form-columns-3 {
+.ela-hubspot-form .ela-hs-form .form-columns-1,
+.ela-hubspot-form .ela-hs-form .form-columns-2,
+.ela-hubspot-form .ela-hs-form .form-columns-3,
+.ela-hubspot-form .ela-hs-form [data-hsfc-id="Row"],
+.ela-hubspot-form .ela-hs-form .hsfc-Row {
   display: block !important;
+  float: none !important;
+  width: 100% !important;
 }
 
-.ela-hs-form .form-columns-2 .hs-form-field,
-.ela-hs-form .form-columns-3 .hs-form-field {
+.ela-hubspot-form .ela-hs-form .form-columns-2 .hs-form-field,
+.ela-hubspot-form .ela-hs-form .form-columns-3 .hs-form-field {
   float: none !important;
   width: 100% !important;
 }
 
 @media (min-width: 480px) {
-  .ela-hs-form .form-columns-2 {
+  .ela-hubspot-form .ela-hs-form .form-columns-2 {
     display: flex !important;
     gap: 0.75rem !important;
   }
 
-  .ela-hs-form .form-columns-2 .hs-form-field {
+  .ela-hubspot-form .ela-hs-form .form-columns-2 .hs-form-field {
     flex: 1 1 0 !important;
     width: auto !important;
   }
+}
+
+/* Optional V4/hsfc hooks if HubSpot emits them alongside classic markup */
+.ela-hubspot-form [data-hsfc-id="FieldLabel"],
+.ela-hubspot-form .hsfc-FieldLabel {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.ela-hubspot-form [data-hsfc-id="TextInput"],
+.ela-hubspot-form [data-hsfc-id="TextareaInput"],
+.ela-hubspot-form [data-hsfc-id="PhoneInput"],
+.ela-hubspot-form .hsfc-TextInput,
+.ela-hubspot-form .hsfc-TextareaInput,
+.ela-hubspot-form .hsfc-PhoneInput {
+  width: 100%;
 }

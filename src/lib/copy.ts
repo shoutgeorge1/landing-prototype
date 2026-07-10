@@ -31,6 +31,8 @@ export interface FormCopy {
   loading: string;
   fallbackPrompt: string;
   fallbackLink: string;
+  slowLoad: string;
+  loadError: string;
 }
 
 export interface Copy {
@@ -193,6 +195,10 @@ const en: Copy = {
     loading: "Loading form…",
     fallbackPrompt: "Having trouble with the form?",
     fallbackLink: "Complete the form here instead",
+    slowLoad:
+      "The form is taking longer than expected to load. Please refresh the page or call us directly.",
+    loadError:
+      "We couldn’t load the consultation form. Please refresh the page or call us directly.",
   },
   disclaimer: (city) =>
     `The information on this page is for general informational purposes only and is not legal advice. Contacting Employment Law Assist does not create an attorney-client relationship. Employment Law Assist serves employees in ${city} and does not maintain a physical office in ${city}. Every case is different and prior results do not guarantee a similar outcome.`,
@@ -318,6 +324,10 @@ const es: Copy = {
     loading: "Cargando formulario…",
     fallbackPrompt: "¿Problemas con el formulario?",
     fallbackLink: "Complete el formulario aquí",
+    slowLoad:
+      "El formulario está tardando más de lo esperado. Actualice la página o llámenos directamente.",
+    loadError:
+      "No pudimos cargar el formulario de consulta. Actualice la página o llámenos directamente.",
   },
   disclaimer: (city) =>
     `La información en esta página es solo para fines informativos generales y no constituye asesoría legal. Contactar a Employment Law Assist no crea una relación abogado-cliente. Employment Law Assist ayuda a empleados en ${city} y no mantiene una oficina física en ${city}. Cada caso es diferente y los resultados anteriores no garantizan un resultado similar.`,

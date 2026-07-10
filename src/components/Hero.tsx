@@ -15,6 +15,7 @@ interface HeroProps {
 
 export function Hero({ city, lang, copy }: HeroProps) {
   const alt = otherLang(lang);
+
   return (
     <section className="bg-[var(--navy)] px-5 pb-12 pt-6 text-white sm:px-6 sm:pb-14 sm:pt-8">
       <div className="mx-auto max-w-6xl">
