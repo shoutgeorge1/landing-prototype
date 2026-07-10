@@ -21,8 +21,8 @@ export const HUBSPOT_STANDALONE_URLS: Record<Lang, string> = {
     "https://40behl.share-na2.hsforms.com/20R-fLKHSSuCEs59gKtA9UQ",
 };
 
-/** Classic embed (in-DOM) so we can style fields to match the landing page. */
-export const HUBSPOT_EMBED_SCRIPT_URL = `https://js-${HUBSPOT_REGION}.hsforms.net/forms/embed/v2.js`;
+/** HubSpot V4 portal embed — required for these form builder forms. */
+export const HUBSPOT_EMBED_SCRIPT_URL = `https://js-${HUBSPOT_REGION}.hsforms.net/forms/embed/${HUBSPOT_PORTAL_ID}.js`;
 
 export function getHubSpotFormId(lang: Lang): string {
   return lang === "es" ? HUBSPOT_SPANISH_FORM_ID : HUBSPOT_ENGLISH_FORM_ID;

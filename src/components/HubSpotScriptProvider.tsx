@@ -26,18 +26,13 @@ function setGlobalScriptStatus(status: ScriptStatus): void {
   listeners.forEach((listener) => listener(status));
 }
 
-function isHubSpotReady(): boolean {
-  return Boolean(
-    typeof window !== "undefined" &&
-      window.hbspt &&
-      typeof window.hbspt.forms?.create === "function",
-  );
+function hasEmbedScript(): boolean {
+  return Boolean(document.getElementById("hubspot-forms-embed"));
 }
 
-/** Singleton loader — one script tag, shared across all HubSpotForm mounts. */
+/** Singleton loader for HubSpot V4 portal embed script. */
 export function ensureHubSpotScript(): Promise<void> {
-  if (isHubSpotReady()) {
-    setGlobalScriptStatus("ready");
+  if (scriptStatus === "ready" && hasEmbedScript()) {
     return Promise.resolve();
   }
 
@@ -61,12 +56,19 @@ export function ensureHubSpotScript(): Promise<void> {
     };
 
     if (existing) {
-      if (isHubSpotReady()) {
+      // Script tag already present — if it already loaded, succeed; else wait.
+      if (scriptStatus === "ready") {
         onSuccess();
         return;
       }
       existing.addEventListener("load", onSuccess, { once: true });
       existing.addEventListener("error", onFailure, { once: true });
+      // If the script finished before listeners attached, treat as ready shortly.
+      window.setTimeout(() => {
+        if (scriptStatus !== "ready" && scriptStatus !== "error") {
+          onSuccess();
+        }
+      }, 50);
       return;
     }
 
@@ -74,6 +76,7 @@ export function ensureHubSpotScript(): Promise<void> {
     script.id = "hubspot-forms-embed";
     script.src = HUBSPOT_EMBED_SCRIPT_URL;
     script.async = true;
+    script.defer = true;
     script.onload = onSuccess;
     script.onerror = onFailure;
     document.body.appendChild(script);
@@ -83,9 +86,7 @@ export function ensureHubSpotScript(): Promise<void> {
 }
 
 export function HubSpotScriptProvider({ children }: { children: ReactNode }) {
-  const [status, setStatus] = useState<ScriptStatus>(() =>
-    typeof window !== "undefined" && isHubSpotReady() ? "ready" : scriptStatus,
-  );
+  const [status, setStatus] = useState<ScriptStatus>(scriptStatus);
 
   useEffect(() => {
     const listener = (next: ScriptStatus) => setStatus(next);

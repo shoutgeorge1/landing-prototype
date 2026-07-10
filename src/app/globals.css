@@ -511,3 +511,13 @@ body {
 .ela-hubspot-form .hsfc-PhoneInput {
   width: 100%;
 }
+
+/* V4 frame embed — keep iframe inside the card */
+.ela-hubspot-form .hs-form-frame,
+.ela-hubspot-form .hubspot-form-frame,
+.ela-hubspot-form .hs-form-frame iframe,
+.ela-hubspot-form .hubspot-form-frame iframe {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+}

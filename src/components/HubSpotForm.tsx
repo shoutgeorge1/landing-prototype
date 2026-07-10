@@ -1,18 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { City, Lang } from "@/lib/cities";
 import { otherLang } from "@/lib/cities";
 import { COPY } from "@/lib/copy";
 import { FIRM } from "@/lib/content";
-import { populateGoogleAdsHiddenFields, populateGoogleAdsHiddenFieldsFromRoot } from "@/lib/googleAdsParams";
+import { populateGoogleAdsFieldsV4 } from "@/lib/googleAdsParams";
 import {
   getFormLanguageLabel,
   getHubSpotFormId,
   getHubSpotStandaloneUrl,
   getThankYouPath,
   HUBSPOT_PORTAL_ID,
+  HUBSPOT_REGION,
   isHubSpotConfigured,
 } from "@/lib/hubspot";
 import {
@@ -30,86 +31,14 @@ interface HubSpotFormProps {
   lang: Lang;
 }
 
-type HubSpotFormElement = Parameters<typeof populateGoogleAdsHiddenFields>[0];
-
-interface HubSpotCreateOptions {
-  portalId: string;
-  formId: string;
-  region?: string;
-  target: string;
-  cssClass?: string;
-  css?: string;
-  onFormReady?: ($form: HubSpotFormElement) => void;
-  onFormSubmitted?: () => void;
-}
-
-declare global {
-  interface Window {
-    hbspt?: {
-      forms: {
-        create: (options: HubSpotCreateOptions) => void;
-      };
-    };
-  }
-}
-
 const SLOW_LOAD_MS = 12_000;
 
-/** Park rendered HubSpot form DOM between language navigations so switches are instant. */
-const formDomCache = new Map<string, HTMLElement>();
-const formCreateInFlight = new Set<string>();
-const formReadyKeys = new Set<string>();
-
-function cacheKey(citySlug: string, lang: Lang, formId: string): string {
-  return `${citySlug}:${lang}:${formId}`;
+function formIdFromEvent(event: Event): string | undefined {
+  const detail = (event as CustomEvent<{ formId?: string }>).detail;
+  return detail?.formId;
 }
 
-function parkForm(key: string, target: HTMLElement | null): void {
-  if (!target) return;
-  const node = target.firstElementChild as HTMLElement | null;
-  if (!node) return;
-  formDomCache.set(key, node);
-}
-
-function restoreForm(key: string, target: HTMLElement): boolean {
-  const node = formDomCache.get(key);
-  if (!node) return false;
-  target.replaceChildren(node);
-  formDomCache.delete(key);
-  return true;
-}
-
-function createFormInto(
-  targetId: string,
-  city: City,
-  lang: Lang,
-  onReady: () => void,
-  onSubmitted: () => void,
-): void {
-  const formId = getHubSpotFormId(lang);
-  const key = cacheKey(city.slug, lang, formId);
-  if (formCreateInFlight.has(key) || !window.hbspt?.forms?.create) return;
-
-  formCreateInFlight.add(key);
-
-  window.hbspt.forms.create({
-    portalId: HUBSPOT_PORTAL_ID,
-    formId,
-    region: "na2",
-    target: `#${targetId}`,
-    cssClass: "ela-hs-form",
-    css: "",
-    onFormReady: ($form: HubSpotFormElement) => {
-      formCreateInFlight.delete(key);
-      formReadyKeys.add(key);
-      populateGoogleAdsHiddenFields($form);
-      onReady();
-    },
-    onFormSubmitted: onSubmitted,
-  });
-}
-
-/** Shared success handler for live and warm/preloaded forms (HubSpot onFormSubmitted only). */
+/** Shared success handler (HubSpot V4 on-submission:success only). */
 function handleHubSpotFormSubmitted(
   city: City,
   lang: Lang,
@@ -123,16 +52,6 @@ function handleHubSpotFormSubmitted(
     window.location.search,
   );
   push(thankYouPath);
-}
-
-function scheduleIdle(task: () => void): () => void {
-  const ric = window.requestIdleCallback?.bind(window);
-  if (typeof ric === "function") {
-    const id = ric(() => task(), { timeout: 2500 });
-    return () => window.cancelIdleCallback?.(id);
-  }
-  const id = window.setTimeout(task, 400);
-  return () => window.clearTimeout(id);
 }
 
 function FormSkeleton({ lang }: { lang: Lang }) {
@@ -170,22 +89,26 @@ function FormSkeleton({ lang }: { lang: Lang }) {
   );
 }
 
+/**
+ * HubSpot V4 embed (hs-form-frame).
+ * These Bakersfield forms are V4-only — classic v2.js never fires onFormReady,
+ * which caused the infinite skeleton hang.
+ */
 export function HubSpotForm({ city, lang }: HubSpotFormProps) {
   const router = useRouter();
   const scriptStatus = useHubSpotScriptStatus();
   const formId = getHubSpotFormId(lang);
   const formCopy = COPY[lang].form;
   const configured = isHubSpotConfigured(lang);
-  const targetId = `hubspot-form-${city.slug}-${lang}`;
-  const key = cacheKey(city.slug, lang, formId);
+  const reactId = useId().replace(/:/g, "");
+  const instanceId = `${city.slug}-${lang}-${reactId}`;
   const mountedRef = useRef(true);
-  const visibleReadyRef = useRef(formReadyKeys.has(key) || formDomCache.has(key));
+  const handledSubmitRef = useRef(false);
 
-  const [isLoading, setIsLoading] = useState(
-    () => !(formReadyKeys.has(key) || formDomCache.has(key)),
-  );
+  const [isLoading, setIsLoading] = useState(true);
   const [showSlowFallback, setShowSlowFallback] = useState(false);
   const [loadFailed, setLoadFailed] = useState(() => !configured);
+
   const standaloneUrl =
     typeof window === "undefined"
       ? getHubSpotStandaloneUrl(lang)
@@ -196,154 +119,85 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
 
   useEffect(() => {
     mountedRef.current = true;
+    handledSubmitRef.current = false;
     return () => {
       mountedRef.current = false;
     };
-  }, []);
+  }, [formId, city.slug, lang]);
 
-  // Ensure script starts loading as soon as the form card mounts.
   useEffect(() => {
     void ensureHubSpotScript().catch(() => {
       if (mountedRef.current) setLoadFailed(true);
     });
   }, []);
 
-  // Create the visible-language form as soon as the script is ready.
+  // Prefetch alternate language route only (no second form create race).
   useEffect(() => {
-    if (!configured) return;
-    if (scriptStatus === "error") {
-      if (process.env.NODE_ENV === "development") {
-        console.error("[HubSpot] script error", { lang, formId });
-      }
-      return;
-    }
+    router.prefetch(`/${city.slug}/${otherLang(lang)}`);
+  }, [router, city.slug, lang]);
 
-    if (scriptStatus !== "ready") return;
+  useEffect(() => {
+    if (!configured || scriptStatus === "error") return;
 
-    const target = document.getElementById(targetId);
-    if (!target) return;
+    const handleReady = (event: Event) => {
+      if (formIdFromEvent(event) !== formId) return;
+      if (!mountedRef.current) return;
+      void populateGoogleAdsFieldsV4(event);
+      setIsLoading(false);
+      setShowSlowFallback(false);
+      setLoadFailed(false);
+      pushEvent("form_ready", { city: city.slug, lang });
+    };
 
-    if (restoreForm(key, target)) {
-      // onFormReady will not fire again — refresh attribution from the current URL.
-      populateGoogleAdsHiddenFieldsFromRoot(target);
-      visibleReadyRef.current = true;
-      queueMicrotask(() => {
-        if (!mountedRef.current) return;
-        setIsLoading(false);
-        setShowSlowFallback(false);
-        setLoadFailed(false);
-      });
-      return () => {
-        parkForm(key, document.getElementById(targetId));
-      };
-    }
+    const handleSuccess = (event: Event) => {
+      if (formIdFromEvent(event) !== formId) return;
+      if (handledSubmitRef.current) return;
+      handledSubmitRef.current = true;
+      handleHubSpotFormSubmitted(city, lang, (href) => router.push(href));
+    };
 
-    if (formCreateInFlight.has(key) && target.childElementCount > 0) {
-      return () => {
-        parkForm(key, document.getElementById(targetId));
-      };
-    }
-
-    if (formReadyKeys.has(key) && target.childElementCount > 0) {
-      populateGoogleAdsHiddenFieldsFromRoot(target);
-      visibleReadyRef.current = true;
-      queueMicrotask(() => {
-        if (mountedRef.current) setIsLoading(false);
-      });
-      return () => {
-        parkForm(key, document.getElementById(targetId));
-      };
-    }
-
-    queueMicrotask(() => {
-      if (mountedRef.current) setIsLoading(true);
-    });
-    createFormInto(
-      targetId,
-      city,
-      lang,
-      () => {
-        if (!mountedRef.current) {
-          parkForm(key, document.getElementById(targetId));
-          return;
-        }
-        visibleReadyRef.current = true;
-        setIsLoading(false);
-        setShowSlowFallback(false);
-        pushEvent("form_ready", { city: city.slug, lang });
-      },
-      () => handleHubSpotFormSubmitted(city, lang, (href) => router.push(href)),
+    window.addEventListener("hs-form-event:on-ready", handleReady);
+    window.addEventListener(
+      "hs-form-event:on-submission:success",
+      handleSuccess,
     );
 
     return () => {
-      parkForm(key, document.getElementById(targetId));
-    };
-  }, [configured, scriptStatus, formId, city, lang, router, targetId, key]);
-
-  // Warm the alternate language only after the visible form is ready.
-  useEffect(() => {
-    if (scriptStatus !== "ready" || isLoading || loadFailed) return;
-    if (!visibleReadyRef.current && !formReadyKeys.has(key)) return;
-
-    const alt = otherLang(lang);
-    const altFormId = getHubSpotFormId(alt);
-    router.prefetch(`/${city.slug}/${alt}`);
-
-    const altKey = cacheKey(city.slug, alt, altFormId);
-    if (formDomCache.has(altKey) || formCreateInFlight.has(altKey) || formReadyKeys.has(altKey)) {
-      return;
-    }
-
-    const cancel = scheduleIdle(() => {
-      if (!mountedRef.current) return;
-
-      const warmId = `hubspot-warm-${city.slug}-${alt}`;
-      let warm = document.getElementById(warmId);
-      if (!warm) {
-        warm = document.createElement("div");
-        warm.id = warmId;
-        warm.className = "ela-hubspot-form ela-hs-form-shell ela-hubspot-warm";
-        warm.setAttribute("aria-hidden", "true");
-        warm.setAttribute("inert", "");
-        // Off-screen inert bucket: avoids display:none (which can break HubSpot/reCAPTCHA init)
-        // while keeping the warm form out of layout, focus, and AT.
-        warm.style.cssText =
-          "position:fixed;left:-10000px;top:0;width:360px;height:1px;overflow:hidden;opacity:0;pointer-events:none;";
-        document.body.appendChild(warm);
-      }
-
-      createFormInto(
-        warmId,
-        city,
-        alt,
-        () => {
-          const node = warm?.firstElementChild as HTMLElement | null;
-          if (node) formDomCache.set(altKey, node);
-          pushEvent("form_ready", { city: city.slug, lang: alt, warmed: true });
-        },
-        () => handleHubSpotFormSubmitted(city, alt, (href) => router.push(href)),
+      window.removeEventListener("hs-form-event:on-ready", handleReady);
+      window.removeEventListener(
+        "hs-form-event:on-submission:success",
+        handleSuccess,
       );
-    });
-
-    return cancel;
-  }, [scriptStatus, isLoading, loadFailed, city, lang, router, key]);
-
-  const formFailed = loadFailed || scriptStatus === "error" || !configured;
+    };
+  }, [configured, scriptStatus, formId, city, lang, router]);
 
   useEffect(() => {
-    if (!configured || scriptStatus === "error" || !isLoading || formFailed) {
+    if (!configured || scriptStatus === "error" || !isLoading || loadFailed) {
       return;
     }
-
     const timeout = window.setTimeout(() => {
       setShowSlowFallback(true);
     }, SLOW_LOAD_MS);
-
     return () => window.clearTimeout(timeout);
-  }, [configured, scriptStatus, isLoading, formFailed]);
+  }, [configured, scriptStatus, isLoading, loadFailed]);
 
+  // If script is ready but HubSpot never emits on-ready, surface failure.
+  useEffect(() => {
+    if (!configured || scriptStatus !== "ready" || !isLoading) return;
+    const timeout = window.setTimeout(() => {
+      if (!mountedRef.current || !isLoading) return;
+      setLoadFailed(true);
+      setIsLoading(false);
+      if (process.env.NODE_ENV === "development") {
+        console.error("[HubSpot] form ready timeout", { lang, formId });
+      }
+    }, 20_000);
+    return () => window.clearTimeout(timeout);
+  }, [configured, scriptStatus, isLoading, lang, formId]);
+
+  const formFailed = loadFailed || scriptStatus === "error" || !configured;
   const showSkeleton = configured && !formFailed && isLoading;
-  const showFormShell = configured && !formFailed;
+  const showFormShell = configured && scriptStatus !== "error" && !loadFailed;
 
   return (
     <div
@@ -374,14 +228,23 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
               </div>
             )}
 
-            <div
-              id={targetId}
-              className={`ela-hs-form-shell w-full max-w-full transition-opacity duration-300 ${
-                isLoading
-                  ? "pointer-events-none absolute inset-x-5 top-5 opacity-0 sm:inset-x-7 sm:top-6"
-                  : "relative opacity-100"
-              }`}
-            />
+            {/*
+              Mount the V4 frame as soon as the script is ready (or even before —
+              HubSpot's portal embed observes .hs-form-frame nodes).
+            */}
+            {(scriptStatus === "ready" || scriptStatus === "loading") && (
+              <div
+                className={`hs-form-frame hubspot-form-frame ela-hs-form-shell w-full max-w-full transition-opacity duration-300 ${
+                  isLoading
+                    ? "pointer-events-none absolute inset-x-5 top-5 min-h-[280px] opacity-0 sm:inset-x-7 sm:top-6"
+                    : "relative opacity-100"
+                }`}
+                data-region={HUBSPOT_REGION}
+                data-form-id={formId}
+                data-portal-id={HUBSPOT_PORTAL_ID}
+                data-instance-id={instanceId}
+              />
+            )}
 
             {showSlowFallback && isLoading && (
               <p className="mt-4 text-center text-sm text-slate-600" role="status">
