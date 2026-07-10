@@ -32,13 +32,15 @@ interface HubSpotFormProps {
 }
 
 const SLOW_LOAD_MS = 12_000;
+const HARD_FAIL_MS = 25_000;
 
-function formIdFromEvent(event: Event): string | undefined {
+/** Only one form frame per page, so a loose match is safe and resilient to event-shape changes. */
+function eventMatchesForm(event: Event, formId: string): boolean {
   const detail = (event as CustomEvent<{ formId?: string }>).detail;
-  return detail?.formId;
+  const eventFormId = detail?.formId;
+  return !eventFormId || eventFormId === formId;
 }
 
-/** Shared success handler (HubSpot V4 on-submission:success only). */
 function handleHubSpotFormSubmitted(
   city: City,
   lang: Lang,
@@ -90,9 +92,12 @@ function FormSkeleton({ lang }: { lang: Lang }) {
 }
 
 /**
- * HubSpot V4 embed (hs-form-frame).
- * These Bakersfield forms are V4-only — classic v2.js never fires onFormReady,
- * which caused the infinite skeleton hang.
+ * HubSpot V4 portal embed (hs-form-frame).
+ *
+ * Reveal is driven by a MutationObserver watching the frame container, NOT by a
+ * strict formId-matched ready event. HubSpot's V4 events sometimes omit/rename
+ * detail.formId, which previously left the skeleton hanging forever even though
+ * the form had rendered. The observer fires as soon as HubSpot injects content.
  */
 export function HubSpotForm({ city, lang }: HubSpotFormProps) {
   const router = useRouter();
@@ -102,7 +107,10 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
   const configured = isHubSpotConfigured(lang);
   const reactId = useId().replace(/:/g, "");
   const instanceId = `${city.slug}-${lang}-${reactId}`;
+
+  const frameRef = useRef<HTMLDivElement | null>(null);
   const mountedRef = useRef(true);
+  const readyRef = useRef(false);
   const handledSubmitRef = useRef(false);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -119,11 +127,10 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
 
   useEffect(() => {
     mountedRef.current = true;
-    handledSubmitRef.current = false;
     return () => {
       mountedRef.current = false;
     };
-  }, [formId, city.slug, lang]);
+  }, []);
 
   useEffect(() => {
     void ensureHubSpotScript().catch(() => {
@@ -131,26 +138,53 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
     });
   }, []);
 
-  // Prefetch alternate language route only (no second form create race).
   useEffect(() => {
     router.prefetch(`/${city.slug}/${otherLang(lang)}`);
   }, [router, city.slug, lang]);
 
+  const markReady = () => {
+    if (readyRef.current || !mountedRef.current) return;
+    readyRef.current = true;
+    setIsLoading(false);
+    setShowSlowFallback(false);
+    setLoadFailed(false);
+  };
+
+  // Primary reveal: observe the frame container for HubSpot-injected content.
+  useEffect(() => {
+    if (!configured) return;
+    const target = frameRef.current;
+    if (!target) return;
+
+    if (target.childElementCount > 0) {
+      markReady();
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      if (target.childElementCount > 0) {
+        markReady();
+        observer.disconnect();
+      }
+    });
+    observer.observe(target, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, [configured, scriptStatus, formId]);
+
+  // Secondary: V4 events for attribution + submission redirect (loose match).
   useEffect(() => {
     if (!configured || scriptStatus === "error") return;
 
     const handleReady = (event: Event) => {
-      if (formIdFromEvent(event) !== formId) return;
-      if (!mountedRef.current) return;
+      if (!eventMatchesForm(event, formId)) return;
       void populateGoogleAdsFieldsV4(event);
-      setIsLoading(false);
-      setShowSlowFallback(false);
-      setLoadFailed(false);
+      markReady();
       pushEvent("form_ready", { city: city.slug, lang });
     };
 
     const handleSuccess = (event: Event) => {
-      if (formIdFromEvent(event) !== formId) return;
+      if (!eventMatchesForm(event, formId)) return;
       if (handledSubmitRef.current) return;
       handledSubmitRef.current = true;
       handleHubSpotFormSubmitted(city, lang, (href) => router.push(href));
@@ -171,33 +205,31 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
     };
   }, [configured, scriptStatus, formId, city, lang, router]);
 
+  // Slow-load hint (non-fatal).
   useEffect(() => {
-    if (!configured || scriptStatus === "error" || !isLoading || loadFailed) {
-      return;
-    }
+    if (!configured || loadFailed || !isLoading) return;
     const timeout = window.setTimeout(() => {
-      setShowSlowFallback(true);
+      if (mountedRef.current && isLoading) setShowSlowFallback(true);
     }, SLOW_LOAD_MS);
     return () => window.clearTimeout(timeout);
-  }, [configured, scriptStatus, isLoading, loadFailed]);
+  }, [configured, loadFailed, isLoading]);
 
-  // If script is ready but HubSpot never emits on-ready, surface failure.
+  // Hard failure: script/render never completed.
   useEffect(() => {
-    if (!configured || scriptStatus !== "ready" || !isLoading) return;
+    if (!configured || !isLoading || loadFailed) return;
     const timeout = window.setTimeout(() => {
-      if (!mountedRef.current || !isLoading) return;
+      if (!mountedRef.current || readyRef.current) return;
       setLoadFailed(true);
       setIsLoading(false);
       if (process.env.NODE_ENV === "development") {
-        console.error("[HubSpot] form ready timeout", { lang, formId });
+        console.error("[HubSpot] form never rendered", { lang, formId });
       }
-    }, 20_000);
+    }, HARD_FAIL_MS);
     return () => window.clearTimeout(timeout);
-  }, [configured, scriptStatus, isLoading, lang, formId]);
+  }, [configured, isLoading, loadFailed, lang, formId]);
 
-  const formFailed = loadFailed || scriptStatus === "error" || !configured;
-  const showSkeleton = configured && !formFailed && isLoading;
-  const showFormShell = configured && scriptStatus !== "error" && !loadFailed;
+  const showError = loadFailed || scriptStatus === "error" || !configured;
+  const showSkeleton = configured && !showError && isLoading;
 
   return (
     <div
@@ -215,50 +247,7 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
       </div>
 
       <div className="relative px-5 py-5 sm:px-7 sm:pb-7 sm:pt-6">
-        {showFormShell ? (
-          <>
-            {showSkeleton && (
-              <div
-                className="ela-hubspot-skeleton-wrap"
-                aria-busy="true"
-                aria-live="polite"
-              >
-                <span className="sr-only">{formCopy.loading}</span>
-                <FormSkeleton lang={lang} />
-              </div>
-            )}
-
-            {/*
-              Mount the V4 frame as soon as the script is ready (or even before —
-              HubSpot's portal embed observes .hs-form-frame nodes).
-            */}
-            {(scriptStatus === "ready" || scriptStatus === "loading") && (
-              <div
-                className={`hs-form-frame hubspot-form-frame ela-hs-form-shell w-full max-w-full transition-opacity duration-300 ${
-                  isLoading
-                    ? "pointer-events-none absolute inset-x-5 top-5 min-h-[280px] opacity-0 sm:inset-x-7 sm:top-6"
-                    : "relative opacity-100"
-                }`}
-                data-region={HUBSPOT_REGION}
-                data-form-id={formId}
-                data-portal-id={HUBSPOT_PORTAL_ID}
-                data-instance-id={instanceId}
-              />
-            )}
-
-            {showSlowFallback && isLoading && (
-              <p className="mt-4 text-center text-sm text-slate-600" role="status">
-                {formCopy.slowLoad}{" "}
-                <a
-                  href={`tel:${FIRM.phoneTel}`}
-                  className="font-semibold text-[var(--navy)] underline underline-offset-2"
-                >
-                  {FIRM.phoneDisplay}
-                </a>
-              </p>
-            )}
-          </>
-        ) : (
+        {showError ? (
           <div className="rounded-xl border border-dashed border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
             <p className="font-semibold">{formCopy.loadError}</p>
             <p className="mt-2">
@@ -279,6 +268,45 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
               </a>
             </p>
           </div>
+        ) : (
+          <>
+            {showSkeleton && (
+              <div
+                className="ela-hubspot-skeleton-wrap"
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span className="sr-only">{formCopy.loading}</span>
+                <FormSkeleton lang={lang} />
+              </div>
+            )}
+
+            {/* Always mounted: HubSpot's V4 script observes and renders into this node. */}
+            <div
+              ref={frameRef}
+              className={`hs-form-frame hubspot-form-frame ela-hs-form-shell w-full max-w-full transition-opacity duration-300 ${
+                isLoading
+                  ? "pointer-events-none absolute inset-x-5 top-5 opacity-0 sm:inset-x-7 sm:top-6"
+                  : "relative opacity-100"
+              }`}
+              data-region={HUBSPOT_REGION}
+              data-form-id={formId}
+              data-portal-id={HUBSPOT_PORTAL_ID}
+              data-instance-id={instanceId}
+            />
+
+            {showSlowFallback && isLoading && (
+              <p className="mt-4 text-center text-sm text-slate-600" role="status">
+                {formCopy.slowLoad}{" "}
+                <a
+                  href={`tel:${FIRM.phoneTel}`}
+                  className="font-semibold text-[var(--navy)] underline underline-offset-2"
+                >
+                  {FIRM.phoneDisplay}
+                </a>
+              </p>
+            )}
+          </>
         )}
       </div>
     </div>
