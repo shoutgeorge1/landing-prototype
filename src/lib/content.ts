@@ -1,3 +1,11 @@
+/** This PPC microsite — separate property from the main firm website. */
+export const MICROSITE = {
+  host: "help.employmentlawassist.com",
+  origin: "https://help.employmentlawassist.com",
+  privacyPath: "/privacy",
+  termsPath: "/terms",
+} as const;
+
 export const FIRM = {
   name: "Employment Law Assist",
   phoneDisplay: "(424) 234-5229",

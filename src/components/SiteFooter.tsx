@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BRAND_IMAGES, FIRM } from "@/lib/content";
+import { BRAND_IMAGES, FIRM, MICROSITE } from "@/lib/content";
 
 interface SiteFooterProps {
   officeTitle: string;
@@ -48,6 +48,17 @@ export function SiteFooter({ officeTitle, contactTitle, disclaimer }: SiteFooter
         <p className="mt-10 border-t border-white/10 pt-6 text-xs leading-relaxed text-white/50">
           {disclaimer}
         </p>
+        <nav
+          aria-label="Legal"
+          className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-white/55"
+        >
+          <a href={MICROSITE.privacyPath} className="hover:text-white hover:underline">
+            Privacy Policy
+          </a>
+          <a href={MICROSITE.termsPath} className="hover:text-white hover:underline">
+            Terms of Use
+          </a>
+        </nav>
         <p className="mt-4 text-xs text-white/40">
           &copy; {new Date().getFullYear()} {FIRM.name}
         </p>

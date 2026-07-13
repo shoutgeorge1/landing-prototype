@@ -24,6 +24,8 @@ export const GENERAL_LAUNCH_LINKS = [
   { label: "Homepage", href: "/" },
   { label: "English thank-you page", href: SHARED_THANK_YOU.en },
   { label: "Spanish thank-you page", href: SHARED_THANK_YOU.es },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Use", href: "/terms" },
 ] as const;
 
 /** Internal PPC launch sequence — Bakersfield is active production; others are placeholders. */
