@@ -9,7 +9,7 @@ import { TrustBadges } from "@/components/TrustBadges";
 import { TrustBar } from "@/components/TrustBar";
 import { Disclaimer } from "@/components/Disclaimer";
 
-/* Landing-page CTAs use plain <a> so the browser does a full load and HubSpot embeds initialize. */
+/* Landing CTAs use plain <a> for a full navigation into city landing pages. */
 /* eslint-disable @next/next/no-html-link-for-pages */
 
 export const metadata: Metadata = {

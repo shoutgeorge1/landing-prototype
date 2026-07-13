@@ -21,8 +21,13 @@ export const HUBSPOT_STANDALONE_URLS: Record<Lang, string> = {
     "https://40behl.share-na2.hsforms.com/20R-fLKHSSuCEs59gKtA9UQ",
 };
 
-/** HubSpot V4 portal embed — required for these form builder forms. */
-export const HUBSPOT_EMBED_SCRIPT_URL = `https://js-${HUBSPOT_REGION}.hsforms.net/forms/embed/${HUBSPOT_PORTAL_ID}.js`;
+/** Same subscription type on EN + ES HubSpot forms (communication consent). */
+export const HUBSPOT_COMMUNICATION_SUBSCRIPTION_TYPE_ID = 717581389;
+
+/** Unauthenticated Forms API submit — same portal forms the embed used. */
+export function getHubSpotSubmitUrl(lang: Lang): string {
+  return `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${getHubSpotFormId(lang)}`;
+}
 
 export function getHubSpotFormId(lang: Lang): string {
   return lang === "es" ? HUBSPOT_SPANISH_FORM_ID : HUBSPOT_ENGLISH_FORM_ID;

@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 import { BRAND_IMAGES } from "@/lib/content";
-import { HUBSPOT_EMBED_SCRIPT_URL } from "@/lib/hubspot";
-import { hubSpotThemeCssText } from "@/lib/hubspotTheme";
 import { GTM_ID } from "@/lib/tracking";
-import { HubSpotScriptProvider } from "@/components/HubSpotScriptProvider";
 import { UtmCapture } from "@/components/UtmCapture";
 
 export const metadata: Metadata = {
@@ -42,21 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://js-na2.hsforms.net" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://js-na2.hsforms.net" />
-        <link rel="dns-prefetch" href="https://forms.hsforms.com" />
-        {/* Start HubSpot download during first HTML parse — don't wait for React hydration. */}
-        <link
-          rel="preload"
-          href={HUBSPOT_EMBED_SCRIPT_URL}
-          as="script"
-          crossOrigin="anonymous"
-        />
-        {/* HubSpot V4 iframe reads --hsf-* from :root before the embed mounts. */}
-        <style
-          id="ela-hubspot-theme"
-          dangerouslySetInnerHTML={{ __html: hubSpotThemeCssText() }}
-        />
+        <link rel="dns-prefetch" href="https://api.hsforms.com" />
         <script dangerouslySetInnerHTML={{ __html: gtmSnippet }} />
       </head>
       <body className="min-h-screen bg-white text-slate-800 antialiased">
@@ -68,15 +50,8 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        <Script
-          id="hubspot-forms-embed"
-          src={HUBSPOT_EMBED_SCRIPT_URL}
-          strategy="beforeInteractive"
-        />
-        <HubSpotScriptProvider>
-          <UtmCapture />
-          {children}
-        </HubSpotScriptProvider>
+        <UtmCapture />
+        {children}
       </body>
     </html>
   );

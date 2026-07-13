@@ -1,30 +1,24 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { City, Lang } from "@/lib/cities";
 import { otherLang } from "@/lib/cities";
 import { COPY } from "@/lib/copy";
-import { FIRM } from "@/lib/content";
-import { populateGoogleAdsFieldsV4 } from "@/lib/googleAdsParams";
+import { FIRM, MICROSITE } from "@/lib/content";
 import {
   getFormLanguageLabel,
   getHubSpotFormId,
   getHubSpotStandaloneUrl,
   getThankYouPath,
-  HUBSPOT_PORTAL_ID,
-  HUBSPOT_REGION,
   isHubSpotConfigured,
 } from "@/lib/hubspot";
 import {
   appendPreservedQueryParams,
   appendPreservedQueryParamsToUrl,
 } from "@/lib/queryParams";
+import { submitLead } from "@/lib/submitLead";
 import { pushEvent, pushHubSpotFormSubmission } from "@/lib/tracking";
-import {
-  ensureHubSpotScript,
-  useHubSpotScriptStatus,
-} from "./HubSpotScriptProvider";
 import { TrackedTelLink } from "./TrackedTelLink";
 
 interface HubSpotFormProps {
@@ -32,93 +26,35 @@ interface HubSpotFormProps {
   lang: Lang;
 }
 
-const SLOW_LOAD_MS = 12_000;
-const HARD_FAIL_MS = 25_000;
+type FieldErrors = Partial<
+  Record<"firstName" | "lastName" | "phone" | "email" | "consent", string>
+>;
 
-/** Only one form frame per page, so a loose match is safe and resilient to event-shape changes. */
-function eventMatchesForm(event: Event, formId: string): boolean {
-  const detail = (event as CustomEvent<{ formId?: string }>).detail;
-  const eventFormId = detail?.formId;
-  return !eventFormId || eventFormId === formId;
+function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-function handleHubSpotFormSubmitted(
-  city: City,
-  lang: Lang,
-  push: (href: string) => void,
-): void {
-  const submittedFormId = getHubSpotFormId(lang);
-  pushHubSpotFormSubmission(submittedFormId, getFormLanguageLabel(lang));
-  pushEvent("form_submit", { city: city.slug, lang });
-  const thankYouPath = appendPreservedQueryParams(
-    getThankYouPath(lang),
-    window.location.search,
-    { city: city.slug, language: lang },
-  );
-  push(thankYouPath);
+function isValidPhone(value: string): boolean {
+  const digits = value.replace(/\D/g, "");
+  return digits.length >= 10 && digits.length <= 15;
 }
 
-function FormSkeleton({ lang }: { lang: Lang }) {
-  const label = COPY[lang].form.loading;
-  return (
-    <div
-      className="ela-hubspot-skeleton"
-      aria-hidden="true"
-      data-loading-label={label}
-    >
-      <div className="ela-hubspot-skeleton__row ela-hubspot-skeleton__row--split">
-        <div className="ela-hubspot-skeleton__field">
-          <div className="ela-hubspot-skeleton__label" />
-          <div className="ela-hubspot-skeleton__input" />
-        </div>
-        <div className="ela-hubspot-skeleton__field">
-          <div className="ela-hubspot-skeleton__label" />
-          <div className="ela-hubspot-skeleton__input" />
-        </div>
-      </div>
-      <div className="ela-hubspot-skeleton__field">
-        <div className="ela-hubspot-skeleton__label" />
-        <div className="ela-hubspot-skeleton__input" />
-      </div>
-      <div className="ela-hubspot-skeleton__field">
-        <div className="ela-hubspot-skeleton__label" />
-        <div className="ela-hubspot-skeleton__input" />
-      </div>
-      <div className="ela-hubspot-skeleton__field">
-        <div className="ela-hubspot-skeleton__label" />
-        <div className="ela-hubspot-skeleton__textarea" />
-      </div>
-      <div className="ela-hubspot-skeleton__consent" />
-      <div className="ela-hubspot-skeleton__button" />
-    </div>
-  );
-}
-
-/**
- * HubSpot V4 portal embed (hs-form-frame).
- *
- * Reveal is driven by a MutationObserver watching the frame container, NOT by a
- * strict formId-matched ready event. HubSpot's V4 events sometimes omit/rename
- * detail.formId, which previously left the skeleton hanging forever even though
- * the form had rendered. The observer fires as soon as HubSpot injects content.
- */
 export function HubSpotForm({ city, lang }: HubSpotFormProps) {
   const router = useRouter();
-  const scriptStatus = useHubSpotScriptStatus();
-  const formId = getHubSpotFormId(lang);
   const formCopy = COPY[lang].form;
   const configured = isHubSpotConfigured(lang);
-  const reactId = useId().replace(/:/g, "");
-  const instanceId = `${city.slug}-${lang}-${reactId}`;
+  const formId = getHubSpotFormId(lang);
+  const baseId = useId().replace(/:/g, "");
 
-  const frameRef = useRef<HTMLDivElement | null>(null);
-  const mountedRef = useRef(true);
-  const readyRef = useRef(false);
-  const handledSubmitRef = useRef(false);
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [showSlowFallback, setShowSlowFallback] = useState(false);
-  const [loadFailed, setLoadFailed] = useState(() => !configured);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitFailed, setSubmitFailed] = useState(false);
 
   const standaloneUrl =
     typeof window === "undefined"
@@ -129,110 +65,82 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
         );
 
   useEffect(() => {
-    mountedRef.current = true;
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    void ensureHubSpotScript().catch(() => {
-      if (mountedRef.current) setLoadFailed(true);
-    });
-  }, []);
-
-  useEffect(() => {
     router.prefetch(`/${city.slug}/${otherLang(lang)}`);
+    pushEvent("form_ready", { city: city.slug, lang, form_mode: "native_api" });
   }, [router, city.slug, lang]);
 
-  const markReady = () => {
-    if (readyRef.current || !mountedRef.current) return;
-    readyRef.current = true;
-    setIsLoading(false);
-    setShowSlowFallback(false);
-    setLoadFailed(false);
-  };
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (submitting) return;
 
-  // Primary reveal: observe the frame container for HubSpot-injected content.
-  useEffect(() => {
-    if (!configured) return;
-    const target = frameRef.current;
-    if (!target) return;
+    const nextErrors: FieldErrors = {};
+    if (!firstName.trim()) nextErrors.firstName = formCopy.errFirst;
+    if (!lastName.trim()) nextErrors.lastName = formCopy.errLast;
+    if (!isValidPhone(phone)) nextErrors.phone = formCopy.errPhone;
+    if (!isValidEmail(email.trim())) nextErrors.email = formCopy.errEmail;
+    if (!consent) nextErrors.consent = formCopy.errConsent;
+    setErrors(nextErrors);
+    setSubmitFailed(false);
+    if (Object.keys(nextErrors).length > 0) return;
 
-    if (target.childElementCount > 0) {
-      markReady();
+    setSubmitting(true);
+    const result = await submitLead({
+      firstName,
+      lastName,
+      phone,
+      email,
+      message,
+      consent,
+      lang,
+      pageName: `${city.name} ${lang === "es" ? "ES" : "EN"} consultation`,
+      communicationConsentText: formCopy.consentCheckbox,
+      processingConsentText: formCopy.processingNote,
+    });
+    setSubmitting(false);
+
+    if (!result.ok) {
+      setSubmitFailed(true);
       return;
     }
 
-    const observer = new MutationObserver(() => {
-      if (target.childElementCount > 0) {
-        markReady();
-        observer.disconnect();
-      }
-    });
-    observer.observe(target, { childList: true, subtree: true });
-
-    return () => observer.disconnect();
-  }, [configured, scriptStatus, formId]);
-
-  // Secondary: V4 events for attribution + submission redirect (loose match).
-  useEffect(() => {
-    if (!configured || scriptStatus === "error") return;
-
-    const handleReady = (event: Event) => {
-      if (!eventMatchesForm(event, formId)) return;
-      void populateGoogleAdsFieldsV4(event);
-      markReady();
-      pushEvent("form_ready", { city: city.slug, lang });
-    };
-
-    const handleSuccess = (event: Event) => {
-      if (!eventMatchesForm(event, formId)) return;
-      if (handledSubmitRef.current) return;
-      handledSubmitRef.current = true;
-      handleHubSpotFormSubmitted(city, lang, (href) => router.push(href));
-    };
-
-    window.addEventListener("hs-form-event:on-ready", handleReady);
-    window.addEventListener(
-      "hs-form-event:on-submission:success",
-      handleSuccess,
+    pushHubSpotFormSubmission(formId, getFormLanguageLabel(lang));
+    pushEvent("form_submit", { city: city.slug, lang, form_mode: "native_api" });
+    const thankYouPath = appendPreservedQueryParams(
+      getThankYouPath(lang),
+      window.location.search,
+      { city: city.slug, language: lang },
     );
+    router.push(thankYouPath);
+  }
 
-    return () => {
-      window.removeEventListener("hs-form-event:on-ready", handleReady);
-      window.removeEventListener(
-        "hs-form-event:on-submission:success",
-        handleSuccess,
-      );
-    };
-  }, [configured, scriptStatus, formId, city, lang, router]);
-
-  // Slow-load hint (non-fatal).
-  useEffect(() => {
-    if (!configured || loadFailed || !isLoading) return;
-    const timeout = window.setTimeout(() => {
-      if (mountedRef.current && isLoading) setShowSlowFallback(true);
-    }, SLOW_LOAD_MS);
-    return () => window.clearTimeout(timeout);
-  }, [configured, loadFailed, isLoading]);
-
-  // Hard failure: script/render never completed.
-  useEffect(() => {
-    if (!configured || !isLoading || loadFailed) return;
-    const timeout = window.setTimeout(() => {
-      if (!mountedRef.current || readyRef.current) return;
-      setLoadFailed(true);
-      setIsLoading(false);
-      if (process.env.NODE_ENV === "development") {
-        console.error("[HubSpot] form never rendered", { lang, formId });
-      }
-    }, HARD_FAIL_MS);
-    return () => window.clearTimeout(timeout);
-  }, [configured, isLoading, loadFailed, lang, formId]);
-
-  const showError = loadFailed || scriptStatus === "error" || !configured;
-  const showSkeleton = configured && !showError && isLoading;
+  if (!configured) {
+    return (
+      <div
+        id="lead-form"
+        className="ela-hubspot-form mx-auto w-full max-w-[480px] scroll-mt-4 overflow-hidden rounded-[14px] border border-white/15 bg-white shadow-[0_14px_36px_rgba(0,0,0,0.28)]"
+      >
+        <div className="bg-[var(--navy)] px-4 pb-3.5 pt-4 sm:px-5 sm:pb-4 sm:pt-5">
+          <div className="mb-2.5 h-1 w-10 rounded-full bg-[var(--gold)]" aria-hidden />
+          <h2 className="text-[1.15rem] font-extrabold tracking-tight text-white sm:text-xl">
+            {formCopy.title}
+          </h2>
+        </div>
+        <div className="px-4 py-4 sm:px-5">
+          <div className="rounded-xl border border-dashed border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
+            <p className="font-semibold">{formCopy.loadError}</p>
+            <p className="mt-2">
+              <TrackedTelLink
+                location="form_error"
+                className="font-semibold text-[var(--navy)] underline underline-offset-2"
+              >
+                {FIRM.phoneDisplay}
+              </TrackedTelLink>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -249,13 +157,152 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
         </p>
       </div>
 
-      <div className="relative px-4 pb-4 pt-3.5 sm:px-5 sm:pb-5 sm:pt-4">
-        {showError ? (
-          <div className="rounded-xl border border-dashed border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
-            <p className="font-semibold">{formCopy.loadError}</p>
-            <p className="mt-2">
+      <form
+        className="ela-native-form px-4 pb-4 pt-3.5 sm:px-5 sm:pb-5 sm:pt-4"
+        onSubmit={onSubmit}
+        noValidate
+      >
+        <div className="ela-native-form__row ela-native-form__row--split">
+          <div className="ela-native-form__field">
+            <label htmlFor={`${baseId}-first`}>
+              {formCopy.firstName}
+              <span aria-hidden="true">*</span>
+            </label>
+            <input
+              id={`${baseId}-first`}
+              name="firstname"
+              autoComplete="given-name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              aria-invalid={Boolean(errors.firstName)}
+              aria-describedby={
+                errors.firstName ? `${baseId}-first-err` : undefined
+              }
+            />
+            {errors.firstName ? (
+              <p id={`${baseId}-first-err`} className="ela-native-form__error" role="alert">
+                {errors.firstName}
+              </p>
+            ) : null}
+          </div>
+          <div className="ela-native-form__field">
+            <label htmlFor={`${baseId}-last`}>
+              {formCopy.lastName}
+              <span aria-hidden="true">*</span>
+            </label>
+            <input
+              id={`${baseId}-last`}
+              name="lastname"
+              autoComplete="family-name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              aria-invalid={Boolean(errors.lastName)}
+              aria-describedby={
+                errors.lastName ? `${baseId}-last-err` : undefined
+              }
+            />
+            {errors.lastName ? (
+              <p id={`${baseId}-last-err`} className="ela-native-form__error" role="alert">
+                {errors.lastName}
+              </p>
+            ) : null}
+          </div>
+        </div>
+
+        <div className="ela-native-form__field">
+          <label htmlFor={`${baseId}-phone`}>
+            {formCopy.phone}
+            <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id={`${baseId}-phone`}
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            aria-invalid={Boolean(errors.phone)}
+            aria-describedby={errors.phone ? `${baseId}-phone-err` : undefined}
+          />
+          {errors.phone ? (
+            <p id={`${baseId}-phone-err`} className="ela-native-form__error" role="alert">
+              {errors.phone}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="ela-native-form__field">
+          <label htmlFor={`${baseId}-email`}>
+            {formCopy.email}
+            <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id={`${baseId}-email`}
+            name="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            aria-invalid={Boolean(errors.email)}
+            aria-describedby={errors.email ? `${baseId}-email-err` : undefined}
+          />
+          {errors.email ? (
+            <p id={`${baseId}-email-err`} className="ela-native-form__error" role="alert">
+              {errors.email}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="ela-native-form__field">
+          <label htmlFor={`${baseId}-message`}>{formCopy.whatHappened}</label>
+          <textarea
+            id={`${baseId}-message`}
+            name="message"
+            rows={4}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </div>
+
+        <p className="ela-native-form__note">{formCopy.consentIntro}</p>
+
+        <label className="ela-native-form__consent" htmlFor={`${baseId}-consent`}>
+          <input
+            id={`${baseId}-consent`}
+            name="consent"
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            aria-invalid={Boolean(errors.consent)}
+            aria-describedby={
+              errors.consent ? `${baseId}-consent-err` : undefined
+            }
+          />
+          <span>
+            {formCopy.consentCheckbox}
+            <span aria-hidden="true">*</span>
+          </span>
+        </label>
+        {errors.consent ? (
+          <p id={`${baseId}-consent-err`} className="ela-native-form__error" role="alert">
+            {errors.consent}
+          </p>
+        ) : null}
+
+        <p className="ela-native-form__note">
+          {formCopy.privacyNoteBefore}{" "}
+          <a href={MICROSITE.privacyPath}>{formCopy.privacyLinkLabel}</a>
+          {formCopy.privacyNoteAfter}
+        </p>
+        <p className="ela-native-form__note">{formCopy.processingNote}</p>
+
+        {submitFailed ? (
+          <div className="ela-native-form__fail" role="alert">
+            <p className="font-semibold">{formCopy.genericError}</p>
+            <p className="mt-1.5">
               <TrackedTelLink
-                location="form_error"
+                location="form_submit_error"
                 className="font-semibold text-[var(--navy)] underline underline-offset-2"
               >
                 {FIRM.phoneDisplay}
@@ -271,47 +318,12 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
               </a>
             </p>
           </div>
-        ) : (
-          <>
-            {showSkeleton && (
-              <div
-                className="ela-hubspot-skeleton-wrap"
-                aria-busy="true"
-                aria-live="polite"
-              >
-                <span className="sr-only">{formCopy.loading}</span>
-                <FormSkeleton lang={lang} />
-              </div>
-            )}
+        ) : null}
 
-            {/* Always mounted: HubSpot's V4 script observes and renders into this node. */}
-            <div
-              ref={frameRef}
-              className={`hs-form-frame hubspot-form-frame ela-hs-form-shell w-full max-w-full transition-opacity duration-150 ${
-                isLoading
-                  ? "pointer-events-none absolute inset-x-4 top-3.5 opacity-0 sm:inset-x-5 sm:top-4"
-                  : "relative opacity-100"
-              }`}
-              data-region={HUBSPOT_REGION}
-              data-form-id={formId}
-              data-portal-id={HUBSPOT_PORTAL_ID}
-              data-instance-id={instanceId}
-            />
-
-            {showSlowFallback && isLoading && (
-              <p className="mt-3 text-center text-sm text-slate-600" role="status">
-                {formCopy.slowLoad}{" "}
-                <TrackedTelLink
-                  location="form_slow_load"
-                  className="font-semibold text-[var(--navy)] underline underline-offset-2"
-                >
-                  {FIRM.phoneDisplay}
-                </TrackedTelLink>
-              </p>
-            )}
-          </>
-        )}
-      </div>
+        <button type="submit" className="ela-native-form__submit" disabled={submitting}>
+          {submitting ? formCopy.submitting : formCopy.submit}
+        </button>
+      </form>
     </div>
   );
 }

@@ -13,25 +13,22 @@ export interface FormCopy {
   lastName: string;
   phone: string;
   email: string;
-  cityLabel: string;
-  employer: string;
-  optional: string;
   whatHappened: string;
-  consent: string;
+  consentIntro: string;
+  consentCheckbox: string;
+  privacyNoteBefore: string;
+  privacyLinkLabel: string;
+  privacyNoteAfter: string;
+  processingNote: string;
   submit: string;
   submitting: string;
   errFirst: string;
   errLast: string;
   errPhone: string;
   errEmail: string;
-  errCity: string;
-  errWhat: string;
   errConsent: string;
   genericError: string;
-  loading: string;
-  fallbackPrompt: string;
   fallbackLink: string;
-  slowLoad: string;
   loadError: string;
 }
 
@@ -172,31 +169,29 @@ const en: Copy = {
   form: {
     title: "Request a Free Consultation",
     subtitle: (city) => `No commitment. Confidential. Serving employees in ${city}.`,
-    firstName: "First name",
-    lastName: "Last name",
-    phone: "Phone",
+    firstName: "First Name",
+    lastName: "Last Name",
+    phone: "Phone Number",
     email: "Email",
-    cityLabel: "City",
-    employer: "Employer name",
-    optional: "(optional)",
-    whatHappened: "What happened?",
-    consent:
-      "I agree to be contacted by Employment Law Assist about my inquiry. I understand that contacting the firm does not create an attorney-client relationship.",
-    submit: "Get My Free Consultation",
+    whatHappened: "What workplace issue are you dealing with?",
+    consentIntro:
+      "By checking the boxes below, you agree to receive communications from Employment Law Assist. You can unsubscribe anytime.",
+    consentCheckbox:
+      "I agree to receive other communications from Employment Law Assist.",
+    privacyNoteBefore: "We care about your privacy. Learn how we handle your data in our",
+    privacyLinkLabel: "Privacy Policy",
+    privacyNoteAfter: ".",
+    processingNote:
+      "To deliver your service, we need your permission to store and process your personal data.",
+    submit: "REQUEST A FREE CASE REVIEW",
     submitting: "Submitting...",
     errFirst: "Enter your first name.",
     errLast: "Enter your last name.",
     errPhone: "Enter a valid phone number.",
     errEmail: "Enter a valid email address.",
-    errCity: "Enter your city.",
-    errWhat: "Tell us briefly what happened.",
     errConsent: "Please provide your consent to continue.",
     genericError: "Something went wrong. Please call us instead.",
-    loading: "Loading form…",
-    fallbackPrompt: "Having trouble with the form?",
     fallbackLink: "Complete the form here instead",
-    slowLoad:
-      "The form is taking longer than expected to load. Please refresh the page or call us directly.",
     loadError:
       "We couldn’t load the consultation form. Please refresh the page or call us directly.",
   },
@@ -303,29 +298,27 @@ const es: Copy = {
     subtitle: (city) => `Sin compromiso. Confidencial. Ayudamos a empleados en ${city}.`,
     firstName: "Nombre",
     lastName: "Apellido",
-    phone: "Teléfono",
+    phone: "Número de Teléfono",
     email: "Correo Electrónico",
-    cityLabel: "Ciudad",
-    employer: "Nombre del Empleador",
-    optional: "(opcional)",
-    whatHappened: "¿Qué pasó?",
-    consent:
-      "Acepto que Employment Law Assist me contacte sobre mi consulta. Entiendo que contactar a la firma no crea una relación abogado-cliente.",
-    submit: "Obtener Mi Consulta Gratis",
+    whatHappened: "¿Con qué problema laboral necesita ayuda?",
+    consentIntro:
+      "Al marcar las casillas de abajo, aceptas recibir comunicaciones de Employment Law Assist. Puedes darte de baja en cualquier momento.",
+    consentCheckbox:
+      "Acepto recibir otras comunicaciones de Employment Law Assist.",
+    privacyNoteBefore: "Nos importa tu privacidad. Descubre cómo gestionamos tus datos en nuestra",
+    privacyLinkLabel: "Política de Privacidad",
+    privacyNoteAfter: ".",
+    processingNote:
+      "Para prestarte el servicio, necesitamos tu permiso para almacenar y procesar tus datos personales.",
+    submit: "SOLICITAR REVISIÓN DE MI CASO",
     submitting: "Enviando...",
     errFirst: "Ingrese su nombre.",
     errLast: "Ingrese su apellido.",
     errPhone: "Ingrese un número de teléfono válido.",
     errEmail: "Ingrese un correo electrónico válido.",
-    errCity: "Ingrese su ciudad.",
-    errWhat: "Cuéntenos brevemente qué pasó.",
     errConsent: "Por favor otorgue su consentimiento para continuar.",
     genericError: "Algo salió mal. Por favor llámenos.",
-    loading: "Cargando formulario…",
-    fallbackPrompt: "¿Problemas con el formulario?",
     fallbackLink: "Complete el formulario aquí",
-    slowLoad:
-      "El formulario está tardando más de lo esperado. Actualice la página o llámenos directamente.",
     loadError:
       "No pudimos cargar el formulario de consulta. Actualice la página o llámenos directamente.",
   },
