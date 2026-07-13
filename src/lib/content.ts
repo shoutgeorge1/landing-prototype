@@ -8,8 +8,8 @@ export const MICROSITE = {
 
 export const FIRM = {
   name: "Employment Law Assist",
-  phoneDisplay: "(424) 234-5229",
-  phoneTel: "+14242345229",
+  phoneDisplay: "(424) 678-1416",
+  phoneTel: "+14246781416",
   email: "info@employmentlawassist.com",
   website: "https://employmentlawassist.com/",
   office: {

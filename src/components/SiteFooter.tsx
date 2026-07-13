@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { BRAND_IMAGES, FIRM, MICROSITE } from "@/lib/content";
+import { TrackedTelLink } from "./TrackedTelLink";
 
 interface SiteFooterProps {
   officeTitle: string;
@@ -35,9 +36,10 @@ export function SiteFooter({ officeTitle, contactTitle, disclaimer }: SiteFooter
               {contactTitle}
             </p>
             <p className="mt-1 text-sm leading-relaxed text-white/80">
-              <a href={`tel:${FIRM.phoneTel}`} className="font-bold text-white hover:underline">
-                {FIRM.phoneDisplay}
-              </a>
+              <TrackedTelLink
+                location="footer"
+                className="font-bold text-white hover:underline"
+              />
               <br />
               <a href={`mailto:${FIRM.email}`} className="hover:underline">
                 {FIRM.email}

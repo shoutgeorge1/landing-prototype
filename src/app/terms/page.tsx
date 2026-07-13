@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPageShell } from "@/components/LegalPageShell";
+import { TrackedTelLink } from "@/components/TrackedTelLink";
 import { FIRM, MICROSITE } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -132,7 +133,11 @@ export default function TermsPage() {
         <br />
         Email: <a href={`mailto:${FIRM.email}`}>{FIRM.email}</a>
         <br />
-        Phone: <a href={`tel:${FIRM.phoneTel}`}>{FIRM.phoneDisplay}</a>
+        Phone:{" "}
+        <TrackedTelLink
+          location="terms_contact"
+          className="font-medium text-[var(--navy)] underline"
+        />
       </p>
     </LegalPageShell>
   );

@@ -14,7 +14,6 @@ import { FinalStopCTA } from "./FinalStopCTA";
 import { Disclaimer } from "./Disclaimer";
 import { SiteFooter } from "./SiteFooter";
 import { StickyMobileCTA } from "./StickyMobileCTA";
-import { UtmCapture } from "./UtmCapture";
 
 interface LandingPageProps {
   city: City;
@@ -25,7 +24,6 @@ export function LandingPage({ city, lang }: LandingPageProps) {
   const copy = COPY[lang];
   return (
     <main>
-      <UtmCapture />
       <Hero city={city} lang={lang} copy={copy} />
       <ProofStrip
         title={copy.proofTitle}

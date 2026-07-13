@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { BRAND_IMAGES, FIRM } from "@/lib/content";
+import { BRAND_IMAGES } from "@/lib/content";
+import { TrackedTelLink } from "./TrackedTelLink";
 
 interface SiteHeaderProps {
   /** When set, logo links here (homepage). Landing pages omit this to avoid exit links. */
@@ -42,12 +43,10 @@ export function SiteHeader({
       <div className="flex shrink-0 items-center gap-2 sm:gap-4">
         {actions}
         {showPhone && (
-          <a
-            href={`tel:${FIRM.phoneTel}`}
+          <TrackedTelLink
+            location="header"
             className="hidden text-base font-bold text-white sm:block sm:text-lg"
-          >
-            {FIRM.phoneDisplay}
-          </a>
+          />
         )}
       </div>
     </div>

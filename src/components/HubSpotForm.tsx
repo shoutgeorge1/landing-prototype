@@ -25,6 +25,7 @@ import {
   ensureHubSpotScript,
   useHubSpotScriptStatus,
 } from "./HubSpotScriptProvider";
+import { TrackedTelLink } from "./TrackedTelLink";
 
 interface HubSpotFormProps {
   city: City;
@@ -87,6 +88,7 @@ function FormSkeleton({ lang }: { lang: Lang }) {
         <div className="ela-hubspot-skeleton__label" />
         <div className="ela-hubspot-skeleton__textarea" />
       </div>
+      <div className="ela-hubspot-skeleton__consent" />
       <div className="ela-hubspot-skeleton__button" />
     </div>
   );
@@ -235,39 +237,29 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
   return (
     <div
       id="lead-form"
-      className="ela-hubspot-form scroll-mt-4 overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_rgba(0,0,0,0.35)] ring-1 ring-[var(--gold)]/35"
+      className="ela-hubspot-form mx-auto w-full max-w-[480px] scroll-mt-4 overflow-hidden rounded-[14px] border border-white/15 bg-white shadow-[0_14px_36px_rgba(0,0,0,0.28)]"
     >
-      <div className="border-b border-[var(--gold)]/25 bg-[var(--navy)] px-5 pb-5 pt-5 sm:px-7 sm:pb-6 sm:pt-6">
-        <div className="mb-3 h-1 w-12 rounded-full bg-[var(--gold)]" aria-hidden />
-        <h2 className="text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+      <div className="bg-[var(--navy)] px-4 pb-3.5 pt-4 sm:px-5 sm:pb-4 sm:pt-5">
+        <div className="mb-2.5 h-1 w-10 rounded-full bg-[var(--gold)]" aria-hidden />
+        <h2 className="text-[1.15rem] font-extrabold tracking-tight text-white sm:text-xl">
           {formCopy.title}
         </h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-white/85 sm:text-base">
+        <p className="mt-1 text-[13px] leading-snug text-white/80 sm:text-sm">
           {formCopy.subtitle(city.name)}
         </p>
-        <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold sm:text-sm">
-          {COPY[lang].proofPoints.map((point) => (
-            <li key={point} className="flex items-center gap-1.5 text-white/90">
-              <span aria-hidden className="text-[var(--gold)]">
-                &#10003;
-              </span>
-              {point}
-            </li>
-          ))}
-        </ul>
       </div>
 
-      <div className="relative bg-gradient-to-b from-[#f7f5ef] to-white px-4 py-5 sm:px-6 sm:pb-6 sm:pt-6">
+      <div className="relative px-4 pb-4 pt-3.5 sm:px-5 sm:pb-5 sm:pt-4">
         {showError ? (
           <div className="rounded-xl border border-dashed border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
             <p className="font-semibold">{formCopy.loadError}</p>
             <p className="mt-2">
-              <a
-                href={`tel:${FIRM.phoneTel}`}
+              <TrackedTelLink
+                location="form_error"
                 className="font-semibold text-[var(--navy)] underline underline-offset-2"
               >
                 {FIRM.phoneDisplay}
-              </a>
+              </TrackedTelLink>
               {" · "}
               <a
                 href={standaloneUrl}
@@ -297,7 +289,7 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
               ref={frameRef}
               className={`hs-form-frame hubspot-form-frame ela-hs-form-shell w-full max-w-full transition-opacity duration-300 ${
                 isLoading
-                  ? "pointer-events-none absolute inset-x-4 top-5 opacity-0 sm:inset-x-6 sm:top-6"
+                  ? "pointer-events-none absolute inset-x-4 top-3.5 opacity-0 sm:inset-x-5 sm:top-4"
                   : "relative opacity-100"
               }`}
               data-region={HUBSPOT_REGION}
@@ -307,30 +299,19 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
             />
 
             {showSlowFallback && isLoading && (
-              <p className="mt-4 text-center text-sm text-slate-600" role="status">
+              <p className="mt-3 text-center text-sm text-slate-600" role="status">
                 {formCopy.slowLoad}{" "}
-                <a
-                  href={`tel:${FIRM.phoneTel}`}
+                <TrackedTelLink
+                  location="form_slow_load"
                   className="font-semibold text-[var(--navy)] underline underline-offset-2"
                 >
                   {FIRM.phoneDisplay}
-                </a>
+                </TrackedTelLink>
               </p>
             )}
           </>
         )}
       </div>
-
-      {!showError && (
-        <div className="border-t border-[var(--navy)]/10 bg-[var(--navy)]/5 px-5 py-3.5 text-center sm:px-7">
-          <a
-            href={`tel:${FIRM.phoneTel}`}
-            className="text-sm font-bold text-[var(--navy)] underline-offset-2 hover:underline"
-          >
-            {COPY[lang].ctaCall}
-          </a>
-        </div>
-      )}
     </div>
   );
 }

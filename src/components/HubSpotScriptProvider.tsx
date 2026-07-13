@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { HUBSPOT_EMBED_SCRIPT_URL } from "@/lib/hubspot";
+import { applyHubSpotThemeToDocument } from "@/lib/hubspotTheme";
 
 type ScriptStatus = "idle" | "loading" | "ready" | "error";
 
@@ -32,6 +33,10 @@ function hasEmbedScript(): boolean {
 
 /** Singleton loader for HubSpot V4 portal embed script. */
 export function ensureHubSpotScript(): Promise<void> {
+  if (typeof document !== "undefined") {
+    applyHubSpotThemeToDocument();
+  }
+
   if (scriptStatus === "ready" && hasEmbedScript()) {
     return Promise.resolve();
   }

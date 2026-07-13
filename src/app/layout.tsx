@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { BRAND_IMAGES } from "@/lib/content";
+import { hubSpotThemeCssText } from "@/lib/hubspotTheme";
 import { GTM_ID } from "@/lib/tracking";
 import { HubSpotScriptProvider } from "@/components/HubSpotScriptProvider";
+import { UtmCapture } from "@/components/UtmCapture";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://help.employmentlawassist.com"),
@@ -41,6 +43,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://js-na2.hsforms.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://js-na2.hsforms.net" />
         <link rel="dns-prefetch" href="https://forms.hsforms.com" />
+        {/* HubSpot V4 iframe reads --hsf-* from :root before the embed mounts. */}
+        <style
+          id="ela-hubspot-theme"
+          dangerouslySetInnerHTML={{ __html: hubSpotThemeCssText() }}
+        />
         <script dangerouslySetInnerHTML={{ __html: gtmSnippet }} />
       </head>
       <body className="min-h-screen bg-white text-slate-800 antialiased">
@@ -52,7 +59,10 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        <HubSpotScriptProvider>{children}</HubSpotScriptProvider>
+        <HubSpotScriptProvider>
+          <UtmCapture />
+          {children}
+        </HubSpotScriptProvider>
       </body>
     </html>
   );

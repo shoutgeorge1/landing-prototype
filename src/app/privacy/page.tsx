@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPageShell } from "@/components/LegalPageShell";
+import { TrackedTelLink } from "@/components/TrackedTelLink";
 import { FIRM, MICROSITE } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -108,8 +109,11 @@ export default function PrivacyPage() {
       <p>
         To make a request, email{" "}
         <a href={`mailto:${FIRM.email}`}>{FIRM.email}</a> or call{" "}
-        <a href={`tel:${FIRM.phoneTel}`}>{FIRM.phoneDisplay}</a>. We may need
-        to verify your identity before fulfilling a request.
+        <TrackedTelLink
+          location="privacy_ccpa"
+          className="font-medium text-[var(--navy)] underline"
+        />
+        . We may need to verify your identity before fulfilling a request.
       </p>
 
       <h2>6. Retention</h2>
@@ -143,7 +147,11 @@ export default function PrivacyPage() {
         <br />
         Email: <a href={`mailto:${FIRM.email}`}>{FIRM.email}</a>
         <br />
-        Phone: <a href={`tel:${FIRM.phoneTel}`}>{FIRM.phoneDisplay}</a>
+        Phone:{" "}
+        <TrackedTelLink
+          location="privacy_contact"
+          className="font-medium text-[var(--navy)] underline"
+        />
       </p>
     </LegalPageShell>
   );

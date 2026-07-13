@@ -1,7 +1,7 @@
 "use client";
 
 import { FIRM } from "@/lib/content";
-import { pushEvent } from "@/lib/tracking";
+import { trackPhoneClick } from "@/lib/tracking";
 import { PhoneIcon } from "./PhoneIcon";
 
 interface PhoneCTAProps {
@@ -27,7 +27,7 @@ export function PhoneCTA({
   return (
     <a
       href={`tel:${FIRM.phoneTel}`}
-      onClick={() => pushEvent("phone_click", { location })}
+      onClick={() => trackPhoneClick(location)}
       className={`${base} ${styles} ${className}`}
       aria-label={`Call ${FIRM.name} at ${FIRM.phoneDisplay}`}
     >

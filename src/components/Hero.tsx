@@ -7,6 +7,7 @@ import { TrustBar } from "./TrustBar";
 import { HubSpotForm } from "./HubSpotForm";
 import { PreserveQueryLink } from "./PreserveQueryLink";
 import { SiteHeader } from "./SiteHeader";
+import { ScrollToFormButton } from "./ScrollToFormButton";
 
 interface HeroProps {
   city: City;
@@ -18,7 +19,7 @@ export function Hero({ city, lang, copy }: HeroProps) {
   const alt = otherLang(lang);
 
   return (
-    <section className="bg-[var(--navy)] px-5 pb-12 pt-6 text-white sm:px-6 sm:pb-14 sm:pt-8">
+    <section className="bg-[var(--navy)] px-5 pb-10 pt-6 text-white sm:px-6 sm:pb-12 sm:pt-8">
       <div className="mx-auto max-w-6xl">
         <SiteHeader
           actions={
@@ -32,38 +33,49 @@ export function Hero({ city, lang, copy }: HeroProps) {
           }
         />
 
-        {/* Mobile: headline → form → bullets+call. Desktop: two-column */}
-        <div className="mt-6 flex flex-col gap-5 sm:mt-8 sm:gap-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-10">
+        {/* Mobile: headline → copy → CTA → form. Desktop: two-column, form top-aligned. */}
+        <div className="mt-5 flex flex-col gap-5 sm:mt-7 sm:gap-6 lg:mt-8 lg:grid lg:grid-cols-2 lg:items-start lg:gap-10">
           <div className="lg:col-start-1 lg:row-start-1">
-            <h1 className="text-[28px] font-extrabold leading-[1.15] sm:text-4xl lg:text-5xl">
+            <h1 className="text-[26px] font-extrabold leading-[1.15] sm:text-4xl lg:text-5xl">
               {copy.headline(city.name)}
             </h1>
-            <p className="mt-3 text-base leading-relaxed text-white/90 sm:text-lg">
+            <p className="mt-3 text-[15px] leading-relaxed text-white/90 sm:text-lg">
               {copy.subheadline}
             </p>
-            <div className="mt-4 max-w-[200px] sm:max-w-[220px] lg:mt-5 lg:max-w-[260px]">
+
+            <div className="mt-5 lg:hidden">
+              <ScrollToFormButton
+                location="hero_mobile"
+                className="cta-glow inline-flex w-full items-center justify-center rounded-[10px] bg-[var(--gold)] px-5 py-3.5 text-base font-extrabold text-[var(--navy)]"
+              >
+                {copy.ctaPrimary}
+              </ScrollToFormButton>
+            </div>
+
+            <div className="mt-5 hidden max-w-[240px] lg:mt-6 lg:block lg:max-w-[260px]">
               <Image
                 src={BRAND_IMAGES.attorneyHero}
                 alt={BRAND_IMAGES.alt.attorney}
                 width={520}
                 height={650}
                 className="h-auto w-full object-contain"
-                sizes="(max-width: 640px) 200px, 260px"
+                sizes="260px"
+                priority
               />
             </div>
           </div>
 
-          <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          <div className="w-full lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:justify-self-end">
             <HubSpotForm city={city} lang={lang} />
           </div>
 
           <div className="lg:col-start-1 lg:row-start-2">
             <TrustBar points={copy.heroBullets} tone="dark" />
-            <div className="mt-6">
+            <div className="mt-5">
               <PhoneCTA
                 location="hero"
                 label={copy.ctaCall}
-                className="w-full py-4 text-lg sm:text-xl lg:w-auto"
+                className="w-full py-3.5 text-base sm:text-lg lg:w-auto lg:py-4 lg:text-xl"
               />
             </div>
           </div>
