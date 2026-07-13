@@ -36,11 +36,9 @@ export function isHubSpotConfigured(lang: Lang): boolean {
   return Boolean(HUBSPOT_PORTAL_ID && getHubSpotFormId(lang));
 }
 
-/** Post-submit destination: English uses /thank-you, Spanish uses /gracias. */
-export function getThankYouPath(citySlug: string, lang: Lang): string {
-  return lang === "es"
-    ? `/${citySlug}/es/gracias`
-    : `/${citySlug}/en/thank-you`;
+/** Post-submit destination: shared EN/ES thank-you pages (not city-specific). */
+export function getThankYouPath(lang: Lang): string {
+  return lang === "es" ? "/gracias" : "/thank-you";
 }
 
 export function getFormLanguageLabel(lang: Lang): "english" | "spanish" {

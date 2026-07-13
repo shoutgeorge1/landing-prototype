@@ -5,14 +5,14 @@ import { GTM_ID } from "@/lib/tracking";
 import { HubSpotScriptProvider } from "@/components/HubSpotScriptProvider";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://employmentlawassist.com"),
+  metadataBase: new URL("https://help.employmentlawassist.com"),
   title: {
-    default: "Employment Law Assist | California Employment Lawyers",
+    default: "Employment Law Assist | California Employment Law Support",
     template: "%s | Employment Law Assist",
   },
   description:
-    "California employment law attorneys serving employees statewide. Free, confidential consultation. Hablamos Español. Available 24/7 by phone.",
-  robots: { index: false, follow: false },
+    "California employment law support for employees. Request a confidential case review for wrongful termination, discrimination, harassment, retaliation, or unpaid wages.",
+  robots: { index: true, follow: true },
   icons: {
     icon: BRAND_IMAGES.iconDarkSquare,
     apple: BRAND_IMAGES.iconDarkSquare,
@@ -20,9 +20,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Employment Law Assist",
-    title: "Employment Law Assist | California Employment Lawyers",
+    title: "Employment Law Assist | California Employment Law Support",
     description:
-      "California employment law attorneys serving employees statewide. Free, confidential consultation.",
+      "California employment law support for employees. Request a confidential case review.",
   },
 };
 

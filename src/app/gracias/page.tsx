@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { ThankYouPage } from "@/components/ThankYouPage";
 
 export const metadata: Metadata = {
-  title: "Thank You",
-  description: "Your free consultation request has been received.",
+  title: "Gracias",
+  description: "Hemos recibido su solicitud de consulta gratis.",
   robots: { index: false, follow: false },
 };
 
 export default function Page() {
-  return <ThankYouPage lang="en" />;
+  return <ThankYouPage lang="es" />;
 }

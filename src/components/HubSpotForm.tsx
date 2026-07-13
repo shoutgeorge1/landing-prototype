@@ -50,8 +50,9 @@ function handleHubSpotFormSubmitted(
   pushHubSpotFormSubmission(submittedFormId, getFormLanguageLabel(lang));
   pushEvent("form_submit", { city: city.slug, lang });
   const thankYouPath = appendPreservedQueryParams(
-    getThankYouPath(city.slug, lang),
+    getThankYouPath(lang),
     window.location.search,
+    { city: city.slug, language: lang },
   );
   push(thankYouPath);
 }
@@ -234,19 +235,29 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
   return (
     <div
       id="lead-form"
-      className="ela-hubspot-form scroll-mt-4 overflow-hidden rounded-2xl bg-white shadow-[0_20px_50px_rgba(0,0,0,0.28)] ring-1 ring-black/5"
+      className="ela-hubspot-form scroll-mt-4 overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_rgba(0,0,0,0.35)] ring-1 ring-[var(--gold)]/35"
     >
-      <div className="border-b border-slate-100 bg-gradient-to-b from-slate-50 to-white px-5 pb-4 pt-5 sm:px-7 sm:pt-7">
+      <div className="border-b border-[var(--gold)]/25 bg-[var(--navy)] px-5 pb-5 pt-5 sm:px-7 sm:pb-6 sm:pt-6">
         <div className="mb-3 h-1 w-12 rounded-full bg-[var(--gold)]" aria-hidden />
-        <h2 className="text-xl font-extrabold tracking-tight text-[var(--navy)] sm:text-2xl">
+        <h2 className="text-xl font-extrabold tracking-tight text-white sm:text-2xl">
           {formCopy.title}
         </h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-slate-600 sm:text-base">
+        <p className="mt-1.5 text-sm leading-relaxed text-white/85 sm:text-base">
           {formCopy.subtitle(city.name)}
         </p>
+        <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold sm:text-sm">
+          {COPY[lang].proofPoints.map((point) => (
+            <li key={point} className="flex items-center gap-1.5 text-white/90">
+              <span aria-hidden className="text-[var(--gold)]">
+                &#10003;
+              </span>
+              {point}
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <div className="relative px-5 py-5 sm:px-7 sm:pb-7 sm:pt-6">
+      <div className="relative bg-gradient-to-b from-[#f7f5ef] to-white px-4 py-5 sm:px-6 sm:pb-6 sm:pt-6">
         {showError ? (
           <div className="rounded-xl border border-dashed border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
             <p className="font-semibold">{formCopy.loadError}</p>
@@ -286,7 +297,7 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
               ref={frameRef}
               className={`hs-form-frame hubspot-form-frame ela-hs-form-shell w-full max-w-full transition-opacity duration-300 ${
                 isLoading
-                  ? "pointer-events-none absolute inset-x-5 top-5 opacity-0 sm:inset-x-7 sm:top-6"
+                  ? "pointer-events-none absolute inset-x-4 top-5 opacity-0 sm:inset-x-6 sm:top-6"
                   : "relative opacity-100"
               }`}
               data-region={HUBSPOT_REGION}
@@ -309,6 +320,17 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
           </>
         )}
       </div>
+
+      {!showError && (
+        <div className="border-t border-[var(--navy)]/10 bg-[var(--navy)]/5 px-5 py-3.5 text-center sm:px-7">
+          <a
+            href={`tel:${FIRM.phoneTel}`}
+            className="text-sm font-bold text-[var(--navy)] underline-offset-2 hover:underline"
+          >
+            {COPY[lang].ctaCall}
+          </a>
+        </div>
+      )}
     </div>
   );
 }

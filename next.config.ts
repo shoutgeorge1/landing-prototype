@@ -10,6 +10,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/bakersfield/en/thank-you",
+        destination: "/thank-you",
+        permanent: true,
+      },
+      {
+        source: "/bakersfield/es/gracias",
+        destination: "/gracias",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

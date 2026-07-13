@@ -164,15 +164,21 @@ body {
 .ela-hubspot-skeleton__button {
   margin-top: 0.35rem;
   height: 3.25rem;
+  background: linear-gradient(90deg, #e0c84a 0%, #f0dc6e 45%, #e0c84a 90%);
+  background-size: 200% 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .ela-hubspot-skeleton__label,
   .ela-hubspot-skeleton__input,
-  .ela-hubspot-skeleton__textarea,
-  .ela-hubspot-skeleton__button {
+  .ela-hubspot-skeleton__textarea {
     animation: none;
     background: #e8eef5;
+  }
+
+  .ela-hubspot-skeleton__button {
+    animation: none;
+    background: #e0c84a;
   }
 }
 

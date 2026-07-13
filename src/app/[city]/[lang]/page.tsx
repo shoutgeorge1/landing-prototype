@@ -25,6 +25,7 @@ export async function generateMetadata({
   return {
     title: copy.seoTitle(city.name),
     description: copy.seoDescription(city.name),
+    robots: { index: true, follow: true },
     alternates: {
       canonical: url,
       languages: {

@@ -36,6 +36,8 @@ const UTM_KEYS = [
   "gclid",
   "gbraid",
   "wbraid",
+  "msclkid",
+  "fbclid",
   ...GOOGLE_ADS_PARAM_KEYS,
 ];
 
