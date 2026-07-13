@@ -287,7 +287,7 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
             {/* Always mounted: HubSpot's V4 script observes and renders into this node. */}
             <div
               ref={frameRef}
-              className={`hs-form-frame hubspot-form-frame ela-hs-form-shell w-full max-w-full transition-opacity duration-300 ${
+              className={`hs-form-frame hubspot-form-frame ela-hs-form-shell w-full max-w-full transition-opacity duration-150 ${
                 isLoading
                   ? "pointer-events-none absolute inset-x-4 top-3.5 opacity-0 sm:inset-x-5 sm:top-4"
                   : "relative opacity-100"

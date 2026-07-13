@@ -224,7 +224,7 @@ body {
   flex-direction: column;
   gap: 0.75rem;
   width: 100%;
-  min-height: 22rem;
+  min-height: 18rem;
 }
 
 .ela-hubspot-skeleton__row--split {

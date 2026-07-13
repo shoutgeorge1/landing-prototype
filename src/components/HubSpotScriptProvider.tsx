@@ -31,6 +31,12 @@ function hasEmbedScript(): boolean {
   return Boolean(document.getElementById("hubspot-forms-embed"));
 }
 
+function isScriptElementComplete(script: HTMLScriptElement): boolean {
+  // readyState exists on HTMLScriptElement in browsers when supported.
+  const state = (script as HTMLScriptElement & { readyState?: string }).readyState;
+  return state === "complete" || state === "loaded" || script.dataset.elaLoaded === "1";
+}
+
 /** Singleton loader for HubSpot V4 portal embed script. */
 export function ensureHubSpotScript(): Promise<void> {
   if (typeof document !== "undefined") {
@@ -51,6 +57,7 @@ export function ensureHubSpotScript(): Promise<void> {
     ) as HTMLScriptElement | null;
 
     const onSuccess = () => {
+      if (existing) existing.dataset.elaLoaded = "1";
       setGlobalScriptStatus("ready");
       resolve();
     };
@@ -61,14 +68,14 @@ export function ensureHubSpotScript(): Promise<void> {
     };
 
     if (existing) {
-      // Script tag already present — if it already loaded, succeed; else wait.
-      if (scriptStatus === "ready") {
+      // Layout may have injected this via beforeInteractive — often already loaded.
+      if (scriptStatus === "ready" || isScriptElementComplete(existing)) {
         onSuccess();
         return;
       }
       existing.addEventListener("load", onSuccess, { once: true });
       existing.addEventListener("error", onFailure, { once: true });
-      // If the script finished before listeners attached, treat as ready shortly.
+      // If load fired before listeners attached, complete shortly.
       window.setTimeout(() => {
         if (scriptStatus !== "ready" && scriptStatus !== "error") {
           onSuccess();
@@ -81,10 +88,12 @@ export function ensureHubSpotScript(): Promise<void> {
     script.id = "hubspot-forms-embed";
     script.src = HUBSPOT_EMBED_SCRIPT_URL;
     script.async = true;
-    script.defer = true;
-    script.onload = onSuccess;
+    script.onload = () => {
+      script.dataset.elaLoaded = "1";
+      onSuccess();
+    };
     script.onerror = onFailure;
-    document.body.appendChild(script);
+    document.head.appendChild(script);
   });
 
   return loadPromise;
