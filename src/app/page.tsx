@@ -1,7 +1,13 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { Metadata } from "next";
-import { BRAND_IMAGES, FIRM } from "@/lib/content";
+import { BRAND_IMAGES } from "@/lib/content";
+import { COPY } from "@/lib/copy";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
+import { ProofStrip } from "@/components/ProofStrip";
+import { TrustBadges } from "@/components/TrustBadges";
+import { TrustBar } from "@/components/TrustBar";
+import { Disclaimer } from "@/components/Disclaimer";
 
 /* Landing-page CTAs use plain <a> so the browser does a full load and HubSpot embeds initialize. */
 /* eslint-disable @next/next/no-html-link-for-pages */
@@ -65,85 +71,101 @@ const STEPS = [
 ] as const;
 
 export default function Home() {
-  const year = new Date().getFullYear();
+  const copy = COPY.en;
 
   return (
     <main className="overflow-x-hidden">
-      {/* Header */}
-      <header className="border-b border-slate-200/80 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-6">
-          <Link href="/" className="min-w-0 shrink">
-            <Image
-              src={BRAND_IMAGES.logoDarkLong}
-              alt={BRAND_IMAGES.alt.logo}
-              width={320}
-              height={64}
-              priority
-              className="h-8 w-auto max-w-[11rem] sm:h-10 sm:max-w-none"
-            />
-          </Link>
-          <nav
-            aria-label="Primary"
-            className="hidden items-center gap-6 text-sm font-medium text-slate-600 md:flex"
-          >
-            <a href="#workplace-issues" className="hover:text-[var(--navy)]">
-              Workplace Issues
-            </a>
-            <a href="#how-it-works" className="hover:text-[var(--navy)]">
-              How It Works
-            </a>
-            <a href="#get-help" className="hover:text-[var(--navy)]">
-              Get Help
-            </a>
-          </nav>
-          <a
-            href="/bakersfield/en"
-            className="shrink-0 rounded-md bg-[var(--navy)] px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--navy-800)] sm:px-4"
-          >
-            Request a Case Review
-          </a>
-        </div>
-      </header>
+      {/* Hero — same navy header treatment as landing pages */}
+      <section className="bg-[var(--navy)] px-5 pb-12 pt-6 text-white sm:px-6 sm:pb-14 sm:pt-8">
+        <div className="mx-auto max-w-6xl">
+          <SiteHeader
+            logoHref="/"
+            actions={
+              <>
+                <nav
+                  aria-label="Primary"
+                  className="hidden items-center gap-5 text-sm font-medium text-white/85 lg:flex"
+                >
+                  <a href="#workplace-issues" className="hover:text-white">
+                    Workplace Issues
+                  </a>
+                  <a href="#how-it-works" className="hover:text-white">
+                    How It Works
+                  </a>
+                  <a href="#get-help" className="hover:text-white">
+                    Get Help
+                  </a>
+                </nav>
+                <a
+                  href="/bakersfield/en"
+                  className="rounded-md bg-[var(--gold)] px-3 py-2 text-xs font-bold text-[var(--navy)] transition-opacity hover:opacity-95 sm:px-4 sm:text-sm"
+                >
+                  Request a Case Review
+                </a>
+              </>
+            }
+          />
 
-      {/* Hero */}
-      <section className="relative bg-[var(--navy)] text-white">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              "radial-gradient(ellipse 80% 60% at 70% 20%, #e7be02 0%, transparent 55%), linear-gradient(165deg, transparent 40%, #0b1c36 100%)",
-          }}
-        />
-        <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-6 sm:py-20 lg:py-24">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--gold)] sm:text-sm">
-            California Employment Law Support
-          </p>
-          <h1 className="mt-4 max-w-3xl text-[2rem] font-extrabold leading-[1.12] tracking-tight sm:text-5xl lg:text-[3.25rem]">
-            Get Help Understanding Your Workplace Rights
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
-            If you believe you were wrongfully terminated, discriminated against,
-            harassed, retaliated against, or denied wages, you can submit your
-            information for review.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <a
-              href="/bakersfield/en"
-              className="inline-flex items-center justify-center rounded-md bg-[var(--gold)] px-6 py-3.5 text-base font-bold text-[var(--navy)] transition-opacity hover:opacity-95"
-            >
-              Request a Case Review
-            </a>
-            <a
-              href="/bakersfield/es"
-              className="inline-flex items-center justify-center rounded-md border border-white/35 px-6 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white/10"
-              hrefLang="es"
-            >
-              Ver en Español
-            </a>
+          <div className="mt-8 flex flex-col gap-8 lg:mt-10 lg:grid lg:grid-cols-2 lg:items-center lg:gap-12">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--gold)] sm:text-sm">
+                California Employment Law Support
+              </p>
+              <h1 className="mt-4 text-[28px] font-extrabold leading-[1.15] sm:text-4xl lg:text-5xl">
+                Get Help Understanding Your Workplace Rights
+              </h1>
+              <p className="mt-4 text-base leading-relaxed text-white/90 sm:text-lg">
+                If you believe you were wrongfully terminated, discriminated
+                against, harassed, retaliated against, or denied wages, you can
+                submit your information for review.
+              </p>
+              <div className="mt-6">
+                <TrustBar points={copy.heroBullets} tone="dark" />
+              </div>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <a
+                  href="/bakersfield/en"
+                  className="inline-flex items-center justify-center rounded-md bg-[var(--gold)] px-6 py-3.5 text-base font-bold text-[var(--navy)] transition-opacity hover:opacity-95"
+                >
+                  Request a Case Review
+                </a>
+                <a
+                  href="/bakersfield/es"
+                  className="inline-flex items-center justify-center rounded-md border border-white/35 px-6 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white/10"
+                  hrefLang="es"
+                >
+                  Ver en Español
+                </a>
+              </div>
+            </div>
+
+            <div className="mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:mx-0 lg:max-w-[380px]">
+              <Image
+                src={BRAND_IMAGES.attorneyHero}
+                alt={BRAND_IMAGES.alt.attorney}
+                width={520}
+                height={650}
+                priority
+                className="h-auto w-full object-contain"
+                sizes="(max-width: 1024px) 320px, 380px"
+              />
+            </div>
           </div>
         </div>
       </section>
+
+      <ProofStrip
+        title={copy.proofTitle}
+        googleRating={copy.proofGoogleRating}
+        googleReviews={copy.proofGoogleReviews}
+        yelpLabel={copy.proofYelp}
+        points={copy.proofPoints}
+      />
+
+      <TrustBadges
+        title={copy.trustBadgesTitle}
+        membershipsTitle={copy.trustMembershipsTitle}
+      />
 
       {/* Workplace issues */}
       <section
@@ -229,21 +251,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[var(--navy-800)] px-5 py-10 text-white sm:px-6">
-        <div className="mx-auto max-w-6xl">
-          <p className="text-sm font-semibold">{FIRM.name}</p>
-          <p className="mt-4 max-w-3xl text-xs leading-relaxed text-white/50">
-            This website provides general information about California employment
-            law support and is not legal advice. Submitting information does not
-            create an attorney-client relationship. Past results do not guarantee
-            a similar outcome.
-          </p>
-          <p className="mt-6 text-xs text-white/40">
-            &copy; {year} {FIRM.name}
-          </p>
-        </div>
-      </footer>
+      <Disclaimer text={copy.disclaimerGeneric} />
+      <SiteFooter
+        officeTitle={copy.footerOfficeTitle}
+        contactTitle={copy.footerContactTitle}
+        disclaimer={copy.footerDisclaimer}
+      />
     </main>
   );
 }

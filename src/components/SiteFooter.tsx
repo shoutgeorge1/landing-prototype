@@ -17,9 +17,9 @@ export function SiteFooter({ officeTitle, contactTitle, disclaimer }: SiteFooter
             <Image
               src={BRAND_IMAGES.logoWhiteLong}
               alt={BRAND_IMAGES.alt.logo}
-              width={280}
-              height={56}
-              className="h-8 w-auto"
+              width={360}
+              height={72}
+              className="h-11 w-auto sm:h-12"
             />
             <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-[var(--gold)]">
               {officeTitle}
