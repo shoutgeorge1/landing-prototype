@@ -1,0 +1,69 @@
+# LOCKED — Step 4 campaign settings policy
+# Approved: 2026-07-15
+# Account: EMPLOYMENT LAW ASSIST APC (6769947952)
+
+version: 1
+status: LOCKED
+locked_at: "2026-07-15"
+
+decisions:
+  P_search_only_network: true
+  Q_separate_language_campaigns: true
+  R_bidding_at_launch: MAXIMIZE_CLICKS
+  S_max_cpc_ceiling: 25.0
+  T_ad_schedule: all_day
+  U_ad_rotation: OPTIMIZE
+
+channel:
+  type: SEARCH
+  forbidden: [PERFORMANCE_MAX, DISPLAY, VIDEO, DEMAND_GEN]
+
+network:
+  target_google_search: true
+  target_search_network: false
+  target_content_network: false
+
+language:
+  model: separate_campaigns_per_language
+  en_language_id: 1000
+  es_language_id: 1003
+
+budget:
+  model: daily
+  en_daily: 50.0
+  es_daily: 40.0
+  currency: USD
+  shared_budget: false
+
+bidding:
+  launch_strategy: MAXIMIZE_CLICKS
+  max_cpc_bid_limit: 25.0
+  notes:
+    - "User preference: Maximize Clicks over Manual CPC at launch."
+    - "Optional ceiling prevents runaway CPCs on harassment/employment head terms."
+    - "Ad-group CPC tiers below are reference only if switching to Manual CPC later."
+  reference_manual_cpc_if_needed:
+    default: 18.0
+    employment_lawyer: 20.0
+    harassment: 22.0
+    wage_and_hour: 16.0
+  future_strategy:
+    after_form_and_phone_qa: MAXIMIZE_CONVERSIONS
+    prerequisite: "ELA | Goals | Nonbrand Search goal clean; Form + call primaries QA-passed"
+
+ad_delivery:
+  ad_rotation: OPTIMIZE
+  ad_schedule: all_day_all_week
+  match_types: [PHRASE, EXACT]
+  broad_match: forbidden
+  dynamic_search_ads: forbidden
+
+campaign_status:
+  at_create: PAUSED
+  legacy_campaigns: stay_paused
+
+ad_extensions:
+  sitelinks: yes
+  callouts: yes
+  structured_snippets: yes
+  call_assets: hold_until_phone_qa

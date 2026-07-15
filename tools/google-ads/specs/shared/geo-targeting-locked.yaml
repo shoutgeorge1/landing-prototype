@@ -1,0 +1,145 @@
+# LOCKED — Step 3 geo targeting policy
+# Approved: 2026-07-15
+# Account: EMPLOYMENT LAW ASSIST APC (6769947952)
+# All geo IDs verified via GeoTargetConstantService 2026-07-15
+
+version: 1
+status: LOCKED
+locked_at: "2026-07-15"
+
+decisions:
+  K_presence_only: true
+  L_county_and_city_cluster_split: true
+  L_avoid_duplicate_county_at_enable: true
+  M_victorville_four_city_cluster: true
+  N_geo_exclusions_at_launch: none
+  O_bakersfield_geo: kern_county
+
+location_options:
+  mode: presence_only
+  google_ads_ui_label: "Presence: People in or regularly in your included locations"
+  forbidden: "Presence or interest"
+  location_presence_only: true
+
+identical_geo_enable_rules:
+  description: "Upload all campaigns PAUSED. At enable time, never run two campaigns with the same geo_target_ids set in the same language simultaneously."
+  notes:
+    - "Some keyword/geo overlap between adjacent markets is acceptable."
+    - "Identical county targeting on multiple live campaigns is not."
+  groups:
+    san_bernardino_county_9057153:
+      geo_target_ids: [9057153]
+      markets: [san-bernardino, fontana, ontario]
+      rule: enable_one_language_pair_at_a_time
+      example: "Enable Fontana EN+ES OR San Bernardino EN+ES — not both county-wide."
+    antelope_valley_cities:
+      geo_target_ids: [1013931, 1014108]
+      markets: [lancaster, palmdale]
+      rule: enable_one_language_pair_at_a_time
+      example: "Enable Lancaster EN+ES OR Palmdale EN+ES — not both."
+  non_conflicting:
+    - "Victorville city-cluster does not duplicate SB County — can run alongside one SB County alternate."
+    - "Each Central Valley county (Fresno, Stockton, Modesto, Visalia) is unique — no dedup needed."
+    - "Riverside, Monterey, Ventura, Kern counties are each unique per market."
+
+defaults:
+  language_ids:
+    en: 1000
+    es: 1003
+  location_exclusions_launch: []
+
+strategies:
+  county:
+    markets: [bakersfield, fresno, stockton, modesto, visalia, riverside, san-bernardino, fontana, ontario, salinas, oxnard]
+  city_cluster:
+    markets: [lancaster, palmdale, victorville]
+
+markets:
+  bakersfield:
+    strategy: county
+    geo_target_ids: [9057133]
+    geo_target_names: ["Kern County, California, United States"]
+    enable_priority: last
+    bakersfield_geo_locked: kern_county
+  fresno:
+    strategy: county
+    geo_target_ids: [9057128]
+    geo_target_names: ["Fresno County, California, United States"]
+    enable_priority: first
+  stockton:
+    strategy: county
+    geo_target_ids: [9057156]
+    geo_target_names: ["San Joaquin County, California, United States"]
+    enable_priority: first
+  modesto:
+    strategy: county
+    geo_target_ids: [9057167]
+    geo_target_names: ["Stanislaus County, California, United States"]
+    enable_priority: first
+  visalia:
+    strategy: county
+    geo_target_ids: [9057171]
+    geo_target_names: ["Tulare County, California, United States"]
+    enable_priority: first
+  lancaster:
+    strategy: city_cluster
+    geo_target_ids: [1013931, 1014108]
+    geo_target_names:
+      - "Lancaster, California, United States"
+      - "Palmdale, California, United States"
+    identical_geo_group: antelope_valley_cities
+    enable_priority: second
+  palmdale:
+    strategy: city_cluster
+    geo_target_ids: [1014108, 1013931]
+    geo_target_names:
+      - "Palmdale, California, United States"
+      - "Lancaster, California, United States"
+    identical_geo_group: antelope_valley_cities
+    enable_priority: second
+  victorville:
+    strategy: city_cluster
+    geo_target_ids: [1014370, 1013857, 1013549, 1013525]
+    geo_target_names:
+      - "Victorville, California, United States"
+      - "Hesperia, California, United States"
+      - "Apple Valley, California, United States"
+      - "Adelanto, California, United States"
+    enable_priority: first
+  riverside:
+    strategy: county
+    geo_target_ids: [9057150]
+    geo_target_names: ["Riverside County, California, United States"]
+    enable_priority: first
+  san-bernardino:
+    strategy: county
+    geo_target_ids: [9057153]
+    geo_target_names: ["San Bernardino County, California, United States"]
+    identical_geo_group: san_bernardino_county_9057153
+    enable_priority: second
+  fontana:
+    strategy: county
+    geo_target_ids: [9057153]
+    geo_target_names: ["San Bernardino County, California, United States"]
+    identical_geo_group: san_bernardino_county_9057153
+    enable_priority: second
+  ontario:
+    strategy: county
+    geo_target_ids: [9057153]
+    geo_target_names: ["San Bernardino County, California, United States"]
+    identical_geo_group: san_bernardino_county_9057153
+    enable_priority: second
+  salinas:
+    strategy: county
+    geo_target_ids: [9057145]
+    geo_target_names: ["Monterey County, California, United States"]
+    enable_priority: second
+  oxnard:
+    strategy: county
+    geo_target_ids: [9057173]
+    geo_target_names: ["Ventura County, California, United States"]
+    enable_priority: second
+
+post_launch_review:
+  - Re-export search terms after 14 days before adding geo exclusions.
+  - Do not add California statewide (21137) to market campaigns.

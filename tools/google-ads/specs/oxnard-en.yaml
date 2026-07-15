@@ -1,0 +1,578 @@
+# GENERATED from Bakersfield EN template + markets.yaml
+# Review landing page and overlap metadata before launch.
+# Never hand-enable: campaign must be created PAUSED.
+
+name: ELA | Search | Oxnard | EN | Nonbrand
+status: PAUSED
+channel: SEARCH
+language: en
+city: oxnard
+daily_budget: 50.0
+bidding_strategy: MAXIMIZE_CLICKS
+start_date: null
+network:
+  target_google_search: true
+  target_search_network: false
+  target_content_network: false
+geo_target_names:
+- Ventura County, California, United States
+geo_target_ids:
+- 9057173
+location_presence_only: true
+language_ids:
+- 1000
+final_url: https://help.employmentlawassist.com/oxnard/en
+tracking:
+  tracking_template: null
+  final_url_suffix: google_campaign=ela_search_oxnard_en_nonbrand&google_ad_group={_ad_group_name}&google_keyword={keyword}
+  notes:
+  - Do not duplicate UTMs — account-level tracking template already appends utm/hsa.
+  - Auto-tagging is enabled; gclid should pass on click.
+  - '{_ad_group_name} is expanded per ad group at preview/apply time.'
+brand:
+  brand_lane_owner: external_agency
+  internal_campaign_type: nonbrand
+  shared_brand_negative_list: shared/brand-negatives.yaml
+  overlap_risk_notes:
+  - Another agency may already bid brand or overlapping non-brand terms.
+  - Do not launch brand Search until vendor keyword/geo list is confirmed.
+  - Export search terms weekly after launch to catch overlap.
+shared_negative_lists:
+- shared/negative-lists.yaml
+- shared/brand-negatives.yaml
+campaign_negative_keywords: []
+conversion_goals:
+- '7569909838'
+sitelinks:
+- link_text: Free Case Review
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  description1: Tell us what happened.
+  description2: Confidential review.
+- link_text: Wrongful Termination
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  description1: Fired after reporting?
+  description2: Talk with a lawyer.
+- link_text: Discrimination Help
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  description1: Treated unfairly at work?
+  description2: Review your options.
+- link_text: Wage & Hour Claims
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  description1: Unpaid wages or overtime?
+  description2: Get clear guidance.
+- link_text: Retaliation Claims
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  description1: Punished for speaking up?
+  description2: Know your protections.
+- link_text: Harassment Help
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  description1: Hostile workplace issues?
+  description2: Confidential guidance.
+- link_text: Meal & Rest Breaks
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  description1: Missed breaks or lunches?
+  description2: Review possible claims.
+- link_text: Free Consultation
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  description1: No initial commitment.
+  description2: Hablamos Español.
+callouts:
+- Free Consultation
+- Employee-Side Counsel
+- Confidential Review
+- Hablamos Español
+- Oxnard Service Area
+- California Employee Law
+- Workplace Rights Review
+- Employee Rights Guidance
+structured_snippets:
+- header: Types
+  values:
+  - Wrongful Termination
+  - Discrimination
+  - Retaliation
+  - Harassment
+  - Wage & Hour
+  - Meal Breaks
+- header: Services
+  values:
+  - Free Consultation
+  - Case Review
+  - Employee Rights
+  - Legal Guidance
+call_asset_schedule: []
+ad_schedule: []
+ad_groups:
+- name: Employment Lawyer
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  keywords:
+  - text: employment lawyer oxnard
+    match_type: PHRASE
+  - text: employment attorney oxnard
+    match_type: PHRASE
+  - text: oxnard employment lawyer
+    match_type: PHRASE
+  - text: oxnard employment attorney
+    match_type: PHRASE
+  - text: employment law attorney oxnard
+    match_type: PHRASE
+  - text: employment law lawyer oxnard
+    match_type: PHRASE
+  - text: labor lawyer oxnard
+    match_type: PHRASE
+  - text: labor attorney oxnard
+    match_type: PHRASE
+  - text: employee rights lawyer oxnard
+    match_type: PHRASE
+  - text: employee rights attorney oxnard
+    match_type: PHRASE
+  - text: employment lawyer near me
+    match_type: PHRASE
+  - text: employment attorney near me
+    match_type: PHRASE
+  - text: employee rights lawyer near me
+    match_type: PHRASE
+  - text: workplace lawyer near me
+    match_type: PHRASE
+  - text: employment lawyer oxnard
+    match_type: EXACT
+  - text: employment attorney oxnard
+    match_type: EXACT
+  - text: oxnard employment lawyer
+    match_type: EXACT
+  - text: oxnard employment attorney
+    match_type: EXACT
+  - text: employment law attorney oxnard
+    match_type: EXACT
+  - text: employment law lawyer oxnard
+    match_type: EXACT
+  - text: labor lawyer oxnard
+    match_type: EXACT
+  - text: labor attorney oxnard
+    match_type: EXACT
+  - text: employee rights lawyer oxnard
+    match_type: EXACT
+  - text: employee rights attorney oxnard
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Employment Lawyer Nearby
+    - Oxnard Work Lawyer
+    - Oxnard Job Attorney
+    - Employee Rights Guidance
+    - Talk With Counsel Today
+    - Employment Law Guidance
+    - Workplace Legal Help
+    - Confidential Case Review
+    - Fired or Treated Unfairly?
+    - California Employee Lawyer
+    descriptions:
+    - Employment Law Assist helps Oxnard employees understand possible legal options.
+    - Tell us what happened at work. Start with a free, confidential consultation.
+    - Employee-side guidance for wrongful firing, retaliation, harassment, and pay issues.
+    - Speak with an employment lawyer about your workplace concern and next steps.
+    path1: Oxnard
+    path2: Employment
+- name: Wrongful Termination
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  keywords:
+  - text: wrongful termination lawyer oxnard
+    match_type: PHRASE
+  - text: wrongful termination attorney oxnard
+    match_type: PHRASE
+  - text: oxnard wrongful termination lawyer
+    match_type: PHRASE
+  - text: oxnard wrongful termination attorney
+    match_type: PHRASE
+  - text: wrongful firing lawyer oxnard
+    match_type: PHRASE
+  - text: wrongful firing attorney oxnard
+    match_type: PHRASE
+  - text: fired unfairly oxnard
+    match_type: PHRASE
+  - text: wrongful termination lawyer near me
+    match_type: PHRASE
+  - text: wrongful termination attorney near me
+    match_type: PHRASE
+  - text: terminated without cause lawyer
+    match_type: PHRASE
+  - text: fired after complaint lawyer
+    match_type: PHRASE
+  - text: wrongful termination lawyer oxnard
+    match_type: EXACT
+  - text: wrongful termination attorney oxnard
+    match_type: EXACT
+  - text: oxnard wrongful termination lawyer
+    match_type: EXACT
+  - text: oxnard wrongful termination attorney
+    match_type: EXACT
+  - text: wrongful firing lawyer oxnard
+    match_type: EXACT
+  - text: wrongful firing attorney oxnard
+    match_type: EXACT
+  - text: fired unfairly oxnard
+    match_type: EXACT
+  - text: wrongful termination lawyer near me
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Wrongful Termination Help
+    - Fired Unfairly at Work?
+    - Oxnard Work Lawyer
+    - Oxnard Firing Attorney
+    - Termination Case Review
+    - Talk About Your Firing
+    - Employee-Side Counsel
+    - Termination Law Guidance
+    - Know Your Work Rights
+    - Confidential Legal Review
+    descriptions:
+    - Think you were fired illegally? Learn what options may be available.
+    - Employment Law Assist reviews wrongful termination concerns for employees.
+    - Get clear next steps after a sudden, unfair, or retaliatory firing.
+    - Guidance for Oxnard workers facing possible wrongful termination.
+    path1: Oxnard
+    path2: Termination
+- name: Workplace Discrimination
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  keywords:
+  - text: discrimination lawyer oxnard
+    match_type: PHRASE
+  - text: discrimination attorney oxnard
+    match_type: PHRASE
+  - text: workplace discrimination lawyer oxnard
+    match_type: PHRASE
+  - text: workplace discrimination attorney oxnard
+    match_type: PHRASE
+  - text: racial discrimination lawyer oxnard
+    match_type: PHRASE
+  - text: age discrimination attorney oxnard
+    match_type: PHRASE
+  - text: workplace discrimination lawyer near me
+    match_type: PHRASE
+  - text: workplace discrimination attorney near me
+    match_type: PHRASE
+  - text: pregnancy discrimination lawyer
+    match_type: PHRASE
+  - text: discrimination lawyer oxnard
+    match_type: EXACT
+  - text: discrimination attorney oxnard
+    match_type: EXACT
+  - text: workplace discrimination lawyer oxnard
+    match_type: EXACT
+  - text: workplace discrimination attorney oxnard
+    match_type: EXACT
+  - text: racial discrimination lawyer oxnard
+    match_type: EXACT
+  - text: age discrimination attorney oxnard
+    match_type: EXACT
+  - text: workplace discrimination lawyer near me
+    match_type: EXACT
+  - text: workplace discrimination attorney near me
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Workplace Discrimination
+    - Treated Unfairly at Work?
+    - Discrimination Case Help
+    - Oxnard Work Lawyer
+    - Oxnard Bias Attorney
+    - Employee Rights Counsel
+    - Bias at Work? Talk Now
+    - Discrimination Law Help
+    - Confidential Case Review
+    - Protect Your Job Rights
+    descriptions:
+    - Facing discrimination at work? Get a confidential review of what happened.
+    - We help employees explore options for workplace bias and unequal treatment.
+    - Employment counsel for discrimination concerns affecting Oxnard workers.
+    - Start with a case evaluation and clear, practical next-step guidance.
+    path1: Oxnard
+    path2: Bias
+- name: Workplace Retaliation
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  keywords:
+  - text: retaliation lawyer oxnard
+    match_type: PHRASE
+  - text: retaliation attorney oxnard
+    match_type: PHRASE
+  - text: workplace retaliation lawyer oxnard
+    match_type: PHRASE
+  - text: workplace retaliation attorney oxnard
+    match_type: PHRASE
+  - text: fired after reporting oxnard
+    match_type: PHRASE
+  - text: whistleblower lawyer oxnard
+    match_type: PHRASE
+  - text: workplace retaliation lawyer near me
+    match_type: PHRASE
+  - text: workplace retaliation attorney near me
+    match_type: PHRASE
+  - text: fired for reporting employer
+    match_type: PHRASE
+  - text: retaliation after complaint
+    match_type: PHRASE
+  - text: whistleblower retaliation lawyer
+    match_type: PHRASE
+  - text: retaliation lawyer oxnard
+    match_type: EXACT
+  - text: retaliation attorney oxnard
+    match_type: EXACT
+  - text: workplace retaliation lawyer oxnard
+    match_type: EXACT
+  - text: workplace retaliation attorney oxnard
+    match_type: EXACT
+  - text: fired after reporting oxnard
+    match_type: EXACT
+  - text: whistleblower lawyer oxnard
+    match_type: EXACT
+  - text: workplace retaliation lawyer near me
+    match_type: EXACT
+  - text: workplace retaliation attorney near me
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Workplace Retaliation Help
+    - Punished for Speaking Up?
+    - Retaliation Case Review
+    - Oxnard Work Lawyer
+    - Oxnard Claim Attorney
+    - Employee Complaint Rights
+    - Fired After Reporting?
+    - Retaliation Legal Counsel
+    - Confidential Legal Help
+    - Know Your Protections
+    descriptions:
+    - Faced pushback after reporting issues at work? Talk with employment counsel.
+    - We help employees evaluate retaliation after complaints or protected activity.
+    - Confidential guidance for Oxnard workers dealing with retaliation.
+    - Learn possible next steps with clear information and no pressure.
+    path1: Oxnard
+    path2: Retaliation
+- name: Workplace Harassment
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  keywords:
+  - text: harassment lawyer oxnard
+    match_type: PHRASE
+  - text: harassment attorney oxnard
+    match_type: PHRASE
+  - text: workplace harassment lawyer oxnard
+    match_type: PHRASE
+  - text: workplace harassment attorney oxnard
+    match_type: PHRASE
+  - text: sexual harassment lawyer oxnard
+    match_type: PHRASE
+  - text: sexual harassment attorney oxnard
+    match_type: PHRASE
+  - text: hostile work environment lawyer oxnard
+    match_type: PHRASE
+  - text: workplace harassment lawyer near me
+    match_type: PHRASE
+  - text: workplace harassment attorney near me
+    match_type: PHRASE
+  - text: hostile work environment lawyer
+    match_type: PHRASE
+  - text: employment harassment lawyer near me
+    match_type: PHRASE
+  - text: harassment lawyer oxnard
+    match_type: EXACT
+  - text: harassment attorney oxnard
+    match_type: EXACT
+  - text: workplace harassment lawyer oxnard
+    match_type: EXACT
+  - text: workplace harassment attorney oxnard
+    match_type: EXACT
+  - text: sexual harassment lawyer oxnard
+    match_type: EXACT
+  - text: sexual harassment attorney oxnard
+    match_type: EXACT
+  - text: hostile work environment lawyer oxnard
+    match_type: EXACT
+  - text: workplace harassment lawyer near me
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Workplace Harassment Help
+    - Hostile Work Environment?
+    - Harassment Case Review
+    - Oxnard Work Lawyer
+    - Oxnard Harassment Help
+    - Employee Safety Matters
+    - Sexual Harassment Help
+    - Employment Law Counsel
+    - Confidential Support
+    - Talk About What Happened
+    descriptions:
+    - Dealing with harassment or a hostile workplace? Get confidential guidance.
+    - Employment Law Assist helps employees understand harassment-related options.
+    - Legal support for Oxnard workers facing unsafe or hostile conditions.
+    - Start with a discreet case review and clear information.
+    path1: Oxnard
+    path2: Harassment
+- name: Wage and Hour
+  final_url: https://help.employmentlawassist.com/oxnard/en
+  keywords:
+  - text: unpaid wages lawyer oxnard
+    match_type: PHRASE
+  - text: unpaid wages attorney oxnard
+    match_type: PHRASE
+  - text: overtime lawyer oxnard
+    match_type: PHRASE
+  - text: overtime attorney oxnard
+    match_type: PHRASE
+  - text: wage and hour lawyer oxnard
+    match_type: PHRASE
+  - text: wage and hour attorney oxnard
+    match_type: PHRASE
+  - text: unpaid wages lawyer near me
+    match_type: PHRASE
+  - text: unpaid overtime lawyer near me
+    match_type: PHRASE
+  - text: unpaid overtime lawyer
+    match_type: PHRASE
+  - text: missed meal break lawyer california
+    match_type: PHRASE
+  - text: unpaid commission lawyer
+    match_type: PHRASE
+  - text: unpaid wages lawyer oxnard
+    match_type: EXACT
+  - text: unpaid wages attorney oxnard
+    match_type: EXACT
+  - text: overtime lawyer oxnard
+    match_type: EXACT
+  - text: overtime attorney oxnard
+    match_type: EXACT
+  - text: wage and hour lawyer oxnard
+    match_type: EXACT
+  - text: wage and hour attorney oxnard
+    match_type: EXACT
+  - text: unpaid wages lawyer near me
+    match_type: EXACT
+  - text: unpaid overtime lawyer near me
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Wage & Hour Claim Help
+    - Unpaid Overtime Issues?
+    - Oxnard Wage Lawyer
+    - Oxnard Pay Attorney
+    - Missed Breaks or Pay?
+    - Employee Pay Rights
+    - Wage Claim Help
+    - Get a Pay Case Review
+    - Unpaid Wages Guidance
+    - California Wage Counsel
+    descriptions:
+    - Missing wages, overtime, or breaks? Get clarity on possible next steps.
+    - Employment Law Assist helps employees with California wage-and-hour concerns.
+    - Guidance for unpaid wage issues affecting Oxnard workers.
+    - Request a confidential review of your wage and hour situation.
+    path1: Oxnard
+    path2: Wages
+- name: Meal and Rest Breaks
+  keywords:
+  - text: meal break lawyer oxnard
+    match_type: PHRASE
+  - text: rest break attorney oxnard
+    match_type: PHRASE
+  - text: missed meal break lawyer oxnard
+    match_type: PHRASE
+  - text: missed rest break attorney oxnard
+    match_type: PHRASE
+  - text: meal and rest break lawyer
+    match_type: PHRASE
+  - text: california meal break lawyer
+    match_type: PHRASE
+  - text: missed lunch break attorney
+    match_type: PHRASE
+  - text: unpaid meal breaks lawyer
+    match_type: PHRASE
+  - text: meal break lawyer oxnard
+    match_type: EXACT
+  - text: rest break attorney oxnard
+    match_type: EXACT
+  - text: missed meal break lawyer oxnard
+    match_type: EXACT
+  - text: missed rest break attorney oxnard
+    match_type: EXACT
+  - text: meal and rest break lawyer
+    match_type: EXACT
+  - text: california meal break lawyer
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Meal & Rest Break Help
+    - Missed Lunch Breaks?
+    - Oxnard Break Lawyer
+    - California Break Rights
+    - Unpaid Break Time?
+    - Employee Pay Review
+    - Wage Claim Help
+    - Confidential Case Review
+    - Know Your Break Rights
+    - Talk With Work Counsel
+    descriptions:
+    - Missed meal or rest breaks can affect your pay. Ask for a confidential review.
+    - Get guidance on California break rules and possible wage-and-hour claims.
+    - Employment Law Assist reviews break and pay issues for Oxnard employees.
+    - Tell us what happened and learn possible next steps for unpaid break time.
+    path1: Oxnard
+    path2: Breaks
+  final_url: https://help.employmentlawassist.com/oxnard/en
+- name: Medical Leave and Injury
+  keywords:
+  - text: medical leave lawyer oxnard
+    match_type: PHRASE
+  - text: medical leave attorney oxnard
+    match_type: PHRASE
+  - text: fmla lawyer oxnard
+    match_type: PHRASE
+  - text: fired after medical leave oxnard
+    match_type: PHRASE
+  - text: fired after injury lawyer
+    match_type: PHRASE
+  - text: work injury retaliation lawyer
+    match_type: PHRASE
+  - text: reasonable accommodation lawyer
+    match_type: PHRASE
+  - text: medical leave lawyer oxnard
+    match_type: EXACT
+  - text: medical leave attorney oxnard
+    match_type: EXACT
+  - text: fmla lawyer oxnard
+    match_type: EXACT
+  - text: fired after medical leave oxnard
+    match_type: EXACT
+  - text: fired after injury lawyer
+    match_type: EXACT
+  - text: work injury retaliation lawyer
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Medical Leave Job Help
+    - Fired After Leave?
+    - Oxnard Leave Lawyer
+    - Disability Leave Rights
+    - Injured Worker Rights
+    - Accommodation Issues?
+    - Employee-Side Counsel
+    - Confidential Case Review
+    - Talk With Work Counsel
+    - Know Your Job Rights
+    descriptions:
+    - Fired, punished, or denied accommodation after leave? Ask for a review.
+    - We help employees understand leave, injury, retaliation, and job-rights issues.
+    - Confidential guidance for Oxnard employees after medical leave problems.
+    - Start with a free consultation and learn what options may apply.
+    path1: Oxnard
+    path2: Leave
+  final_url: https://help.employmentlawassist.com/oxnard/en
+market_metadata:
+  priority: 14
+  landing_page_status: generated_needs_qa
+  geo_strategy: county
+  service_area_notes: Oxnard and broader Ventura County.
+  overlap_group: ventura-county
+  do_not_launch_with: []
+  generated_from: bakersfield-en.yaml
+  launch_ready: false

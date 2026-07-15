@@ -3,7 +3,8 @@ import {
   getHubSpotSubmitUrl,
   HUBSPOT_COMMUNICATION_SUBSCRIPTION_TYPE_ID,
 } from "./hubspot";
-import { readGoogleAdsParamsFromUrl } from "./googleAdsParams";
+import { PRESERVED_QUERY_KEYS } from "./queryParams";
+import { getAttributionPayload } from "./tracking";
 import type { Lang } from "./cities";
 
 export interface LeadPayload {
@@ -14,6 +15,8 @@ export interface LeadPayload {
   message: string;
   consent: boolean;
   lang: Lang;
+  /** Landing city slug — written to HubSpot `city` when present. */
+  city?: string;
   pageName: string;
   /** Exact consent checkbox label sent to HubSpot for audit trail. */
   communicationConsentText: string;
@@ -23,6 +26,8 @@ export interface LeadPayload {
 
 export interface LeadResult {
   ok: boolean;
+  /** Unique ID for this successful HubSpot API submission (GTM/Ads dedup). */
+  submissionId?: string;
   error?: string;
 }
 
@@ -53,8 +58,14 @@ export async function submitLead(payload: LeadPayload): Promise<LeadResult> {
   const message = payload.message.trim();
   if (message) fields.push({ name: "message", value: message });
 
-  const ads = readGoogleAdsParamsFromUrl();
-  for (const [name, value] of Object.entries(ads)) {
+  // Merge live URL + localStorage attribution (gclid/UTMs/google_* / city / language).
+  const attribution: Record<string, string> = {
+    ...getAttributionPayload(),
+    ...(payload.city ? { city: payload.city } : {}),
+    language: payload.lang,
+  };
+  for (const name of PRESERVED_QUERY_KEYS) {
+    const value = attribution[name];
     if (value) fields.push({ name, value });
   }
 
@@ -100,7 +111,7 @@ export async function submitLead(payload: LeadPayload): Promise<LeadResult> {
       return { ok: false, error: "hubspot_rejected" };
     }
 
-    return { ok: true };
+    return { ok: true, submissionId: crypto.randomUUID() };
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
       console.error("[submitLead] network error", error);

@@ -1,0 +1,103 @@
+# LOCKED — Step 6 tracking policy (GTM, HubSpot, phone)
+# Approved: 2026-07-15
+# Account: EMPLOYMENT LAW ASSIST APC (6769947952)
+
+version: 1
+status: LOCKED
+locked_at: "2026-07-15"
+related: specs/shared/conversion-goals-locked.yaml
+
+decisions:
+  Z_hubspot_phone: "424-678-1416"
+  Z_phone_tel: "+14246781416"
+  Z_verify_routing_before_launch: true
+  AA_qualified_call_duration_seconds: 90
+  AB_form_conversion_dedup: submission_id_not_session
+
+phone:
+  display: "(424) 678-1416"
+  e164: "+14246781416"
+  digits: "4246781416"
+  provider: HubSpot
+  usage:
+    - landing_pages
+    - google_ads_call_assets
+    - website_call_conversion_forwarding
+  callrail: forbidden
+  pre_launch: "Verify routing to HubSpot phone system before enabling campaigns"
+  site_source: src/lib/content.ts FIRM.phoneDisplay / phoneTel
+  ads_action: "Replace legacy call assets (424) 234-5229 and (424) 371-7069"
+
+qualified_call_duration:
+  seconds: 90
+  applies_to:
+    - "ELA | Call | Calls From Ads"
+    - "ELA | Call | Website Qualified Call"
+
+form_conversion_dedup:
+  strategy: unique_submission_id
+  session_dedup: false
+  field: hubspot_submission_id
+  also_pushed_as: event_id
+  generated: "crypto.randomUUID() on each successful HubSpot API POST"
+  site_files:
+    - src/lib/submitLead.ts
+    - src/lib/tracking.ts
+    - src/components/HubSpotForm.tsx
+  gtm_instruction: >
+    Deduplicate Google Ads form conversion tags using hubspot_submission_id /
+    event_id (Unique Event ID variable or lookup table). Do NOT use session-level
+    dedup — a user may legitimately submit twice in one session.
+  thank_you_page: "Must not fire Primary form conversion on refresh"
+
+account_tracking:
+  auto_tagging: enabled
+  tracking_url_template: account_level_utms_and_hsa
+  campaign_final_url_suffix: "google_campaign, google_ad_group, google_keyword"
+  landing_domain: help.employmentlawassist.com
+
+hubspot_attribution_fields:
+  - gclid
+  - gbraid
+  - wbraid
+  - utm_source
+  - utm_medium
+  - utm_campaign
+  - utm_term
+  - utm_content
+  - google_campaign
+  - google_ad_group
+  - google_keyword
+  - city
+  - language
+
+gtm_tags:
+  - name: "Ads | ELA HubSpot Form Submit"
+    trigger: "Custom Event hubspot_form_submission"
+    conversion: "ELA | Lead | HubSpot Form Submit"
+    dedup_variable: hubspot_submission_id
+    primary: true
+  - name: "Ads | ELA Phone Click"
+    trigger: "Custom Event phone_click"
+    conversion: "ELA | Call | Phone Click"
+    primary: false
+  - name: "Ads | ELA Thank You Page"
+    trigger: "Page View /thank-you OR /gracias"
+    conversion: "ELA | Lead | Thank You Page"
+    primary: false
+
+data_layer_events:
+  hubspot_form_submission:
+    when: "After HubSpot Forms API POST returns response.ok"
+    includes: [hubspot_submission_id, event_id, form_id, form_language, attribution]
+  phone_click:
+    when: "tel: link click"
+    includes: [phone_number, location, attribution]
+  form_submit:
+    when: "After API success (companion to hubspot_form_submission)"
+    note: "Do not use alone for Ads Primary conversion"
+
+launch_gate:
+  verify_phone_routing: required
+  verify_form_attribution: required
+  see: docs/conversion-qa-checklist.md

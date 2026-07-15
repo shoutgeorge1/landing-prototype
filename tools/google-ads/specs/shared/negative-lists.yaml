@@ -1,0 +1,256 @@
+# ELA non-brand Search — shared negative keyword lists
+# Account: EMPLOYMENT LAW ASSIST APC (6769947952)
+#
+# Design goals:
+# - Human judgment, not a dump of every possible exclusion
+# - Phrase-first (blocks variants) with selective exact for precision
+# - Tiered: launch vs post-launch tuning
+# - Safe with a keyword-heavy account — avoids broad traps like "free" or "what is"
+#
+# Apply as Google Ads shared negative keyword lists, then attach to all
+# ELA non-brand Search campaigns (EN + ES). Review conflicts before apply.
+
+version: 2
+status: LOCKED
+locked_at: "2026-07-15"
+locked_policy: specs/shared/negative-keywords-locked.yaml
+account_id: "6769947952"
+
+apply_guidance:
+  match_type_default: PHRASE
+  attach_to:
+    - "All ELA | Search | * | Nonbrand campaigns"
+  do_not_attach_to:
+    - "Brand campaigns (HawkSEM lane)"
+    - "Performance Max / Display / Video"
+  review_after_days: 14
+  export_search_terms: true
+
+lists:
+  # --- TIER 1: Launch day (high-confidence waste) ---
+
+  job_seekers_en:
+    tier: launch
+    description: People looking for employment, not legal representation
+    keywords:
+      - { text: "job opening", match_type: PHRASE }
+      - { text: "job openings", match_type: PHRASE }
+      - { text: "jobs near me", match_type: PHRASE }
+      - { text: "hiring now", match_type: PHRASE }
+      - { text: "now hiring", match_type: PHRASE }
+      - { text: "apply online", match_type: PHRASE }
+      - { text: "job application", match_type: PHRASE }
+      - { text: "job search", match_type: PHRASE }
+      - { text: "career fair", match_type: PHRASE }
+      - { text: "work from home jobs", match_type: PHRASE }
+      - { text: "part time jobs", match_type: PHRASE }
+      - { text: "full time jobs", match_type: PHRASE }
+      - { text: "temp agency", match_type: PHRASE }
+      - { text: "staffing agency", match_type: PHRASE }
+      - { text: "indeed jobs", match_type: PHRASE }
+      - { text: "glassdoor", match_type: PHRASE }
+      - { text: "resume", match_type: PHRASE }
+      - { text: "cover letter", match_type: PHRASE }
+      - { text: "job interview", match_type: PHRASE }
+      - { text: "internship", match_type: PHRASE }
+
+  legal_careers_en:
+    tier: launch
+    description: Attorneys/paralegals looking for jobs, not clients
+    keywords:
+      - { text: "attorney jobs", match_type: PHRASE }
+      - { text: "lawyer jobs", match_type: PHRASE }
+      - { text: "paralegal jobs", match_type: PHRASE }
+      - { text: "legal assistant jobs", match_type: PHRASE }
+      - { text: "law firm hiring", match_type: PHRASE }
+      - { text: "associate attorney job", match_type: PHRASE }
+      - { text: "lateral attorney", match_type: PHRASE }
+      - { text: "of counsel position", match_type: PHRASE }
+      - { text: "legal recruiter", match_type: PHRASE }
+      - { text: "law clerk jobs", match_type: PHRASE }
+
+  law_school_education_en:
+    tier: launch
+    description: Students, exams, and paralegal training — not case intake
+    keywords:
+      - { text: "law school", match_type: PHRASE }
+      - { text: "bar exam", match_type: PHRASE }
+      - { text: "lsat", match_type: PHRASE }
+      - { text: "lsat prep", match_type: PHRASE }
+      - { text: "paralegal certificate", match_type: PHRASE }
+      - { text: "paralegal program", match_type: PHRASE }
+      - { text: "legal studies degree", match_type: PHRASE }
+      - { text: "become a lawyer", match_type: PHRASE }
+      - { text: "how to become an attorney", match_type: PHRASE }
+
+  employer_side_en:
+    tier: launch
+    description: Employers/HR seeking defense counsel — ELA represents employees
+    keywords:
+      - { text: "employer defense", match_type: PHRASE }
+      - { text: "defend against lawsuit", match_type: PHRASE }
+      - { text: "defend wrongful termination", match_type: PHRASE }
+      - { text: "hr compliance lawyer", match_type: PHRASE }
+      - { text: "employee handbook lawyer", match_type: PHRASE }
+      - { text: "terminate employee", match_type: PHRASE }
+      - { text: "firing an employee", match_type: PHRASE }
+      - { text: "how to fire an employee", match_type: PHRASE }
+      - { text: "employment law for employers", match_type: PHRASE }
+      - { text: "defense attorney for company", match_type: PHRASE }
+      - { text: "management side employment", match_type: PHRASE }
+
+  wrong_practice_area_en:
+    tier: launch
+    description: Non-employment practice areas ELA does not handle
+    keywords:
+      - { text: "personal injury", match_type: PHRASE }
+      - { text: "car accident lawyer", match_type: PHRASE }
+      - { text: "slip and fall", match_type: PHRASE }
+      - { text: "immigration lawyer", match_type: PHRASE }
+      - { text: "immigration attorney", match_type: PHRASE }
+      - { text: "family law attorney", match_type: PHRASE }
+      - { text: "divorce lawyer", match_type: PHRASE }
+      - { text: "criminal defense", match_type: PHRASE }
+      - { text: "dui lawyer", match_type: PHRASE }
+      - { text: "bankruptcy attorney", match_type: PHRASE }
+      - { text: "real estate attorney", match_type: PHRASE }
+      - { text: "estate planning", match_type: PHRASE }
+      - { text: "social security disability", match_type: PHRASE }
+      - { text: "ssd lawyer", match_type: PHRASE }
+
+  job_seekers_es:
+    tier: launch
+    description: Búsquedas de empleo, no representación legal
+    keywords:
+      - { text: "trabajos cerca de mi", match_type: PHRASE }
+      - { text: "ofertas de trabajo", match_type: PHRASE }
+      - { text: "busco trabajo", match_type: PHRASE }
+      - { text: "como conseguir trabajo", match_type: PHRASE }
+      - { text: "aplicar en linea", match_type: PHRASE }
+      - { text: "solicitud de empleo", match_type: PHRASE }
+      - { text: "agencia de empleo", match_type: PHRASE }
+      - { text: "curriculum vitae", match_type: PHRASE }
+      - { text: "carta de presentacion", match_type: PHRASE }
+      - { text: "entrevista de trabajo", match_type: PHRASE }
+      - { text: "pasantia", match_type: PHRASE }
+
+  wrong_practice_area_es:
+    tier: launch
+    description: Áreas fuera de derecho laboral de empleados
+    keywords:
+      - { text: "abogado de inmigracion", match_type: PHRASE }
+      - { text: "abogado de accidentes", match_type: PHRASE }
+      - { text: "abogado de divorcio", match_type: PHRASE }
+      - { text: "abogado penal", match_type: PHRASE }
+      - { text: "abogado de bancarrota", match_type: PHRASE }
+      - { text: "lesion personal", match_type: PHRASE }
+      - { text: "accidente de carro", match_type: PHRASE }
+
+  # --- TIER 2: Launch + week-1 (still high confidence) ---
+
+  pro_bono_legal_aid_en:
+    tier: launch
+    description: Low-retention intent — tune if intake quality data says otherwise
+    notes:
+      - "We advertise free consultation; do NOT negate 'free consultation'."
+      - "Block 'free lawyer' and pro bono seekers who rarely retain."
+    keywords:
+      - { text: "free lawyer", match_type: PHRASE }
+      - { text: "free attorney", match_type: PHRASE }
+      - { text: "pro bono lawyer", match_type: PHRASE }
+      - { text: "pro bono attorney", match_type: PHRASE }
+      - { text: "legal aid", match_type: PHRASE }
+      - { text: "legal aid society", match_type: PHRASE }
+      - { text: "free legal advice", match_type: PHRASE }
+      - { text: "free legal help", match_type: PHRASE }
+
+  diy_templates_en:
+    tier: launch
+    description: DIY forms and templates — rarely converts to retained clients
+    keywords:
+      - { text: "template", match_type: PHRASE }
+      - { text: "sample letter", match_type: PHRASE }
+      - { text: "sample complaint", match_type: PHRASE }
+      - { text: "form pdf", match_type: PHRASE }
+      - { text: "download form", match_type: PHRASE }
+      - { text: "write my own", match_type: PHRASE }
+      - { text: "represent myself", match_type: PHRASE }
+      - { text: "file without lawyer", match_type: PHRASE }
+      - { text: "small claims court", match_type: PHRASE }
+      - { text: "small claims form", match_type: PHRASE }
+
+  unemployment_benefits_en:
+    tier: launch
+    description: EDD/unemployment benefits — different problem than employment claims
+    keywords:
+      - { text: "unemployment benefits", match_type: PHRASE }
+      - { text: "file unemployment", match_type: PHRASE }
+      - { text: "edd unemployment", match_type: PHRASE }
+      - { text: "unemployment appeal", match_type: PHRASE }
+      - { text: "ui benefits", match_type: PHRASE }
+      - { text: "unemployment office", match_type: PHRASE }
+
+  government_diy_filing_en:
+    tier: launch
+    description: Agency filing DIY — keep lawyer-intent variants unblocked
+    notes:
+      - "Do not negate bare 'eeoc' or 'dlse' — people may still need counsel."
+      - "Negate filing/how-to and .gov destination intent."
+    keywords:
+      - { text: "eeoc.gov", match_type: PHRASE }
+      - { text: "file eeoc complaint", match_type: PHRASE }
+      - { text: "how to file eeoc", match_type: PHRASE }
+      - { text: "dlse filing", match_type: PHRASE }
+      - { text: "labor commissioner filing", match_type: PHRASE }
+      - { text: "department of labor website", match_type: PHRASE }
+      - { text: "dol.gov", match_type: PHRASE }
+
+  out_of_market_en:
+    tier: launch
+    description: Out-of-state searches unlikely to convert for CA employee-side firm
+    keywords:
+      - { text: "texas employment lawyer", match_type: PHRASE }
+      - { text: "florida employment lawyer", match_type: PHRASE }
+      - { text: "new york employment lawyer", match_type: PHRASE }
+      - { text: "nevada employment lawyer", match_type: PHRASE }
+      - { text: "arizona employment lawyer", match_type: PHRASE }
+
+  # --- TIER 3: Post-launch tuning (review search terms first) ---
+
+  informational_research_en:
+    tier: post_launch
+    description: Pure research — can block some case-intent; review after 14 days
+    keywords:
+      - { text: "definition of", match_type: PHRASE }
+      - { text: "meaning of", match_type: PHRASE }
+      - { text: "statute of limitations calculator", match_type: PHRASE }
+      - { text: "lawsuit settlement calculator", match_type: PHRASE }
+      - { text: "average settlement", match_type: PHRASE }
+      - { text: "how much can i get", match_type: PHRASE }
+
+  workers_comp_only_en:
+    tier: post_launch
+    description: Pure WC filing — ELA lists WC on site; confirm intake policy first
+    notes:
+      - "Landing page mentions Workers' Compensation."
+      - "Only enable if intake confirms they do not want WC-only leads."
+    keywords:
+      - { text: "workers comp claim form", match_type: PHRASE }
+      - { text: "file workers comp", match_type: PHRASE }
+      - { text: "workers comp insurance", match_type: PHRASE }
+      - { text: "wc insurance carrier", match_type: PHRASE }
+
+  competitor_research_en:
+    tier: post_launch
+    description: Competitor names — add only after confirming no co-op with vendor
+    keywords:
+      - { text: "allred maroko", match_type: PHRASE }
+      - { text: "fisher phillips", match_type: PHRASE }
+      - { text: "ogletree deakins", match_type: PHRASE }
+
+guidance:
+  - Run scripts/check_negative_conflicts.py before uploading lists.
+  - Prefer phrase negatives; use exact only for precision (domains, brand).
+  - Re-export search terms weekly for the first month.
+  - A keyword-heavy account needs surgical negatives, not blanket exclusions.
+  - Spanish campaigns get job_seekers_es + wrong_practice_area_es + shared EN waste lists as needed.

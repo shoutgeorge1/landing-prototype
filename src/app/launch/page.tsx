@@ -26,15 +26,18 @@ function QaLink({ href, children }: { href: string; children: ReactNode }) {
 
 function StatusBadge({ status }: { status: string }) {
   const isActive = status === "active";
+  const needsQa = status === "generated_needs_qa";
   return (
     <span
       className={`inline-block rounded px-2 py-0.5 text-xs font-semibold uppercase tracking-wide ${
         isActive
           ? "bg-emerald-100 text-emerald-800"
-          : "bg-slate-100 text-slate-600"
+          : needsQa
+            ? "bg-amber-100 text-amber-900"
+            : "bg-slate-100 text-slate-600"
       }`}
     >
-      {isActive ? "Active" : "Not Built"}
+      {isActive ? "Active" : needsQa ? "Needs QA" : status}
     </span>
   );
 }
@@ -110,14 +113,15 @@ export default function LaunchPage() {
           </ul>
         </section>
 
-        {/* Future cities */}
+        {/* Generated cities — live routes pending QA */}
         <section>
           <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-            Future cities
+            Generated cities (needs QA)
           </h2>
           <p className="mt-2 text-sm text-slate-500">
-            Planned landing routes. All English cities use{" "}
-            <code className="text-xs">/thank-you</code>; all Spanish cities use{" "}
+            All 14 supported cities × EN/ES are generated. Non-Bakersfield routes
+            still need QA before spend. English thank-you:{" "}
+            <code className="text-xs">/thank-you</code>; Spanish:{" "}
             <code className="text-xs">/gracias</code>.
           </p>
           <ul className="mt-4 space-y-3">

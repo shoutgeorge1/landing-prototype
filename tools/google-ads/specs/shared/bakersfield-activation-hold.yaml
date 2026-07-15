@@ -1,0 +1,33 @@
+# LOCKED — Bakersfield activation hold
+# Approved: 2026-07-15
+# Account: EMPLOYMENT LAW ASSIST APC (6769947952)
+#
+# Bakersfield EN/ES campaigns may be CREATED as PAUSED, but must NOT be
+# ENABLED by any bulk-enable path until vendor shutdown is explicitly
+# acknowledged. Enabling is intentionally not implemented in this toolkit yet.
+
+version: 1
+status: LOCKED
+locked_at: "2026-07-15"
+
+hold:
+  active: true
+  markets:
+    - bakersfield
+  campaign_name_markers:
+    - "Bakersfield"
+  naming_pattern_examples:
+    - "ELA | Search | Bakersfield | EN | Nonbrand"
+    - "ELA | Search | Bakersfield | ES | Nonbrand"
+  reason: >
+    Vendor tracking / keyword overlap on Bakersfield. Prioritize other markets
+    at go-live. Do not enable Bakersfield until the external vendor lane is
+    shut down or explicitly cleared.
+  required_acknowledgement_flag: vendor_shutdown_acknowledged
+  acknowledgement_meaning: >
+    Operator confirms vendor Bakersfield Search activity is shut down or
+    contractually cleared, and accepts enable risk for ELA Bakersfield Nonbrand.
+  code_guard: ela_google_ads.safety.assert_bakersfield_enable_allowed
+  bulk_enable_behavior: refuse_unless_vendor_shutdown_acknowledged
+  create_behavior: allowed_paused_only
+  enable_implemented: false

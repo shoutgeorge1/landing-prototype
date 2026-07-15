@@ -1,6 +1,6 @@
 import type { Lang } from "./cities";
 
-/** HubSpot portal and Bakersfield PPC form IDs (na2 region). */
+/** HubSpot portal and shared EN/ES PPC form IDs (na2 region). */
 export const HUBSPOT_PORTAL_ID =
   process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID ?? "242396697";
 export const HUBSPOT_REGION = process.env.NEXT_PUBLIC_HUBSPOT_REGION ?? "na2";

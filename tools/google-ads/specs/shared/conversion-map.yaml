@@ -1,0 +1,107 @@
+# Conversion-action map — ELA HubSpot tracking stack
+# Account: EMPLOYMENT LAW ASSIST APC (6769947952)
+locked_policy: specs/shared/tracking-locked.yaml
+# Refresh live IDs: python scripts/export_conversion_actions.py
+
+version: 3
+customer_id: "6769947952"
+status: LOCKED
+locked_at: "2026-07-15"
+
+tracking_stack:
+  crm: HubSpot
+  form: "API POST → HubSpot Forms API"
+  phone: "(424) 678-1416 HubSpot — same on LP + call assets"
+  callrail: forbidden
+  auto_tagging: true
+  landing_domain: help.employmentlawassist.com
+
+campaign_goal:
+  name: "ELA | Goals | Nonbrand Search"
+  launch_primary:
+    - "ELA | Lead | HubSpot Form Submit"
+  after_phone_qa_primary:
+    - "ELA | Call | Calls From Ads"
+  after_website_call_qa_primary:
+    - "ELA | Call | Website Qualified Call"
+
+actions:
+  - ela_name: "ELA | Lead | HubSpot Form Submit"
+    google_ads_conversion_action_id: "7569909838"
+    legacy_name: Form
+    role: primary_at_launch
+    category: SUBMIT_LEAD_FORM
+    count: ONE
+    attribution: DATA_DRIVEN
+    primary: true
+    gtm_trigger: "Custom Event hubspot_form_submission (after API POST ok)"
+    site_event: hubspot_form_submission
+    dedup_field: hubspot_submission_id
+    session_dedup: false
+  - ela_name: "ELA | Call | Calls From Ads"
+    google_ads_conversion_action_id: "7612478106"
+    legacy_name: "Calls from ads"
+    role: primary_after_phone_qa
+    primary: false_until_qa
+    destination: "(424) 678-1416"
+    qualified_call_duration_seconds: 90
+  - ela_name: "ELA | Call | Website Qualified Call"
+    google_ads_conversion_action_id: "7611827274"
+    legacy_name: "Website Call--(424) 371-7069)"
+    role: primary_after_website_call_qa
+    primary: false_until_qa
+    action: rebuild_with_hubspot_number
+    destination: "(424) 678-1416"
+    qualified_call_duration_seconds: 90
+  - ela_name: "ELA | Call | Phone Click"
+    google_ads_conversion_action_id: null
+    google_ads_aw_id: "AW-18079555023"
+    google_ads_send_to: "AW-18079555023/lfMHCKvIkNEcEM-7gK1D"
+    legacy_name: "Click to call"
+    role: secondary_diagnostic
+    primary: false
+    gtm_trigger: "Custom Event phone_click"
+    site_event: phone_click
+    site_implementation: "src/lib/tracking.ts trackPhoneClick → gtag conversion"
+    create_in_ads_ui: true
+  - ela_name: "ELA | Lead | Thank You Page"
+    google_ads_conversion_action_id: "7576372473"
+    legacy_name: THANK_YOU_PAGE_VIEW
+    role: secondary_diagnostic
+    primary: false
+    pages: ["/thank-you", "/gracias"]
+
+exclude_from_campaign_goal:
+  - "ELA | Call | Phone Click"
+  - "ELA | Lead | Thank You Page"
+  - workplaceattorneys.net actions
+  - employment-law-assist.com legacy actions
+  - vendor legacy actions
+  - "7569909961"
+
+legacy_disable:
+  - google_ads_conversion_action_id: "7608634989"
+    name: workplaceattorneys.net--THANK_YOU_PAGE_VIEW_gtm_ga4
+  - google_ads_conversion_action_id: "7576293973"
+    name: employment-law-assist.com/discrimination purchase
+  - google_ads_conversion_action_id: "7605830357"
+    name: workplaceattorneys.net purchase
+  - google_ads_conversion_action_id: "7569909961"
+    name: Lead form - Submit
+
+hubspot_fields_from_landing_page:
+  - gclid
+  - utm_source
+  - utm_medium
+  - utm_campaign
+  - utm_term
+  - utm_content
+  - google_campaign
+  - google_ad_group
+  - google_keyword
+  - city
+  - language
+
+offline_upload_future:
+  status: NOT_IMPLEMENTED
+  see: ../docs/offline-conversions.md

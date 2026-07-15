@@ -1,13 +1,24 @@
-export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-W4GRWHTR";
-
 import { FIRM } from "./content";
 import { GOOGLE_ADS_PARAM_KEYS } from "./googleAdsParams";
 
+export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-W4GRWHTR";
+
+/** Google Ads account conversion ID (Click to call / website tags). */
+export const GOOGLE_ADS_AW_ID =
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_AW_ID || "AW-18079555023";
+
+/** Click-to-call conversion: AW-ID/label from Google Ads setup email. */
+export const GOOGLE_ADS_PHONE_CLICK_SEND_TO =
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_PHONE_CLICK_SEND_TO ||
+  "AW-18079555023/lfMHCKvIkNEcEM-7gK1D";
+
 type DataLayerEntry = Record<string, unknown>;
+const firedHubSpotSubmissionIds = new Set<string>();
 
 declare global {
   interface Window {
     dataLayer?: DataLayerEntry[];
+    gtag?: (...args: unknown[]) => void;
   }
 }
 
@@ -20,11 +31,16 @@ export function pushEvent(event: string, data: DataLayerEntry = {}): void {
 export function pushHubSpotFormSubmission(
   formId: string,
   formLanguage: "english" | "spanish",
+  submissionId: string,
 ): void {
+  if (!submissionId || firedHubSpotSubmissionIds.has(submissionId)) return;
+  firedHubSpotSubmissionIds.add(submissionId);
   const path = window.location.pathname;
   pushEvent("hubspot_form_submission", {
     form_language: formLanguage,
     form_id: formId,
+    hubspot_submission_id: submissionId,
+    event_id: submissionId,
     landing_page_path: path,
     page_path: path,
     ...getAttributionPayload(),
@@ -116,6 +132,24 @@ export function getAttributionPayload(): Record<string, string> {
   };
 }
 
+/** Fire Google Ads "Click to call" website conversion (does not block tel: navigation). */
+function fireGoogleAdsPhoneClickConversion(): void {
+  if (typeof window === "undefined") return;
+  window.dataLayer = window.dataLayer || [];
+  if (typeof window.gtag !== "function") {
+    // Match Google's stub so commands queue until gtag.js loads.
+    window.gtag = function gtag() {
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer!.push(arguments as unknown as DataLayerEntry);
+    };
+  }
+  window.gtag("event", "conversion", {
+    send_to: GOOGLE_ADS_PHONE_CLICK_SEND_TO,
+    value: 1.0,
+    currency: "USD",
+  });
+}
+
 /** Dual-fire phone clicks with full source attribution for GTM/Ads. */
 export function trackPhoneClick(location: string): void {
   const attribution = getAttributionPayload();
@@ -130,6 +164,7 @@ export function trackPhoneClick(location: string): void {
   };
   pushEvent("phone_click", payload);
   pushEvent("call_click", payload);
+  fireGoogleAdsPhoneClickConversion();
 }
 
 const UTM_KEYS = [

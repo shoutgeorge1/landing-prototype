@@ -1,0 +1,194 @@
+# LOCKED — Step 5 conversion actions & campaign goals
+# Approved: 2026-07-15
+# Account: EMPLOYMENT LAW ASSIST APC (6769947952)
+
+version: 2
+status: LOCKED
+locked_at: "2026-07-15"
+
+tracking_stack:
+  crm: HubSpot
+  form_delivery: "API POST directly into HubSpot (native form, not iframe embed)"
+  phone_provider: HubSpot
+  phone_destination: "(424) 678-1416 HubSpot"
+  phone_e164: "+14246781416"
+  phone_digits: "4246781416"
+  phone_consistency: "Same HubSpot number on landing pages and Google Ads call assets"
+  callrail: forbidden
+  landing_domain: help.employmentlawassist.com
+  auto_tagging: enabled
+
+launch_gate:
+  rule: "Do not enable campaigns until form QA and phone QA both pass."
+  form_qa_required: true
+  phone_qa_required: true
+
+conversion_actions:
+  hubspot_form_submit:
+    display_name: "ELA | Lead | HubSpot Form Submit"
+    role: primary_at_launch
+    legacy_action_id: "7569909838"
+    legacy_action_name: Form
+    category: SUBMIT_LEAD_FORM
+    count: ONE
+    attribution: DATA_DRIVEN
+    primary: true
+    languages: [en, es]
+    trigger:
+      event: hubspot_form_submission
+      source: GTM
+      fires_when: "HubSpot Forms API POST returns success (response.ok)"
+      must_not_fire_when:
+        - "API POST fails (hubspot_rejected / network)"
+        - "Thank-you page load alone"
+        - "Page refresh on thank-you"
+    implementation_notes:
+      - "Site fires dataLayer hubspot_form_submission only after submitLead() ok — see HubSpotForm.tsx."
+      - "GTM Google Ads conversion tag must listen to hubspot_form_submission, not thank-you pageview."
+      - "GTM deduplicates by hubspot_submission_id / event_id — not session-level."
+
+  calls_from_ads:
+    display_name: "ELA | Call | Calls From Ads"
+    role: primary_after_phone_qa
+    legacy_action_id: "7612478106"
+    legacy_action_name: "Calls from ads"
+    category: PHONE_CALL_LEAD
+    count: ONE
+    primary: false_until_qa_passes
+    then_primary: true
+    settings:
+      google_ads_call_reporting: enabled
+      destination_number: "(424) 678-1416"
+      qualified_call_duration_seconds: 90
+    notes:
+      - "Use (424) 678-1416 on call assets — replace (424) 234-5229 and (424) 371-7069."
+      - "Live test required before promoting to Primary."
+
+  website_qualified_call:
+    display_name: "ELA | Call | Website Qualified Call"
+    role: primary_after_website_call_qa
+    legacy_action_id: "7611827274"
+    legacy_action_name: "Website Call--(424) 371-7069)"
+    replace_or_rebuild: true
+    category: PHONE_CALL_LEAD
+    count: ONE
+    primary: false_until_qa_passes
+    then_primary: true
+    settings:
+      tracking: "Google Ads website call conversion where supported"
+      destination_number: "(424) 678-1416"
+      qualified_call_duration_seconds: 90
+    qa_required:
+      - "HubSpot number on landing page verified"
+      - "Number replacement complete"
+      - "Mobile click-to-call tested"
+      - "Desktop tel: display tested"
+      - "Routing to HubSpot phone system confirmed"
+
+  phone_click:
+    display_name: "ELA | Call | Phone Click"
+    role: secondary_diagnostic
+    legacy_action_id: null
+    create_new: true
+    category: CONTACT
+    count: ONE
+    primary: false
+    include_in_conversions_metric: false
+    trigger:
+      event: phone_click
+      source: GTM
+      also_fires: call_click
+    notes:
+      - "Diagnostic only — tel: link clicks, not completed calls."
+      - "Do not use for bidding."
+
+  thank_you_page:
+    display_name: "ELA | Lead | Thank You Page"
+    role: secondary_diagnostic
+    legacy_action_id: "7576372473"
+    legacy_action_name: THANK_YOU_PAGE_VIEW
+    category: PAGE_VIEW
+    count: ONE
+    primary: false
+    include_in_conversions_metric: false
+    pages:
+      - /thank-you
+      - /gracias
+    notes:
+      - "Diagnostic funnel signal only."
+      - "Must not promote to Primary."
+      - "Must not double-count as form conversion on refresh."
+
+exclude_from_ela_goal:
+  - "ELA | Call | Phone Click"
+  - "ELA | Lead | Thank You Page"
+  - workplaceattorneys.net actions
+  - employment-law-assist.com legacy actions
+  - old vendor conversion actions
+  - Google-hosted lead form extension (7569909961)
+
+campaign_goal:
+  name: "ELA | Goals | Nonbrand Search"
+  apply_to: "All ELA | Search | * | Nonbrand campaigns (EN + ES)"
+  phases:
+    at_launch:
+      primary:
+        - "ELA | Lead | HubSpot Form Submit"
+    after_phone_qa:
+      add_primary:
+        - "ELA | Call | Calls From Ads"
+    after_website_call_qa:
+      add_primary:
+        - "ELA | Call | Website Qualified Call"
+  excluded: see exclude_from_ela_goal
+
+spec_conversion_goal_ids:
+  note: "Campaign YAML specs reference legacy IDs until actions are renamed/created in Google Ads UI."
+  at_launch:
+    - "7569909838"
+  after_phone_qa_add:
+    - "7612478106"
+  after_website_call_qa_add:
+    - TBD_REBUILD_WEBSITE_CALL_ACTION
+
+required_qa:
+  forms:
+    - "Submit tagged test lead on EN and ES landing pages"
+    - "Confirm HubSpot API POST succeeds"
+    - "Confirm contact appears in HubSpot"
+    - "Confirm gclid, UTMs, google_campaign, google_ad_group, google_keyword, city, language recorded"
+    - "Confirm exactly one Google Ads form conversion fires"
+    - "Confirm NO Primary conversion if API POST fails"
+  calls:
+    - "Confirm HubSpot number correct on landing page"
+    - "Confirm same number in Google Ads call assets"
+    - "Test call from ad call asset"
+    - "Test mobile landing-page phone click"
+    - "Confirm both reach HubSpot phone system"
+    - "Confirm call duration + Google Ads attribution recorded"
+    - "Confirm Phone Click stays Secondary"
+
+gtm_wiring:
+  hubspot_form_submit_tag:
+    trigger: "Custom Event = hubspot_form_submission"
+    conversion: "ELA | Lead | HubSpot Form Submit"
+    dedup: "Unique hubspot_submission_id / event_id per successful API POST — no session dedup"
+  phone_click_tag:
+    trigger: "Custom Event = phone_click"
+    conversion: "ELA | Call | Phone Click"
+    primary: false
+  thank_you_tag:
+    trigger: "Page View /thank-you OR /gracias"
+    conversion: "ELA | Lead | Thank You Page"
+    primary: false
+
+legacy_cleanup:
+  demote_or_disable:
+    - id: "7608634989"
+      name: workplaceattorneys.net--THANK_YOU_PAGE_VIEW_gtm_ga4
+    - id: "7576293973"
+      name: employment-law-assist.com/discrimination purchase
+    - id: "7605830357"
+      name: workplaceattorneys.net purchase
+    - id: "7569909961"
+      name: Lead form - Submit

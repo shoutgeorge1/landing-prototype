@@ -1,0 +1,55 @@
+# Brand negatives for ELA-managed NON-BRAND Search campaigns
+# Brand Search may be managed by HawkSEM — confirm before applying.
+#
+# Goal: stop non-brand campaigns from eating branded queries and wasting spend
+# on people who already know the firm.
+
+brand_lane_owner: hawksem
+internal_campaign_type: nonbrand
+status: LOCKED
+locked_at: "2026-07-15"
+locked_policy: specs/shared/negative-keywords-locked.yaml
+
+notes:
+  - Apply to all ELA non-brand Search campaigns only.
+  - Do NOT apply to a dedicated brand campaign if HawkSEM runs one.
+  - Add exact variants for common misspellings after search-term export.
+  - Kasim Idrees is the founding attorney — include personal brand variants.
+
+lists:
+  firm_brand_en:
+    tier: launch
+    description: Employment Law Assist brand queries
+    keywords:
+      - { text: "employment law assist", match_type: PHRASE }
+      - { text: "employmentlawassist", match_type: PHRASE }
+      - { text: "employment law assist apc", match_type: PHRASE }
+      - { text: "ela employment lawyer", match_type: PHRASE }
+      - { text: "employment law assist reviews", match_type: PHRASE }
+      - { text: "employment law assist phone", match_type: PHRASE }
+      - { text: "employment law assist woodland hills", match_type: PHRASE }
+      - { text: "help.employmentlawassist.com", match_type: PHRASE }
+
+  attorney_brand_en:
+    tier: launch
+    description: Founding attorney name searches
+    keywords:
+      - { text: "kasim idrees", match_type: PHRASE }
+      - { text: "kasim idrees attorney", match_type: PHRASE }
+      - { text: "kasim idrees lawyer", match_type: PHRASE }
+
+  legacy_domains_en:
+    tier: launch
+    description: Legacy domains still in conversion tracking
+    keywords:
+      - { text: "workplaceattorneys.net", match_type: PHRASE }
+      - { text: "workplace attorneys", match_type: PHRASE }
+      - { text: "employment-law-assist.com", match_type: PHRASE }
+
+  firm_brand_es:
+    tier: launch
+    description: Marca en español
+    keywords:
+      - { text: "employment law assist", match_type: PHRASE }
+      - { text: "abogado kasim idrees", match_type: PHRASE }
+      - { text: "kasim idrees abogado", match_type: PHRASE }

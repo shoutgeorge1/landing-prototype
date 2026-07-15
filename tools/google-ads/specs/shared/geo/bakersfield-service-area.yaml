@@ -1,0 +1,63 @@
+# Bakersfield employment-law service area (verified via Google Ads GeoTargetConstantService)
+# Strategy: broader geo + tight phrase/exact keywords.
+# Presence-based targeting required (location_presence_only: true in campaign specs).
+
+market: bakersfield
+state: California
+country: US
+
+# Primary recommendation: Kern County covers the metro and surrounding communities
+# where Bakersfield-area employment clients commonly live (typically within ~40 miles).
+primary_geo_target_id: 9057133
+primary_geo_target_name: "Kern County, California, United States"
+primary_geo_target_type: County
+
+# Alternate broader option (DMA) — use instead of county if you want media-market reach.
+alternate_dma:
+  id: 200800
+  name: "Bakersfield CA"
+  canonical_name: "Bakersfield, CA,California,United States"
+  notes: "Broader than county; includes full designated market area."
+
+# Documented city IDs within/near the Kern County service footprint.
+# Included for auditability; campaign specs use county-level targeting by default.
+surrounding_cities:
+  - id: 1013570
+    name: Bakersfield
+    notes: "Core city"
+  - id: 9052592
+    name: Oildale
+    notes: "Bakersfield metro CDP"
+  - id: 1013725
+    name: Delano
+    notes: "North Kern (~30 mi)"
+  - id: 1014268
+    name: Shafter
+    notes: "Northwest Kern"
+  - id: 1014379
+    name: Wasco
+    notes: "Northwest Kern"
+  - id: 1013993
+    name: McFarland
+    notes: "North Kern"
+  - id: 1013558
+    name: Arvin
+    notes: "South Kern"
+  - id: 1014322
+    name: Taft
+    notes: "West Kern"
+  - id: 1013632
+    name: California City
+    notes: "East Kern / Mojave edge"
+  - id: 1014326
+    name: Tehachapi
+    notes: "East Kern mountains"
+
+recommended_campaign_geo_target_ids:
+  - 9057133
+
+guidance:
+  - Prefer Kern County for launch; keywords carry city intent.
+  - Do not add Los Angeles or statewide California targeting for Bakersfield launch.
+  - Revisit after 30 days of search-term data.
+  - For Fresno / other cities, build separate geo files — radii differ by market.

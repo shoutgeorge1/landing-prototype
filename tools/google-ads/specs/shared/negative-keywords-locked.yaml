@@ -1,0 +1,95 @@
+# LOCKED — Step 1 negative keyword policy
+# Approved: 2026-07-15
+# Account: EMPLOYMENT LAW ASSIST APC (6769947952)
+
+version: 1
+status: LOCKED
+locked_at: "2026-07-15"
+
+decisions:
+  A_brand_negatives_on_nonbrand: true
+  B_block_pro_bono_legal_aid: true
+  C_workers_comp_negatives: hold_post_launch
+  D_ad_group_cross_negatives: skip_at_launch
+  E_spanish_attachment: es_specific_plus_en_employer_diy
+
+policy:
+  match_types_allowed: [PHRASE, EXACT]
+  broad_negatives: forbidden
+  do_not_block:
+    - free consultation
+    - free case review
+    - bare eeoc / dlse / labor commissioner (lawyer-intent may remain)
+    - workers compensation case-intent (hold WC-only DIY until Step C revisited)
+    - legitimate employee-side employment law queries
+  review_search_terms_after_days: 14
+
+# Google Ads shared list names (human-readable, for UI upload)
+shared_list_names:
+  job_seekers_en: "ELA | Neg | Job Seekers EN"
+  legal_careers_en: "ELA | Neg | Legal Careers EN"
+  law_school_education_en: "ELA | Neg | Law School EN"
+  employer_side_en: "ELA | Neg | Employer Side EN"
+  wrong_practice_area_en: "ELA | Neg | Wrong Practice EN"
+  job_seekers_es: "ELA | Neg | Job Seekers ES"
+  wrong_practice_area_es: "ELA | Neg | Wrong Practice ES"
+  pro_bono_legal_aid_en: "ELA | Neg | Pro Bono / Legal Aid EN"
+  diy_templates_en: "ELA | Neg | DIY / Templates EN"
+  unemployment_benefits_en: "ELA | Neg | Unemployment Benefits EN"
+  government_diy_filing_en: "ELA | Neg | Gov DIY Filing EN"
+  out_of_market_en: "ELA | Neg | Out of Market EN"
+  firm_brand_en: "ELA | Neg | Brand EN"
+  attorney_brand_en: "ELA | Neg | Attorney Brand EN"
+  legacy_domains_en: "ELA | Neg | Legacy Domains EN"
+  firm_brand_es: "ELA | Neg | Brand ES"
+
+attach_to_en_campaigns:
+  launch_lists:
+    - job_seekers_en
+    - legal_careers_en
+    - law_school_education_en
+    - employer_side_en
+    - wrong_practice_area_en
+    - pro_bono_legal_aid_en
+    - diy_templates_en
+    - unemployment_benefits_en
+    - government_diy_filing_en
+    - out_of_market_en
+    - firm_brand_en
+    - attorney_brand_en
+    - legacy_domains_en
+
+attach_to_es_campaigns:
+  launch_lists:
+    - job_seekers_es
+    - wrong_practice_area_es
+    - employer_side_en
+    - diy_templates_en
+    - pro_bono_legal_aid_en
+    - legal_careers_en
+    - law_school_education_en
+    - unemployment_benefits_en
+    - government_diy_filing_en
+    - out_of_market_en
+    - firm_brand_en
+    - attorney_brand_en
+    - legacy_domains_en
+    - firm_brand_es
+  notes:
+    - "ES campaigns use ES job/wrong-practice lists instead of EN equivalents."
+    - "EN employer-side and DIY lists attach to ES per approved policy."
+    - "EN-only waste lists without ES variants still attach to ES campaigns."
+
+hold_post_launch:
+  - informational_research_en
+  - workers_comp_only_en
+  - competitor_research_en
+
+not_enabled:
+  - ad-group-cross-negatives.yaml
+
+ui_steps:
+  - Create shared lists using shared_list_names values.
+  - Import keywords from output/negative_keywords_upload_en.csv and output/negative_keywords_upload_es.csv.
+  - Attach lists per attach_to_en_campaigns / attach_to_es_campaigns.
+  - Re-run scripts/check_negative_conflicts.py before any campaign goes live.

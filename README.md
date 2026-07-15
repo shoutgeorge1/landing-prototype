@@ -23,9 +23,8 @@ Bilingual PPC landing page prototype for **Employment Law Assist** (ELA).
 
 ### Thank-you pages
 
-- English: [https://landing-prototype-delta.vercel.app/thank-you?lang=en](https://landing-prototype-delta.vercel.app/thank-you?lang=en)
-- Spanish: [https://landing-prototype-delta.vercel.app/thank-you?lang=es](https://landing-prototype-delta.vercel.app/thank-you?lang=es)
-- Default (English): [https://landing-prototype-delta.vercel.app/thank-you](https://landing-prototype-delta.vercel.app/thank-you)
+- English: [https://landing-prototype-delta.vercel.app/thank-you](https://landing-prototype-delta.vercel.app/thank-you)
+- Spanish: [https://landing-prototype-delta.vercel.app/gracias](https://landing-prototype-delta.vercel.app/gracias)
 
 ## Getting started
 

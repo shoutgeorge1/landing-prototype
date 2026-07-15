@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ela-google-ads"
+version = "0.1.0"
+description = "Employment Law Assist Google Ads API automation toolkit (guarded PAUSED create)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Proprietary" }
+authors = [{ name = "Employment Law Assist APC" }]
+dependencies = [
+  "google-ads>=28.0.0",
+  "google-auth-oauthlib>=1.2.0",
+  "python-dotenv>=1.0.1",
+  "PyYAML>=6.0.2",
+  "click>=8.1.7",
+  "rich>=13.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+  "pytest-cov>=5.0.0",
+  "ruff>=0.8.0",
+]
+
+[project.scripts]
+ela-google-ads = "ela_google_ads.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

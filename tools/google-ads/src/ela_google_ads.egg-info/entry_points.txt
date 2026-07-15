@@ -1,0 +1,2 @@
+[console_scripts]
+ela-google-ads = ela_google_ads.cli:main

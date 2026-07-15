@@ -1,11 +1,13 @@
-export type PageStatus = "active" | "not_built";
+import { CITIES, LANGS, type Lang } from "@/lib/cities";
+
+export type PageStatus = "active" | "generated_needs_qa";
 export type FormStatus = "live" | "pending" | "n/a";
 export type TrackingStatus = "configured" | "pending" | "n/a";
 
 export interface LaunchRoute {
   priority: number;
   city: string;
-  language: "en" | "es";
+  language: Lang;
   landingPage: string;
   thankYouPage: string;
   pageStatus: PageStatus;
@@ -28,138 +30,26 @@ export const GENERAL_LAUNCH_LINKS = [
   { label: "Terms of Use", href: "/terms" },
 ] as const;
 
-/** Internal PPC launch sequence — Bakersfield is active production; others are placeholders. */
-export const LAUNCH_ROUTES: LaunchRoute[] = [
-  {
-    priority: 1,
-    city: "Bakersfield",
-    language: "en",
-    landingPage: "/bakersfield/en",
-    thankYouPage: SHARED_THANK_YOU.en,
-    pageStatus: "active",
-    formStatus: "live",
-    trackingStatus: "configured",
-    notes: "Production priority — English",
-  },
-  {
-    priority: 2,
-    city: "Bakersfield",
-    language: "es",
-    landingPage: "/bakersfield/es",
-    thankYouPage: SHARED_THANK_YOU.es,
-    pageStatus: "active",
-    formStatus: "live",
-    trackingStatus: "configured",
-    notes: "Production priority — Spanish",
-  },
-  {
-    priority: 3,
-    city: "Lancaster",
-    language: "en",
-    landingPage: "/lancaster/en",
-    thankYouPage: SHARED_THANK_YOU.en,
-    pageStatus: "not_built",
-    formStatus: "n/a",
-    trackingStatus: "n/a",
-    notes: "Not Built",
-  },
-  {
-    priority: 4,
-    city: "Lancaster",
-    language: "es",
-    landingPage: "/lancaster/es",
-    thankYouPage: SHARED_THANK_YOU.es,
-    pageStatus: "not_built",
-    formStatus: "n/a",
-    trackingStatus: "n/a",
-    notes: "Not Built",
-  },
-  {
-    priority: 5,
-    city: "Victorville",
-    language: "en",
-    landingPage: "/victorville/en",
-    thankYouPage: SHARED_THANK_YOU.en,
-    pageStatus: "not_built",
-    formStatus: "n/a",
-    trackingStatus: "n/a",
-    notes: "Not Built",
-  },
-  {
-    priority: 6,
-    city: "Victorville",
-    language: "es",
-    landingPage: "/victorville/es",
-    thankYouPage: SHARED_THANK_YOU.es,
-    pageStatus: "not_built",
-    formStatus: "n/a",
-    trackingStatus: "n/a",
-    notes: "Not Built",
-  },
-  {
-    priority: 7,
-    city: "Barstow",
-    language: "en",
-    landingPage: "/barstow/en",
-    thankYouPage: SHARED_THANK_YOU.en,
-    pageStatus: "not_built",
-    formStatus: "n/a",
-    trackingStatus: "n/a",
-    notes: "Not Built",
-  },
-  {
-    priority: 8,
-    city: "Barstow",
-    language: "es",
-    landingPage: "/barstow/es",
-    thankYouPage: SHARED_THANK_YOU.es,
-    pageStatus: "not_built",
-    formStatus: "n/a",
-    trackingStatus: "n/a",
-    notes: "Not Built",
-  },
-  {
-    priority: 9,
-    city: "Fresno",
-    language: "en",
-    landingPage: "/fresno/en",
-    thankYouPage: SHARED_THANK_YOU.en,
-    pageStatus: "not_built",
-    formStatus: "n/a",
-    trackingStatus: "n/a",
-    notes: "Not Built",
-  },
-  {
-    priority: 10,
-    city: "Fresno",
-    language: "es",
-    landingPage: "/fresno/es",
-    thankYouPage: SHARED_THANK_YOU.es,
-    pageStatus: "not_built",
-    formStatus: "n/a",
-    trackingStatus: "n/a",
-    notes: "Not Built",
-  },
-  {
-    priority: 11,
-    city: "Modesto",
-    language: "en",
-    landingPage: "/modesto/en",
-    thankYouPage: SHARED_THANK_YOU.en,
-    pageStatus: "not_built",
-    formStatus: "n/a",
-    trackingStatus: "n/a",
-    notes: "Not Built",
-  },
-  {
-    priority: 12,
-    city: "Modesto",
-    language: "es",
-    landingPage: "/modesto/es",
-    thankYouPage: SHARED_THANK_YOU.es,
-    pageStatus: "not_built",
-    formStatus: "n/a",
-    trackingStatus: "n/a",
-    notes: "Not Built",
-  },
-];
+/**
+ * Internal PPC launch sequence — one EN + one ES route per supported city.
+ * Bakersfield is active production; other generated routes still need QA.
+ */
+export const LAUNCH_ROUTES: LaunchRoute[] = CITIES.flatMap((city, cityIndex) =>
+  LANGS.map((language, langIndex): LaunchRoute => {
+    const isBakersfield = city.slug === "bakersfield";
+    const langLabel = language === "en" ? "English" : "Spanish";
+    return {
+      priority: cityIndex * LANGS.length + langIndex + 1,
+      city: city.name,
+      language,
+      landingPage: `/${city.slug}/${language}`,
+      thankYouPage: SHARED_THANK_YOU[language],
+      pageStatus: isBakersfield ? "active" : "generated_needs_qa",
+      formStatus: "live",
+      trackingStatus: isBakersfield ? "configured" : "pending",
+      notes: isBakersfield
+        ? `Production priority — ${langLabel}`
+        : `Generated route — needs QA before spend (${langLabel})`,
+    };
+  }),
+);

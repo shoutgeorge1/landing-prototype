@@ -16,9 +16,14 @@ import {
 import {
   appendPreservedQueryParams,
   appendPreservedQueryParamsToUrl,
+  PRESERVED_QUERY_KEYS,
 } from "@/lib/queryParams";
 import { submitLead } from "@/lib/submitLead";
-import { pushEvent, pushHubSpotFormSubmission } from "@/lib/tracking";
+import {
+  getAttributionPayload,
+  pushEvent,
+  pushHubSpotFormSubmission,
+} from "@/lib/tracking";
 import { TrackedTelLink } from "./TrackedTelLink";
 
 interface HubSpotFormProps {
@@ -37,6 +42,19 @@ function isValidEmail(value: string): boolean {
 function isValidPhone(value: string): boolean {
   const digits = value.replace(/\D/g, "");
   return digits.length >= 10 && digits.length <= 15;
+}
+
+/** Attribution whitelist for thank-you / fallback URLs (URL + localStorage). */
+function preservedAttributionExtras(
+  overrides: Record<string, string> = {},
+): Record<string, string> {
+  const attribution = getAttributionPayload();
+  const extras: Record<string, string> = {};
+  for (const key of PRESERVED_QUERY_KEYS) {
+    const value = overrides[key] ?? attribution[key];
+    if (value) extras[key] = value;
+  }
+  return extras;
 }
 
 export function HubSpotForm({ city, lang }: HubSpotFormProps) {
@@ -62,6 +80,7 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
       : appendPreservedQueryParamsToUrl(
           getHubSpotStandaloneUrl(lang),
           window.location.search,
+          preservedAttributionExtras(),
         );
 
   useEffect(() => {
@@ -92,6 +111,7 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
       message,
       consent,
       lang,
+      city: city.slug,
       pageName: `${city.name} ${lang === "es" ? "ES" : "EN"} consultation`,
       communicationConsentText: formCopy.consentCheckbox,
       processingConsentText: formCopy.processingNote,
@@ -103,12 +123,16 @@ export function HubSpotForm({ city, lang }: HubSpotFormProps) {
       return;
     }
 
-    pushHubSpotFormSubmission(formId, getFormLanguageLabel(lang));
+    pushHubSpotFormSubmission(
+      formId,
+      getFormLanguageLabel(lang),
+      result.submissionId!,
+    );
     pushEvent("form_submit", { city: city.slug, lang, form_mode: "native_api" });
     const thankYouPath = appendPreservedQueryParams(
       getThankYouPath(lang),
       window.location.search,
-      { city: city.slug, language: lang },
+      preservedAttributionExtras({ city: city.slug, language: lang }),
     );
     router.push(thankYouPath);
   }

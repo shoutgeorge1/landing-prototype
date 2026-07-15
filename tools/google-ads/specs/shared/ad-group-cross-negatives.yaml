@@ -1,0 +1,92 @@
+# Optional ad-group cross-negatives for theme isolation
+# Use when running a keyword-heavy structure and you want cleaner query-to-ad relevance.
+#
+# These are AD GROUP level negatives — they keep each group's traffic tighter without
+# splitting the account into dozens of campaigns.
+#
+# Status: OPTIONAL — user confirmed overlap tolerance; enable if QS/relevance suffers.
+
+version: 1
+status: DISABLED_AT_LAUNCH
+locked_policy: specs/shared/negative-keywords-locked.yaml
+
+en:
+  Employment Lawyer:
+    negatives:
+      - { text: "wrongful termination", match_type: PHRASE }
+      - { text: "sexual harassment", match_type: PHRASE }
+      - { text: "unpaid wages", match_type: PHRASE }
+      - { text: "discrimination", match_type: PHRASE }
+      - { text: "retaliation", match_type: PHRASE }
+  Wrongful Termination:
+    negatives:
+      - { text: "sexual harassment", match_type: PHRASE }
+      - { text: "unpaid wages", match_type: PHRASE }
+      - { text: "discrimination", match_type: PHRASE }
+  Workplace Discrimination:
+    negatives:
+      - { text: "wrongful termination", match_type: PHRASE }
+      - { text: "sexual harassment", match_type: PHRASE }
+      - { text: "unpaid wages", match_type: PHRASE }
+  Workplace Retaliation:
+    negatives:
+      - { text: "sexual harassment", match_type: PHRASE }
+      - { text: "unpaid wages", match_type: PHRASE }
+      - { text: "wrongful termination", match_type: PHRASE }
+  Workplace Harassment:
+    negatives:
+      - { text: "unpaid wages", match_type: PHRASE }
+      - { text: "wrongful termination", match_type: PHRASE }
+  Wage and Hour:
+    negatives:
+      - { text: "sexual harassment", match_type: PHRASE }
+      - { text: "wrongful termination", match_type: PHRASE }
+      - { text: "discrimination", match_type: PHRASE }
+  Meal and Rest Breaks:
+    negatives:
+      - { text: "sexual harassment", match_type: PHRASE }
+      - { text: "wrongful termination", match_type: PHRASE }
+  Medical Leave and Injury:
+    negatives:
+      - { text: "sexual harassment", match_type: PHRASE }
+      - { text: "unpaid wages", match_type: PHRASE }
+
+es:
+  Abogado Laboral:
+    negatives:
+      - { text: "despido injustificado", match_type: PHRASE }
+      - { text: "acoso sexual", match_type: PHRASE }
+      - { text: "salarios no pagados", match_type: PHRASE }
+      - { text: "discriminacion", match_type: PHRASE }
+  Despido Injustificado:
+    negatives:
+      - { text: "acoso sexual", match_type: PHRASE }
+      - { text: "salarios no pagados", match_type: PHRASE }
+  Discriminación Laboral:
+    negatives:
+      - { text: "despido injustificado", match_type: PHRASE }
+      - { text: "acoso sexual", match_type: PHRASE }
+  Represalias Laborales:
+    negatives:
+      - { text: "acoso sexual", match_type: PHRASE }
+      - { text: "salarios no pagados", match_type: PHRASE }
+  Acoso Laboral:
+    negatives:
+      - { text: "salarios no pagados", match_type: PHRASE }
+      - { text: "despido injustificado", match_type: PHRASE }
+  Salarios y Horas:
+    negatives:
+      - { text: "acoso sexual", match_type: PHRASE }
+      - { text: "despido injustificado", match_type: PHRASE }
+  Descansos y Comida:
+    negatives:
+      - { text: "acoso sexual", match_type: PHRASE }
+  Licencia Médica:
+    negatives:
+      - { text: "acoso sexual", match_type: PHRASE }
+      - { text: "salarios no pagados", match_type: PHRASE }
+
+guidance:
+  - Cross-negatives trade reach for relevance — skip if you want maximum impression volume.
+  - With phrase/exact positives only, cross-negatives are less critical than in broad-match accounts.
+  - Enable per campaign after reviewing Search Terms for bleed between ad groups.

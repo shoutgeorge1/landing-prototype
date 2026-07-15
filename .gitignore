@@ -40,3 +40,29 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ---------------------------------------------------------------------------
+# Google Ads toolkit (tools/google-ads) — never commit secrets or private exports
+# ---------------------------------------------------------------------------
+tools/google-ads/.env
+tools/google-ads/.env.*
+!tools/google-ads/.env.example
+tools/google-ads/google-ads.yaml
+tools/google-ads/**/client_secret*.json
+tools/google-ads/**/client_secrets*.json
+tools/google-ads/**/*refresh*token*
+tools/google-ads/credentials/**
+!tools/google-ads/credentials/.gitkeep
+!tools/google-ads/credentials/README.md
+tools/google-ads/output/**
+!tools/google-ads/output/.gitkeep
+!tools/google-ads/output/README.md
+tools/google-ads/.venv/
+tools/google-ads/venv/
+tools/google-ads/**/__pycache__/
+tools/google-ads/**/*.pyc
+tools/google-ads/.pytest_cache/
+tools/google-ads/.ruff_cache/
+tools/google-ads/*.egg-info/
+tools/google-ads/dist/
+tools/google-ads/build/

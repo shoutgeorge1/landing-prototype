@@ -1,0 +1,145 @@
+# LOCKED — Step 2 account structure policy
+# Approved: 2026-07-15
+# Account: EMPLOYMENT LAW ASSIST APC (6769947952)
+
+version: 1
+status: LOCKED
+locked_at: "2026-07-15"
+
+decisions:
+  F_naming_pattern: "ELA | Search | {City} | {LANG} | Nonbrand"
+  G_upload_scope: all_28_paused_now
+  H_daily_budget_en: 50.0
+  H_daily_budget_es: 40.0
+  I_legacy_campaigns: keep_paused_do_not_delete
+  J_overlap_alternates: upload_all_paused
+
+launch_priority:
+  note: "Bakersfield uploaded PAUSED but held for enable until vendor tracking sheet review."
+  enable_first:
+    - fresno
+    - stockton
+    - modesto
+    - visalia
+    - victorville
+    - riverside
+  enable_second:
+    - lancaster
+    - palmdale
+    - san-bernardino
+    - fontana
+    - ontario
+    - salinas
+    - oxnard
+  enable_last:
+    - bakersfield
+  reason: "Vendor tracking overlap on Bakersfield — prioritize other markets at go-live."
+
+naming:
+  campaign_pattern: "ELA | Search | {City} | {LANG} | Nonbrand"
+  ad_groups_en:
+    - Employment Lawyer
+    - Wrongful Termination
+    - Workplace Discrimination
+    - Workplace Retaliation
+    - Workplace Harassment
+    - Wage and Hour
+    - Meal and Rest Breaks
+    - Medical Leave and Injury
+  ad_groups_es:
+    - Abogado Laboral
+    - Despido Injustificado
+    - Discriminación Laboral
+    - Represalias Laborales
+    - Acoso Laboral
+    - Salarios y Horas
+    - Descansos y Comida
+    - Licencia Médica
+
+structure:
+  channel: SEARCH
+  campaigns_total: 28
+  markets: 14
+  languages: [en, es]
+  ad_groups_per_campaign: 8
+  match_types: [PHRASE, EXACT]
+  status_at_create: PAUSED
+  search_partners: false
+  display_network: false
+  bidding_at_launch: MAXIMIZE_CLICKS
+
+upload:
+  scope: all_28_paused
+  campaigns:
+    - bakersfield-en
+    - bakersfield-es
+    - fresno-en
+    - fresno-es
+    - stockton-en
+    - stockton-es
+    - modesto-en
+    - modesto-es
+    - visalia-en
+    - visalia-es
+    - lancaster-en
+    - lancaster-es
+    - palmdale-en
+    - palmdale-es
+    - victorville-en
+    - victorville-es
+    - riverside-en
+    - riverside-es
+    - san-bernardino-en
+    - san-bernardino-es
+    - fontana-en
+    - fontana-es
+    - ontario-en
+    - ontario-es
+    - salinas-en
+    - salinas-es
+    - oxnard-en
+    - oxnard-es
+
+overlap_groups:
+  antelope-valley:
+    pick_one_at_enable: [lancaster, palmdale]
+  san-bernardino-county:
+    pick_one_at_enable: [san-bernardino, fontana, ontario]
+
+legacy_campaigns:
+  policy: keep_paused_indefinitely
+  count: 15
+  action: do_not_delete
+
+vendor_overlap_reference:
+  source: "405 Ads - ELA Campaigns Report 2026 .xlsx"
+  mode: read_only
+  report_last_updated: "2026-07-15 08:30 America/Los_Angeles"
+  never_copy_vendor_structure_or_urls: true
+  vendor_domain_forbidden_for_new_campaigns: la.employmentlawassist.com
+  new_campaign_domain: help.employmentlawassist.com
+  active_vendor_campaigns_reported:
+    - Bakersfield - Employment Attorney
+    - Bakersfield - Sexual Harassment
+    - Bakersfield - Workplace Discrimination
+    - Bakersfield - Wrongful Termination
+  historical_inactive_vendor_markets:
+    - Fresno
+    - Inland Empire
+    - Los Angeles
+  known_bad_vendor_url_mappings:
+    - "Fresno Sexual Harassment -> Bakersfield page"
+    - "Inland Empire Workplace Discrimination -> wrongful-termination page"
+
+bakersfield_activation_gate:
+  status: LOCKED_HOLD
+  applies_to:
+    - ELA | Search | Bakersfield | EN | Nonbrand
+    - ELA | Search | Bakersfield | ES | Nonbrand
+  create_status_allowed: PAUSED
+  enabled_status_forbidden: true
+  bulk_enable_forbidden: true
+  release_authority: Athena
+  release_condition: "Athena confirms the outgoing vendor has been shut down."
+  required_future_acknowledgement: vendor_shutdown_confirmed
+  note: "This gate does not authorize any enable command; it only defines a future prerequisite."

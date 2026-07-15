@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { BRAND_IMAGES } from "@/lib/content";
-import { GTM_ID } from "@/lib/tracking";
+import { GOOGLE_ADS_AW_ID, GTM_ID } from "@/lib/tracking";
 import { UtmCapture } from "@/components/UtmCapture";
 
 export const metadata: Metadata = {
@@ -32,6 +32,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${GTM_ID}');`;
 
+/** Google Ads AW tag for Click to call (and future Ads conversions). */
+const googleAdsSnippet = `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GOOGLE_ADS_AW_ID}');`;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -40,6 +46,11 @@ export default function RootLayout({
       <head>
         <link rel="dns-prefetch" href="https://api.hsforms.com" />
         <script dangerouslySetInnerHTML={{ __html: gtmSnippet }} />
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_AW_ID}`}
+        />
+        <script dangerouslySetInnerHTML={{ __html: googleAdsSnippet }} />
       </head>
       <body className="min-h-screen bg-white text-slate-800 antialiased">
         <noscript>

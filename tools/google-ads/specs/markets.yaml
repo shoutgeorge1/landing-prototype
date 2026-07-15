@@ -1,0 +1,192 @@
+# Multi-market campaign generation matrix.
+# Strategy remains editable here; scripts/generate_market_specs.py renders EN/ES specs.
+#
+# All generated campaigns remain PAUSED. "overlap_group" means only one campaign in
+# that group should launch at a time unless geo targets are made mutually exclusive.
+
+version: 1
+base_templates:
+  en: bakersfield-en.yaml
+  es: bakersfield-es.yaml
+
+defaults:
+  conversion_action_ids:
+    - "7569909838"  # ELA | Lead | HubSpot Form Submit (rename in Ads UI)
+  conversion_goal_name: "ELA | Goals | Nonbrand Search"
+  conversion_policy: specs/shared/conversion-goals-locked.yaml
+  location_presence_only: true
+  languages:
+    en: 1000
+    es: 1003
+  status: PAUSED
+  channel: SEARCH
+  search_partners: false
+  display_network: false
+  brand_lane_owner: external_agency
+  internal_campaign_type: nonbrand
+  bidding_strategy: MAXIMIZE_CLICKS
+
+markets:
+  - city: Bakersfield
+    slug: bakersfield
+    priority: 1
+    landing_page_status: active
+    geo_strategy: county
+    geo_target_ids: [9057133]
+    geo_target_names:
+      - "Kern County, California, United States"
+    service_area_notes: "Bakersfield metro plus surrounding Kern County communities."
+    overlap_group: kern-county
+
+  - city: Fresno
+    slug: fresno
+    priority: 2
+    landing_page_status: generated_needs_qa
+    geo_strategy: county
+    geo_target_ids: [9057128]
+    geo_target_names:
+      - "Fresno County, California, United States"
+    service_area_notes: "Fresno metro and broader Fresno County."
+    overlap_group: fresno-county
+
+  - city: Stockton
+    slug: stockton
+    priority: 3
+    landing_page_status: generated_needs_qa
+    geo_strategy: county
+    geo_target_ids: [9057156]
+    geo_target_names:
+      - "San Joaquin County, California, United States"
+    service_area_notes: "Stockton and surrounding San Joaquin County."
+    overlap_group: san-joaquin-county
+
+  - city: Modesto
+    slug: modesto
+    priority: 4
+    landing_page_status: generated_needs_qa
+    geo_strategy: county
+    geo_target_ids: [9057167]
+    geo_target_names:
+      - "Stanislaus County, California, United States"
+    service_area_notes: "Modesto and surrounding Stanislaus County."
+    overlap_group: stanislaus-county
+
+  - city: Visalia
+    slug: visalia
+    priority: 5
+    landing_page_status: generated_needs_qa
+    geo_strategy: county
+    geo_target_ids: [9057171]
+    geo_target_names:
+      - "Tulare County, California, United States"
+    service_area_notes: "Visalia and surrounding Tulare County."
+    overlap_group: tulare-county
+
+  - city: Lancaster
+    slug: lancaster
+    priority: 6
+    landing_page_status: generated_needs_qa
+    geo_strategy: city_cluster
+    geo_target_ids: [1013931, 1014108]
+    geo_target_names:
+      - "Lancaster, California, United States"
+      - "Palmdale, California, United States"
+    service_area_notes: "Antelope Valley core; avoids targeting all Los Angeles County."
+    overlap_group: antelope-valley
+    do_not_launch_with: [palmdale]
+
+  - city: Palmdale
+    slug: palmdale
+    priority: 7
+    landing_page_status: generated_needs_qa
+    geo_strategy: city_cluster
+    geo_target_ids: [1014108, 1013931]
+    geo_target_names:
+      - "Palmdale, California, United States"
+      - "Lancaster, California, United States"
+    service_area_notes: "Alternate Antelope Valley landing/campaign."
+    overlap_group: antelope-valley
+    do_not_launch_with: [lancaster]
+
+  - city: Victorville
+    slug: victorville
+    priority: 8
+    landing_page_status: generated_needs_qa
+    geo_strategy: city_cluster
+    geo_target_ids: [1014370, 1013857, 1013549, 1013525]
+    geo_target_names:
+      - "Victorville, California, United States"
+      - "Hesperia, California, United States"
+      - "Apple Valley, California, United States"
+      - "Adelanto, California, United States"
+    service_area_notes: "High Desert core without all of San Bernardino County."
+    overlap_group: high-desert
+
+  - city: Riverside
+    slug: riverside
+    priority: 9
+    landing_page_status: generated_needs_qa
+    geo_strategy: county
+    geo_target_ids: [9057150]
+    geo_target_names:
+      - "Riverside County, California, United States"
+    service_area_notes: "Broad Riverside County; tight legal-intent keywords control relevance."
+    overlap_group: riverside-county
+
+  - city: San Bernardino
+    slug: san-bernardino
+    priority: 10
+    landing_page_status: generated_needs_qa
+    geo_strategy: county
+    geo_target_ids: [9057153]
+    geo_target_names:
+      - "San Bernardino County, California, United States"
+    service_area_notes: "Broad county; overlaps Fontana, Ontario and High Desert alternates."
+    overlap_group: san-bernardino-county
+    do_not_launch_with: [fontana, ontario]
+
+  - city: Fontana
+    slug: fontana
+    priority: 11
+    landing_page_status: generated_needs_qa
+    geo_strategy: county
+    geo_target_ids: [9057153]
+    geo_target_names:
+      - "San Bernardino County, California, United States"
+    service_area_notes: "Alternate San Bernardino County landing/campaign."
+    overlap_group: san-bernardino-county
+    do_not_launch_with: [san-bernardino, ontario]
+
+  - city: Ontario
+    slug: ontario
+    priority: 12
+    landing_page_status: generated_needs_qa
+    geo_strategy: county
+    geo_target_ids: [9057153]
+    geo_target_names:
+      - "San Bernardino County, California, United States"
+    service_area_notes: "Alternate San Bernardino County landing/campaign."
+    overlap_group: san-bernardino-county
+    do_not_launch_with: [san-bernardino, fontana]
+
+  - city: Salinas
+    slug: salinas
+    priority: 13
+    landing_page_status: generated_needs_qa
+    geo_strategy: county
+    geo_target_ids: [9057145]
+    geo_target_names:
+      - "Monterey County, California, United States"
+    service_area_notes: "Salinas and broader Monterey County."
+    overlap_group: monterey-county
+
+  - city: Oxnard
+    slug: oxnard
+    priority: 14
+    landing_page_status: generated_needs_qa
+    geo_strategy: county
+    geo_target_ids: [9057173]
+    geo_target_names:
+      - "Ventura County, California, United States"
+    service_area_notes: "Oxnard and broader Ventura County."
+    overlap_group: ventura-county

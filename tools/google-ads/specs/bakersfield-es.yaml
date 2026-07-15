@@ -1,0 +1,509 @@
+# GENERATED from Bakersfield ES template + markets.yaml
+# Review landing page and overlap metadata before launch.
+# Never hand-enable: campaign must be created PAUSED.
+
+name: ELA | Search | Bakersfield | ES | Nonbrand
+status: PAUSED
+channel: SEARCH
+language: es
+city: bakersfield
+daily_budget: 40.0
+bidding_strategy: MAXIMIZE_CLICKS
+start_date: null
+network:
+  target_google_search: true
+  target_search_network: false
+  target_content_network: false
+geo_target_names:
+- Kern County, California, United States
+geo_target_ids:
+- 9057133
+location_presence_only: true
+language_ids:
+- 1003
+final_url: https://help.employmentlawassist.com/bakersfield/es
+tracking:
+  tracking_template: null
+  final_url_suffix: google_campaign=ela_search_bakersfield_es_nonbrand&google_ad_group={_ad_group_name}&google_keyword={keyword}
+  notes:
+  - No duplique UTMs — la cuenta ya tiene tracking_url_template con utm/hsa.
+  - Auto-tagging activo; verifique gclid.
+  - '{_ad_group_name} se expande por grupo de anuncios en preview/apply.'
+brand:
+  brand_lane_owner: external_agency
+  internal_campaign_type: nonbrand
+  shared_brand_negative_list: shared/brand-negatives.yaml
+  overlap_risk_notes:
+  - Otra agencia puede estar pujando por marca o términos similares.
+  - No lanzar Search de marca hasta confirmar lista de palabras clave del proveedor.
+shared_negative_lists:
+- shared/negative-lists.yaml
+- shared/brand-negatives.yaml
+campaign_negative_keywords: []
+conversion_goals:
+- '7569909838'
+sitelinks:
+- link_text: Revisión de Caso
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  description1: Cuéntenos qué pasó.
+  description2: Consulta confidencial.
+- link_text: Despido Injustificado
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  description1: ¿Cree que su despido fue injusto?
+  description2: Hable con un abogado.
+- link_text: Discriminación Laboral
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  description1: Trato injusto laboral.
+  description2: Revise sus opciones.
+- link_text: Salarios y Horas
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  description1: ¿Pago u horas extras?
+  description2: Aclare próximos pasos.
+- link_text: Represalias
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  description1: ¿Represalias tras una queja?
+  description2: Proteja sus derechos.
+- link_text: Acoso Laboral
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  description1: Ambiente hostil o acoso.
+  description2: Ayuda confidencial.
+- link_text: Descansos y Comida
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  description1: ¿Le negaron descansos?
+  description2: Revise su reclamo.
+- link_text: Consulta Gratis
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  description1: Sin compromiso inicial.
+  description2: Hablamos Español.
+callouts:
+- Consulta Gratis
+- Atención en Español
+- Revisión Confidencial
+- Representamos Empleados
+- Área de Bakersfield
+- Derechos del Empleado
+structured_snippets:
+- header: Tipos
+  values:
+  - Despido Injustificado
+  - Discriminación
+  - Represalias
+  - Acoso Laboral
+  - Salarios y Horas
+  - Descansos
+- header: Servicios
+  values:
+  - Consulta Gratis
+  - Revisión de Caso
+  - Orientación Laboral
+  - Ayuda en Español
+call_asset_schedule: []
+ad_schedule: []
+ad_groups:
+- name: Abogado Laboral
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  keywords:
+  - text: abogado laboral bakersfield
+    match_type: PHRASE
+  - text: abogado de trabajo bakersfield
+    match_type: PHRASE
+  - text: abogado de empleo bakersfield
+    match_type: PHRASE
+  - text: abogado derechos empleado bakersfield
+    match_type: PHRASE
+  - text: abogado del trabajador bakersfield
+    match_type: PHRASE
+  - text: abogado laboral cerca de mi
+    match_type: PHRASE
+  - text: abogado de trabajo cerca de mi
+    match_type: PHRASE
+  - text: abogado derechos del empleado
+    match_type: PHRASE
+  - text: abogado laboral california
+    match_type: PHRASE
+  - text: abogado laboral bakersfield
+    match_type: EXACT
+  - text: abogado de trabajo bakersfield
+    match_type: EXACT
+  - text: abogado de empleo bakersfield
+    match_type: EXACT
+  - text: abogado derechos empleado bakersfield
+    match_type: EXACT
+  - text: abogado del trabajador bakersfield
+    match_type: EXACT
+  - text: abogado laboral cerca de mi
+    match_type: EXACT
+  - text: abogado de trabajo cerca de mi
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Abogado para Empleados
+    - Ayuda Legal en Trabajo
+    - Derechos del Empleado
+    - Consulta Confidencial
+    - Orientación Laboral
+    - Hable con un Abogado
+    - Casos de Empleo
+    - ¿Problemas en Trabajo?
+    - Abogado en Bakersfield
+    - Revise Su Situación
+    descriptions:
+    - Employment Law Assist ayuda a empleados en Bakersfield a entender sus opciones.
+    - Cuéntenos qué pasó en el trabajo. Comience con una consulta confidencial gratis.
+    - Ayuda para despido, represalias, acoso, discriminación, salarios y descansos.
+    - Hable con un abogado laboral sobre su situación y posibles próximos pasos.
+    path1: Bakersfield
+    path2: Laboral
+- name: Despido Injustificado
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  keywords:
+  - text: abogado despido injustificado bakersfield
+    match_type: PHRASE
+  - text: despido injustificado bakersfield
+    match_type: PHRASE
+  - text: abogado por despido ilegal bakersfield
+    match_type: PHRASE
+  - text: me despidieron injustamente bakersfield
+    match_type: PHRASE
+  - text: abogado despido injustificado
+    match_type: PHRASE
+  - text: abogado por despido ilegal
+    match_type: PHRASE
+  - text: terminacion ilegal del trabajo
+    match_type: PHRASE
+  - text: me despidieron por quejarme
+    match_type: PHRASE
+  - text: abogado despido injustificado bakersfield
+    match_type: EXACT
+  - text: despido injustificado bakersfield
+    match_type: EXACT
+  - text: abogado por despido ilegal bakersfield
+    match_type: EXACT
+  - text: me despidieron injustamente bakersfield
+    match_type: EXACT
+  - text: abogado despido injustificado
+    match_type: EXACT
+  - text: abogado por despido ilegal
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Despido Injustificado
+    - ¿Despido Injustificado?
+    - Abogado por Despido
+    - Revise Su Despido
+    - Ayuda por Despido
+    - Orientación Confidencial
+    - Derechos Tras Despido
+    - Abogado en Bakersfield
+    - Hable de Su Caso
+    - Evaluación del Caso
+    descriptions:
+    - ¿Cree que su despido fue ilegal? Conozca qué opciones puede tener.
+    - Revisamos preocupaciones de despido injustificado para empleados.
+    - Pasos claros después de un despido súbito, injusto o en represalia.
+    - Ayuda para trabajadores de Bakersfield ante un posible despido injusto.
+    path1: Bakersfield
+    path2: Despido
+- name: Discriminación Laboral
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  keywords:
+  - text: abogado discriminacion laboral bakersfield
+    match_type: PHRASE
+  - text: discriminacion en el trabajo bakersfield
+    match_type: PHRASE
+  - text: abogado discriminacion bakersfield
+    match_type: PHRASE
+  - text: abogado discriminacion empleo bakersfield
+    match_type: PHRASE
+  - text: abogado discriminacion laboral
+    match_type: PHRASE
+  - text: discriminacion racial trabajo
+    match_type: PHRASE
+  - text: discriminacion por edad trabajo
+    match_type: PHRASE
+  - text: abogado discriminacion laboral bakersfield
+    match_type: EXACT
+  - text: discriminacion en el trabajo bakersfield
+    match_type: EXACT
+  - text: abogado discriminacion bakersfield
+    match_type: EXACT
+  - text: abogado discriminacion empleo bakersfield
+    match_type: EXACT
+  - text: abogado discriminacion laboral
+    match_type: EXACT
+  - text: discriminacion racial trabajo
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Discriminación Laboral
+    - ¿Trato Injusto Trabajo?
+    - Ayuda por Discriminación
+    - Abogado para Empleados
+    - Derechos del Empleado
+    - Sesgo en el Empleo
+    - Consulta Confidencial
+    - Proteja Sus Derechos
+    - Orientación Legal Clara
+    - Casos de Discriminación
+    descriptions:
+    - ¿Enfrenta discriminación en el trabajo? Obtenga una revisión confidencial.
+    - Ayudamos a empleados a entender opciones ante sesgo o trato desigual.
+    - Orientación laboral por discriminación para trabajadores de Bakersfield.
+    - Comience con una evaluación clara y práctica de su situación.
+    path1: Bakersfield
+    path2: Sesgo
+- name: Represalias Laborales
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  keywords:
+  - text: abogado represalias laborales bakersfield
+    match_type: PHRASE
+  - text: represalias en el trabajo bakersfield
+    match_type: PHRASE
+  - text: abogado represalia laboral bakersfield
+    match_type: PHRASE
+  - text: me despidieron por reportar bakersfield
+    match_type: PHRASE
+  - text: abogado represalias laborales
+    match_type: PHRASE
+  - text: represalia despues de queja
+    match_type: PHRASE
+  - text: abogado denuncia laboral
+    match_type: PHRASE
+  - text: me castigaron por quejarme
+    match_type: PHRASE
+  - text: abogado represalias laborales bakersfield
+    match_type: EXACT
+  - text: represalias en el trabajo bakersfield
+    match_type: EXACT
+  - text: abogado represalia laboral bakersfield
+    match_type: EXACT
+  - text: me despidieron por reportar bakersfield
+    match_type: EXACT
+  - text: abogado represalias laborales
+    match_type: EXACT
+  - text: represalia despues de queja
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Represalias en Trabajo
+    - ¿Represalias por Quejarse?
+    - Ayuda por Represalias
+    - Abogado de Represalias
+    - Derechos al Denunciar
+    - ¿Despido Tras Queja?
+    - Consulta Confidencial
+    - Conozca Sus Protecciones
+    - Revise Su Situación
+    - Orientación para Empleados
+    descriptions:
+    - ¿Recibió represalias después de reportar un problema? Hable con abogados.
+    - Evaluamos represalias tras quejas o actividad protegida en el trabajo.
+    - Orientación confidencial para trabajadores de Bakersfield.
+    - Infórmese de posibles pasos sin presión ni promesas vacías.
+    path1: Bakersfield
+    path2: Represalia
+- name: Acoso Laboral
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  keywords:
+  - text: abogado acoso laboral bakersfield
+    match_type: PHRASE
+  - text: acoso en el trabajo bakersfield
+    match_type: PHRASE
+  - text: acoso sexual en el trabajo bakersfield
+    match_type: PHRASE
+  - text: abogado hostigamiento laboral bakersfield
+    match_type: PHRASE
+  - text: abogado acoso laboral
+    match_type: PHRASE
+  - text: acoso sexual en el trabajo
+    match_type: PHRASE
+  - text: ambiente hostil laboral
+    match_type: PHRASE
+  - text: hostigamiento en el trabajo
+    match_type: PHRASE
+  - text: abogado acoso laboral bakersfield
+    match_type: EXACT
+  - text: acoso en el trabajo bakersfield
+    match_type: EXACT
+  - text: acoso sexual en el trabajo bakersfield
+    match_type: EXACT
+  - text: abogado hostigamiento laboral bakersfield
+    match_type: EXACT
+  - text: abogado acoso laboral
+    match_type: EXACT
+  - text: acoso sexual en el trabajo
+    match_type: EXACT
+  rsa:
+    headlines:
+    - 'Acoso Laboral: Ayuda'
+    - ¿Ambiente Hostil?
+    - Revise un Caso de Acoso
+    - Abogado de Acoso Laboral
+    - Su Seguridad Importa
+    - Acoso Sexual Laboral
+    - Apoyo Confidencial
+    - Hable de lo Ocurrido
+    - Orientación Legal
+    - Ayuda en Bakersfield
+    descriptions:
+    - ¿Sufre acoso o un ambiente hostil? Reciba orientación confidencial.
+    - Ayudamos a empleados a entender opciones ante hostigamiento laboral.
+    - Apoyo legal para trabajadores de Bakersfield ante acoso laboral.
+    - Comience con una revisión discreta y información clara.
+    path1: Bakersfield
+    path2: Acoso
+- name: Salarios y Horas
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+  keywords:
+  - text: abogado salarios no pagados bakersfield
+    match_type: PHRASE
+  - text: abogado horas extras bakersfield
+    match_type: PHRASE
+  - text: horas extras sin pagar bakersfield
+    match_type: PHRASE
+  - text: abogado salario y horas bakersfield
+    match_type: PHRASE
+  - text: abogado salarios no pagados
+    match_type: PHRASE
+  - text: horas extras sin pagar
+    match_type: PHRASE
+  - text: no me pagan horas extras
+    match_type: PHRASE
+  - text: descansos de comida california
+    match_type: PHRASE
+  - text: abogado comisiones no pagadas
+    match_type: PHRASE
+  - text: abogado salarios no pagados bakersfield
+    match_type: EXACT
+  - text: abogado horas extras bakersfield
+    match_type: EXACT
+  - text: horas extras sin pagar bakersfield
+    match_type: EXACT
+  - text: abogado salario y horas bakersfield
+    match_type: EXACT
+  - text: abogado salarios no pagados
+    match_type: EXACT
+  - text: horas extras sin pagar
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Salarios y Horas Extra
+    - ¿Horas Extra sin Pagar?
+    - Abogado de Salarios
+    - ¿Descansos Omitidos?
+    - Derechos de Pago
+    - Ayuda por Salario
+    - Revise Su Pago
+    - Salarios Atrasados
+    - Orientación en CA
+    - Hable de Su Pago
+    descriptions:
+    - ¿Salarios, horas extra o descansos faltantes? Aclare posibles pasos.
+    - Ayudamos a empleados con problemas de salario y horas en California.
+    - Orientación para trabajadores de Bakersfield con salarios pendientes.
+    - Solicite una revisión confidencial de su situación de pago.
+    path1: Bakersfield
+    path2: Salarios
+- name: Descansos y Comida
+  keywords:
+  - text: abogado descansos comida bakersfield
+    match_type: PHRASE
+  - text: descanso de comida no pagado bakersfield
+    match_type: PHRASE
+  - text: abogado descanso laboral bakersfield
+    match_type: PHRASE
+  - text: abogado descanso de comida
+    match_type: PHRASE
+  - text: descansos y comida california
+    match_type: PHRASE
+  - text: no me dan descansos trabajo
+    match_type: PHRASE
+  - text: no me dan lunch en trabajo
+    match_type: PHRASE
+  - text: descansos laborales no pagados
+    match_type: PHRASE
+  - text: abogado descansos comida bakersfield
+    match_type: EXACT
+  - text: descanso de comida no pagado bakersfield
+    match_type: EXACT
+  - text: abogado descanso laboral bakersfield
+    match_type: EXACT
+  - text: abogado descanso de comida
+    match_type: EXACT
+  - text: descansos y comida california
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Descansos y Comida
+    - ¿Sin Lunch o Descanso?
+    - Ayuda por Descansos
+    - Derechos de Pago
+    - Abogado de Salarios
+    - Revise Su Reclamo
+    - Consulta Confidencial
+    - Orientación en CA
+    - Ayuda en Bakersfield
+    - Hable de Su Pago
+    descriptions:
+    - ¿No le dieron comida o descanso? Revise si hay un reclamo de pago.
+    - Aclare reglas de descansos en California y posibles opciones laborales.
+    - Ayuda confidencial para empleados de Bakersfield con breaks o pagos faltantes.
+    - Cuéntenos qué pasó y reciba orientación inicial sin compromiso.
+    path1: Bakersfield
+    path2: Descansos
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+- name: Licencia Médica
+  keywords:
+  - text: abogado licencia medica bakersfield
+    match_type: PHRASE
+  - text: despido por licencia medica bakersfield
+    match_type: PHRASE
+  - text: me despidieron por enfermedad bakersfield
+    match_type: PHRASE
+  - text: abogado licencia medica
+    match_type: PHRASE
+  - text: despido despues de lesion
+    match_type: PHRASE
+  - text: represalia por lesion trabajo
+    match_type: PHRASE
+  - text: acomodacion razonable trabajo
+    match_type: PHRASE
+  - text: abogado licencia medica bakersfield
+    match_type: EXACT
+  - text: despido por licencia medica bakersfield
+    match_type: EXACT
+  - text: me despidieron por enfermedad bakersfield
+    match_type: EXACT
+  - text: abogado licencia medica
+    match_type: EXACT
+  - text: despido despues de lesion
+    match_type: EXACT
+  rsa:
+    headlines:
+    - Licencia Médica Laboral
+    - ¿Despido Tras Licencia?
+    - Abogado de Licencia Médica
+    - Derechos por Discapacidad
+    - Lesión y Trabajo
+    - Acomodación Laboral
+    - Consulta Confidencial
+    - Revise Su Situación
+    - Ayuda en Bakersfield
+    - Proteja Sus Derechos
+    descriptions:
+    - ¿Lo castigaron o despidieron tras licencia médica? Solicite una revisión.
+    - Ayudamos con licencia, discapacidad, represalias y derechos del empleado.
+    - Orientación confidencial para empleados de Bakersfield con problemas de licencia.
+    - Comience con una consulta gratis y conozca opciones posibles.
+    path1: Bakersfield
+    path2: Licencia
+  final_url: https://help.employmentlawassist.com/bakersfield/es
+market_metadata:
+  priority: 1
+  landing_page_status: active
+  geo_strategy: county
+  service_area_notes: Bakersfield metro plus surrounding Kern County communities.
+  overlap_group: kern-county
+  do_not_launch_with: []
+  generated_from: bakersfield-es.yaml
+  launch_ready: true
